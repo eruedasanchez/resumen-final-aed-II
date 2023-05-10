@@ -1,0 +1,463 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper,hmargin=0.5cm,bottom=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xargs}
+\usepackage{xspace}
+\usepackage{caratula}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{graphicx}
+
+\materia{Algoritmos y Estructuras de Datos II}
+\titulo{Apunte para el final}
+\subtitulo{Fuertemente basado en las clases teoricas de Esteban Feuerstein y Alejandro Furfaro}
+\integrante{Ezequiel Rueda Sanchez}{}{ezequiel.ruedasanchez@gmail.com}
+
+%  ü, é, á, í, ó, ú, ñ, Ñ%
+
+
+\begin{document}
+
+\maketitle
+
+\section{Capitulo 1. Especificacion}
+
+\subsection{Introduccion}
+
+Tipicamente, nos enfrentamos a la siguiente situacion. Tenemos un $problema$ que no es presentado en una manera difusa, vaga y se pretende que lo podamos resolver a traves de una computadora de forma eficiente. Lo problematico es transitar este recorrido que va desde la definicion informal del problema a su resolucion computacional. Este camino tiene una serie de pasos que, tipicamente, los llamamos $especificacion$, $disenio$ e $implementacion$. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{etapas-res-problem}
+	\caption{Etapas en la resolucion de un problema}
+	\label{drivers1}
+\end{figure}
+
+En esta materia vamos a estudiar algoritmos y estructuras de datos. Recordemos que es un \textbf{algoritmo}.
+\newline
+\newline
+Un \textbf{algoritmo} es un procedimiento para resolver un problema, descripto por una secuencia ordenada y finita de pasos bien determinados que nos llevan de un estado inicial a uno final en un tiempo finito. 
+\newline
+\newline
+Un \textbf{algoritmo} siempre debe brindar una respuesta, siendo posible que la respuesta sea $"$no hay respuesta$"$. La descripcion debe ser clara y precisa, sin dejar lugar a la utilizacion de la intuicion o la creatividad. Por ejemplo, una receta es un algoritmo si no dice $"$sal a gusto$"$.  
+\newline
+\newline
+Los lenguajes naturales tienen una semantica \textbf{difusa}. Esto quiere decir que una misma oracion puede interpretarse de dos o mas formas (ambiguedad), e incluso hay palabras que tienen varias aceptaciones (polisemia). Por lo tanto, para poder resolver un problema formalmente, primero debemos tener una descripcion del mismo en un lenguaje formal de $especificacion$ que sea preciso, es decir, que pueda interpretarse sin lugar a dudas. Este salto entre un lenguaje formal y uno natural se conoce como \textbf{brecha semantica}.
+\newline
+\newline
+Es importante que al momento de describir los problemas no caigamos en la \textbf{sobreespecificacion}, ya que si bien podemos dar una descripcion precisa y libre de ambiguedades dando todos los detalles acerca de su representacion, estariamos limitando nuestras opciones de diseño. Notemos que cuando estamos especificando un problema nos interesa describir $"$el que$"$ y no $"$el como$"$, por lo que no tiene sentido preguntarnos en esta etapa si la especificacion es o no $eficiente$.
+\newline
+\newline
+La herramienta principal que utilizaremos para especificar problemas se conoce como \textbf{Tipos Abstractos de Datos (TADs)} que son modelos matematicos que se construyen con el fin de exponer los aspectos revelantes del problema bajo analisis. Decimos que un ente matematico es un modelo de nuestra teoria (extension de las teorias de primer orden que incorpora el concepto de genero) si hace corresponder a cada genero del TAD un conjunto de valores y a cada operacion una funcion total. Este lenguaje axiomatico permite estudiar otras formas de demostracion muy utiles como la $induccion$ $estructural$ y cuenta con la ventaja que no requiere de tipos primitivos que deben definirse por fuera del mismo, ademas de ser una herramienta tanto flexible como general. Veamos un ejemplo:
+\newline
+\newline
+\textbf{Descripcion del problema:} El dueño de un restaurant quiere asegurarse de que los pedidos sean atendidos con prolijidad. Los mozos llevan los pedidos hasta la cocina donde los colocan. Cuando el cocinero se libera, saca el primer pedido y prepara el plato indicado. El dueño quiere saber cual es el proximo plato a preparar, cuantos pedidos atiende el cocinero cada dia y cual fue el dia con menos pedidos.
+\newline
+\newline
+Hay ciertos elementos en esta descripcion que realmente no son necesarios para el modelado del problema. Por ejemplo, en la descripcion del problema se nos habla de un $due$ñ$o$ pero este no realiza ninguna operacion por lo que no nos interesa modelarlo. Ahora, nos toca realizar un proceso de \textbf{abstraccion} para identificar aquellos elementos y operaciones que terminan definiendo al problema. En particular, en este problema podemos identificar el uso de platos, dias y un restaurant ¿Que podemos decir sobre esos elementos?
+\newline
+\newline
+\newline
+\newline
+\textbf{.} Los dias pasan por lo que vamos a querer contarlos. Para modelar este comportamiento nos alcanza con renombrar el TAD \tadNombre{DIA} como \tadNombre{NAT}: TAD \tadNombre{DIA} es \tadNombre{NAT}  
+\newline
+\newline
+\textbf{.} Solo nos interesa poder diferenciar los platos entre si. TAD \tadNombre{PLATO} es \tadNombre{STRING}.
+\newline
+\newline
+¿Por que tenemos que renombrar estos TADs y no utilizar STRING o NAT directamente? Lo que queriamos hacer era utilizar un lenguaje de especificacion que nos permita abstraer ciertos conceptos, por lo que usar STRING directamente no seria correcto. Para el restaurant no tiene sentido un STRING, pero los PLATOS si. De esta manera, nos alejamos de la manera en la que representamos los datos en una computadora y nos acercamos a la definicion del problema.
+\newline
+\newline
+Para especificar un TAD, primero debemos definir la \textbf{signatura} del mismo, es decir, las operaciones que ofrece el TAD.
+\newline
+\newline
+\begin{tad}{\tadNombre{Restaurant}}
+	\medskip	
+	\textbf{generos} restaurant
+	\newline
+	
+	\textbf{operaciones}
+	\medskip
+	\tadOperacion{inaugurar}{}{restaurant}{}
+	\medskip
+	\tadOperacion{cantPlatosPendientes}{restaurant}{nat}{}
+	\medskip
+	\tadOperacion{proximoPedido}{restaurant/r}{plato}{cantPlatosPendientes($r$) $>$ 0}
+	\medskip
+	\tadOperacion{prepararPlato}{restaurant/r}{restaurant}{cantPlatosPendientes($r$) $>$ 0}
+	\medskip
+	\tadOperacion{tomarPedido}{restaurant, plato}{restaurant}{}
+	\medskip
+	\tadOperacion{nuevoDia}{restaurant}{restaurant}{}
+	\medskip
+	\tadOperacion{diaActual}{restaurant}{dia}{}
+	\medskip
+	\tadOperacion{platosPorDia}{restaurant/r, dia/d}{nat}{$d$ $\leq$ diaActual($r$)}
+	\medskip
+	\tadOperacion{diaMenosPedidos}{restaurant}{dia}{}
+	\medskip
+\end{tad}
+\medskip
+\medskip
+La signatura nos define que operaciones tiene cada tipo, cuales son sus parametros y que tipos devuelven. Notemos que las operaciones de los TADs son \textbf{funciones totales}, o sea, funciones que estan definidas para todos los valores del dominio. Por eso, en casos como \TipoVariable{prepararPlato()} tuvimos que restringir el dominio. En esta etapa, no seria correcto utilizar una convencion de devolver -1 para indicar que no existe resultado (esto podria incluirse en la etapa de diseño para el manejo de errores).
+\newline
+\newline
+Con esto, definimos la \textbf{sintactica} del TAD y lo que nos falta es darle \textbf{semantica} a estas operaciones. Para ello, vamos a definir los \textbf{axiomas} del TAD. Los $axiomas$ son $formulas$ $bien$ $formadas$, es decir, predicados aplicados a terminos (variables, constantes o a lo que resulta de aplicar las operaciones del TAD sobre otros terminos). En general, los axiomas van a ser ecuaciones como la siguiente:
+\newline
+\newline
+($\forall$ $r$:restaurant) (diaActual(nuevoDia($r$))) $\equiv$ diaActual($r$) + 1
+\newline
+\newline
+De esta manera, podemos darle un significado a la operacion \TipoVariable{diaActual} cuando tenemos una entrada de la forma \TipoVariable{nuevoDia($r$)} (en este caso significa \TipoVariable{diaActual($r$) + 1}). 
+\newpage
+Comenzamos con los axiomas que corresponden al TAD \tadNombre{RESTAURANT}.    
+\newline
+\begin{tad}{\tadNombre{Restaurant}}
+\medskip
+\tadAxiomas[$\forall$ $r$ : \tadNombre{Restaurant}, $p$ : \tadNombre{Plato}, $d$ : \tadNombre{Dia}]
+\medskip
+\tadAlinearAxiomas{diaActual(tomarPedido(r,p))}
+\medskip
+\tadAxioma{diaActual(inaugurar())}{0}
+\medskip
+\tadAxioma{diaActual(nuevoDia(r))}{diaActual(r)+1}
+\medskip
+\tadAxioma{diaActual(tomarPedido(r,p))}{diaActual(r)}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{cantPlatosPendientes(tomarPedido(r,p))}
+\medskip
+\tadAxioma{cantPlatosPendientes(inaugurar())}{0}
+\medskip
+\tadAxioma{cantPlatosPendientes(tomarPedido(r,p))}{cantPlatosPendientes(r)+1}
+\medskip
+\tadAxioma{cantPlatosPendientes(prepararPlato(r))}{cantPlatosPendientes(r)-1}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{cantPlatosPendientes(tomarPedido(r,p))}
+\medskip
+\tadAxioma{proximoPedido(r)}{ult(secuenciaDePedidos(r))}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{secuenciaDePedidos(tomarPedido(r,p))}
+\medskip
+\tadAxioma{secuenciaDePedidos(inaugurar())}{$\secuvacia$}
+\medskip
+\tadAxioma{secuenciaDePedidos(tomarPedido(r,p))}{p $\puntito$ secuenciaDePedidos(r)}
+\medskip
+\tadAxioma{secuenciaDePedidos(prepararPlato(r))}{com(secuenciaDePedidos(r))}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{platosPorDia(d, tomarPedido(r,p))}
+\medskip
+\tadAxioma{platosPorDia(d, inaugurar())}{0}
+\medskip
+\tadAxioma{platosPorDia(d, tomarPedido(r,p))}{platosPorDia(d,r)}
+\medskip
+\tadAxioma{platosPorDia(d, prepararPlato(r))}{\IF diaActual(r) = d THEN platosPorDia(d,r)+1 ELSE platosPorDia(d,r) FI}
+\medskip
+\tadAxioma{platosPorDia(d, nuevoDia(r))}{\IF diaActual(r)+1 = d THEN 0 ELSE platosPorDia(d,r) FI}
+\medskip
+\medskip
+
+Por ultimo, vamos a axiomatizar la funcion diaMenosPedidos(r) de la siguiente forma:
+\newline
+\newline
+($\forall$ $d'$:dia) (0 $\leq$ $d'$ $\leq$ diaActual($r$) $\impluego$ platosPorDia($r$, diaMenosPedidos($r$)) $\leq$ platosPorDia($r,d'$))
+\medskip
+\end{tad}
+
+Notemos que este ultimo axioma no es un axioma ecuacional. El motivo es que en la descripcion del problema no se nos dice que hacer en caso de empate, por lo que si en la etapa de especificacion definimos cual debe ser el criterio de desempate, estariamos sobre-especificando. Otra operacion que esta axiomatizada de esta forma es \TipoVariable{dameUno} del TAD \tadNombre{Conjunto($\alpha$)}. En la materia, se considera incorrecta cualquier especificacion no ecuacional, y debe utilizarse la funcion \TipoVariable{dameUno} para especificar este tipo de casos.
+\newline
+\newline
+Al momento de axiomatizar, una de las primeras cosas que tenemos que tener en cuenta es que las operaciones que estamos especificando son funciones, asi que deberiamos evitar cualquier tipo de inconsistencias. En particular, tenemos que tener en cuenta que no se cuenta con pattern matching, dicho de otro modo, todos los axiomas valen a la vez. Tampoco debemos especificar sobre los casos restringidos, ya que estan fuera del dominio. Es importante que no caigamos en la sobre-especificion ni en la sub-especificacion (no decir que valores toma la funcion para ciertos valores). 
+\newline
+\newline
+Ademas, se espera mantener el encapsulamiento entre los distintos TADs, por lo que si trabajamos con instancias de un TAD en las operaciones de otro, manipularemos esas instancias a traves de sus observadores (y no sus generadores). Por ejemplo: 
+\newpage
+\begin{tad}{\tadNombre{Restaurant}}
+	\medskip
+	\medskip
+	
+	\tadAlinearAxiomas{platosDeCiertoPrecio(r,c,x)}
+	\medskip
+	\tadAxioma{platosDeCiertoPrecio(r,c,x)}{\IF $\emptyset?$(c) THEN $\emptyset$ ELSE {\IF precio(dameUno(c),r) = x THEN Ag(dameUno(c),platosDeCiertoPrecio(r,sinUno(c),x)) ELSE platosDeCiertoPrecio(r,sinUno(c),x) FI}FI}
+	\medskip
+	\medskip
+	Es preferible a
+	\medskip
+	\medskip
+	\tadAlinearAxiomas{platosDeCiertoPrecio(r,Ag(p,c),x)}
+	\medskip
+	\tadAxioma{platosDeCiertoPrecio(r, $\emptyset$, x)}{$\emptyset$}
+	\medskip
+	\tadAxioma{platosDeCiertoPrecio(r,Ag(p,c),x)}{\IF precio(p,r) = x THEN Ag(platosDeCiertoPrecio(r,c,x)) ELSE platosDeCiertoPrecio(r,c,x) FI}
+	\medskip
+\end{tad}
+\medskip
+\medskip
+Ahora, veamos mas en detalle las distintas secciones que tiene un TAD: 
+\newline
+\newline
+\textbf{.} \textbf{Parametros formales:} En \tadNombre{Conjunto($\alpha$)}, $\alpha$ denota un tipo arbitrario, no especificado. $\alpha$ se dice parametro formal del TAD \tadNombre{Conjunto($\alpha$)}. 
+\newline
+\newline
+\textbf{.} \textbf{Generos:} un genero es el nombre que recibe el conjunto de valores del tipo. Hay una sutil diferencia entre el nombre del TAD y del genero. Si se quiere, pensar en el monoide conmutativo ($\mathbb{N}$, +) (TAD) y en el conjunto de los numeros naturales (genero). 
+\newline
+\newline
+\textbf{.} \textbf{Usa:} hace referencia a las operaciones y generos de otros TADs que utiliza el TAD que queremos definir. Estas operaciones y generos tienen que estar exportados en el otro TAD. Si se usa todo lo que aparece mencionado, podemos obviar esta clausula.
+\newline
+\newline
+\textbf{.} \textbf{Exporta:} indica las operaciones y generos que se deja a disposicion de los usuarios del tipo. Esta clausula tiene un valor por omision: los generos, los observadores basicos y los generadores. 
+\newline
+\newline
+\textbf{.} \textbf{Igualdad Observacional:} La igualdad observacional es un predicado entre instancias del tipo que nos dice cuando son iguales desde el punto de vista de su comportamiento (semantica) y no desde el punto de vista de la sintactica. Por ejemplo, la instancia \TipoVariable{Ag(1, Ag(2,$\emptyset$))} es observacionalmente igual a \TipoVariable{Ag(2, Ag(1,$\emptyset$))} a pesar de ser sintacticamente distintas. Para definir la igualdad observacional se utilizan a los observadores basicos. La $\igobs$ es un predicado del metalenguaje, y permite agrupar a las distintas instancias en una misma clase de equivalencia. Vamos a exigir que todas las instancias que sean equivalentes de acuerdo con la igualdad observacional mantengan la congruencia al aplicar cualquier funcion. Recordemos que una funcion $f$ es congruente con respecto a una relacion de equivalencia $"$$\backsim$$"$ si y solo si: ($\forall$ $x,y$)($x \backsim y$ $\leftrightarrow$ $f(x) \backsim f(y)$). 
+\newline
+\newline
+\textbf{.} \textbf{Generadores:} son aquellas operaciones que permiten construir instancias del TAD. Es necesario que el conjunto de generadores este bien definido, es decir, que entre todos los generadores podamos construir cualquier instancia posible del TAD. Un problema menor, no tan grave, es que una instancia del TAD pueda ser construida de mas de una manera. Es importante notar que al aplicar un generador sobre una instancia de un TAD \textbf{no se esta modificando} la instancia que se recibe como parametro, sino que se genera una nueva instancia basada en la anterior. Recordemos que estamos trabajando con $funciones$, por lo que no existe la nocion de $estado$, y que el paradigma funcional trabaja bajo el concepto de \textbf{transparencia referencial}, es decir, que los resultados de las funciones solo dependen de sus argumentos. 
+\newline
+\newline
+\textbf{.} \textbf{Observadores basicos:} son aquellas operaciones que nos permiten diferenciar instancias del TAD en clases de equivalencia. En general, se axiomatizan en base a todos los generadores.
+\newline
+\newline
+\textbf{.} \textbf{Extiende}
+\newline
+\newline
+\textbf{.} \textbf{Otras operaciones:} son el resto de las operaciones que se necesiten declarar en un TAD. No deberia ocurrir que una funcion que aparezca en esta seccion devuelva valores que rompan con la congruencia del TAD (si esto ocurre, habria que repensar los observadores). En general, se axiomatizan en base a los observadores, aunque es posible que en algunos casos sea conveniente axiomatizarlos en base a los generadores. 
+\newline
+\newline
+\textbf{.} \textbf{Axiomas:} son las reglas que describen el comportamiento desde el punto de vista semantico de los elementos del TAD. 
+\newline
+\newline
+Es preferible que el conjunto de generadores y el de los observadores sean \textbf{minimales}, aunque se permite que los generadores no sean minimales si eso facilita la axiomatizacion. Si estos no lo fuesen, se corre el riesgo de producir inconsistencias y, ademas, la redundancia atenta contra la claridad.
+
+\subsection{Comportamiento automatico}
+
+La idea del comportamiento automatico es no modelar operaciones para casos que se dan de forma implicita o automatica. Por ejemplo, si cada vez que se da cierta condicion $A$ se produce el efecto $B$ a traves de una accioon $C$ que se da de $forma$ $automatica$,seguramente no haga falta haceralusion a la accion $C$ de ninguna forma para modelar correctamente el objeto de estudio. Veamos un ejemplo.
+\newline
+\newline \textbf{Descripcion del Problema:} Se quiere especificar el comportamiento de una fabrica de empanadas que esta totalmente automatizada. A medida que se encuentran listas, las empanadas van saliendo de una maquina una a una y son depositadas en una caja para empanadas. En la caja caben 12 empanadas y cuando esta se llena, es \textbf{automaticamente} despachada y reemplazada por una caja vacia. Se quiere saber cuantas cajas de empanadas se despacharon en total y cuantas empanadas hay en la caja que esta actualmente abierta. El enunciado nos dice que cuando la caja actual se llena es $automaticamente$ despachada y reemplazada por una caja vacia. Por lo tanto, no debemos definir una operacion de \TipoVariable{despacharCaja}, ya que estariamos permitiendo la existencia de instancias en las que esto no ocurra. El mayor impacto que tiene el comportamiento automatico sobre la especificacion de un problema es en los axiomas, porque este comportamiento debe quedar plenamente descripto en los mismos. En resumen, cuando alguna parte del comportamiento del TAD debe ser automatica, no deberiamos:
+\newline
+\newline
+\textbf{.} Especificar una accion manual para este comportamiento.
+\newline
+\newline
+\textbf{.} Permitir que existan instancias del TAD en las que el comportamiento deberia haberse aplicado y no se hizo,
+\newline
+\newline
+\textbf{.} restringir acciones que requieran que suceda el comportamiento, ya que este es automatico(no existe ninguna instancia para la cual el comportamiento no se haya dado).
+\newpage
+
+\section{Capitulo 2. Diseño}
+
+\subsection{Analisis de complejidad}
+
+Hasta ahora, estuvimos enfocandonos en modelar correctamente un problema describiendo, mediante un lenguaje formal, $que$ es lo que necesitamos resolver. En esta seccion, vamos a orientarnos hacia el $como$ resolver el problema, es decir al $dise$ñ$o$ de la solucion. Para poder elegir una forma adecuada de resolverel problema, debemos tener alguna medida de $eficiencia$, es decir, cuantos recursos requiere el algoritmopara ejecutar. Algunos recursos que se utilizan habitualmente como medida de eficiencia son el \textbf{tiempo de ejecucion}, el uso de \textbf{memoria}, cantidad de procesadores, utilizacion de la red de comunicaciones, etc. Nos podriamos preguntar si es posible optimizar todos estos criterios al mismo tiempo. En general, esto no va a ser posible, ya que el uso de estos recursos suele entrar en conflicto (tenemos un $trade-off$ entre la utilizacion de los distintos recursos). Por lo tanto, vamos a tener muchas soluciones distintas de un mismo problema, que optimicen distintos recursos, y que nos seran de utilidad bajo distintos $contextos$ $de$ $uso$. El recurso que mas nos va a interesar es el tiempo de ejecucion y, en segundo lugar, el espacio utilizado. Esto se debe a que el tiempo no puede ser recuperarse, mientras que el espacio en la memoria si.  
+\newline
+\newline
+Necesitamos alguna estrategia para poder medir la eficiencia de los distintos algoritmos. Una primer estrategia es la \textbf{empirica} ($a$ $posteriori$), que consiste en programar las distintas soluciones y probarlas con la ayuda de una computadora, para un conjunto arbitrario de instancias. El problema de este enfoque es que para poder comparar cualquier algoritmo con otro, primero debemos implementarlo (lo cual lleva tiempo) y encima los resultados que obtenemos no son generales, ya que dependen del lenguaje de programacion, la maquina sobra la que se ejecuta, las posibles optimizaciones utilizadas y las instancias
+particulares que se utilizaron. Nos gustaria tener una medida mas general, que sea independiente de todas estas variables.
+\newline
+\newline
+Para ello, vamos a medir la complejidad algoritmica de forma \textbf{teorica} ($a$ $priori$), que nos permita estimar lo que tardaria la ejecucion de un algoritmo, sin tener que ejecutarlo ni implementarlo. Esta medida vale para instancias de cualquier tamaño, es independiente del lenguaje de programacion y de la maquina en la que se ejecuta. Lo primero que necesitamos para independizarnos de una computadora en particular es tener un \textbf{modelo de computo}. Vamos a inventar una maquina teorica, ideal, cuyas
+caracteristicas sean consensuadas, y vamos a asociar la complejidad algoritmica a esta maquina teorica.
+\newline
+Para que el analisis valga para instancias de cualquier tamaño, vamos a definir la medida de complejidad en funcion del \textbf{tamaño} de las instancias y no en funcion del valor de instancias particulares, enfocandonos en un analisis \textbf{asintotico} de la complejidad.
+
+\subsubsection{Modelo de computo}
+
+Estamos buscando una medida que sea general, valida para distintas implementaciones del algoritmo e independiente de la maquina en la que se ejecuta. Con este objetivo en mente, vamos a inventar una maquina teorica que vamos a usar como $"$banco de pruebas$"$ para la ejecucion (teorica) del algoritmo. Esta maquina ideal nos va a permitir definir los conceptos de tiempo de ejecucion y espacio de memoria utilizado. Vamos a entender al tiempo de ejecucion como la cantidad de pasos o instrucciones que se ejecutan en la maquina teorica para resolver una instancia del problema. De forma similar, podemos medir el consumo de memoria de un algoritmo en funcion de la cantidad de posiciones de memoria
+utilizados en una ejecucion sobre la maquina teorica.
+\newline
+\newline
+Para definir una unidad de tiempo en la maquina teorica, vamos a utilizar el concepto de \textbf{operaciones elementales} (OE). Las operaciones elementales son aquellas que $"$tardan$"$ una cantidad constante de unidades de tiempo en ejecutarse en el modelo de maquina que estamos definiendo. En general, vamos a tener un conjunto reducido de operaciones elementales y un conjunto de reglas para calcular cuanto tardan aquellas operaciones que no son elementales.
+\newline
+\newline
+En principio, no existen operaciones cuyo tiempo de ejecucion sea independiente de la longitud de sus operandos. Sin embargo, bajo el \textbf{modelo uniforme}, podemos asumir que los operandos envueltos en las instancias son de un tamaño $razonable$, y podemos tomar al tiempo de ejecucion de una operacion elemental sobre cualquier operando como constante. Por otro lado, cuando trabajamos con operandos que pueden crecer de forma arbitraria, nos conviene pensar bajo el \textbf{modelo logaritmico}. La idea es que si bien no es razonable asumir constante el tiempo de una operacion para operandos de cualquier longitud (incluso si es elemental), si podemos asumir que el tiempo de una operacion elemental es constante para operandos de 1 bit. Luego, podemos medir el tiempo de ejecucion de cada operacion en funcion del tamaño de los operandos, medido en \textbf{bits}. Vamos a trabajar bajo el modelo uniforme y consideraremos como operaciones elementales a las operaciones aritmetico-logica basicas (suma, division, multiplicacion, AND, OR), las comparaciones logicas, las transferencias de control y las asignaciones a variables de tipos basico.
+\newline
+\newline
+Vamos a utilizar como medida del tiempo de ejecucion una funcion $t(I)$ que mida la cantidad de operaciones elementales que se ejecutan para una instancia particular $I$, considerando que el tiempo de una OE es de una \textbf{unidad}. Para el analisis del tiempo de ejecucion de un algoritmo, vamos a ver cuanto cuestan las operaciones individuales, para luego combinar estos costos segun la estructura de control involucrada, llamadas a procedimientos y llamados recursivos. Vamos a definir que si $P_{1}$ y $P_{2}$ son dos
+fragmentos sucesivos de un algoritmo, el costo total del algoritmo nos queda $t(A)$ = $t(P_{1})$ $+$ $t(P_{2})$, sin importar si se tratan de instrucciones simples o complicados sub-algoritmos. Notemos que el tiempo de ejecucion de las llamadas a procedimientos recursivos va a dar lugar a ecuaciones de recurrencia, por ejemplo, $T(n)$ = $n$ $+$ $T(n - 1)$, que veremos como se resuelven mas adelante (ver Divide and Conquer).
+
+\subsubsection{Tamaño de la entrada}  
+
+Formalmente, el tamaño de entrada se corresponde con el numero de bits necesarios para representar a esa instancia en una computadora, usando algun esquema de codificacion. Sin embargo, normalmente vamos a ser menos formales que esto, y vamos a entender como $tama$ñ$o$ a cualquier entero que de alguna manera mida el numero de componentes de una instancia. A veces, cuando hablamos de problemas que involucran enteros, es mas natural dar la eficiencia del algoritmo en terminos del $valor$ de la instancia, en lugar de su tamaño. Notemos que la cantidad de bits que ocupa un entero de valor $n$ es $log(n)$, por
+lo que si conocemos el costo en funcion del valor, facilmente podemos traducirlo al costo en funcion del tamaño. El problema que tenemos es que no todas las entradas del mismo  tamaño consumen el mismo tiempo (o espacio). Esto da a lugar a tres medidas particulares para un mismo algoritmo: el analisis del caso \textbf{peor}, del caso \textbf{mejor} y del caso \textbf{promedio}.
+\newline
+\newline
+\textbf{Definicion}
+\newline
+\newline
+Sea $t(I)$ el tiempo de ejecucion de un algoritmo sobre una instancia $I$. Definimos el tiempo de ejecucion del peor caso, del mejor caso y del caso promedio para instancias de un tamaño $n$ como: 
+\newline
+\newline
+$T_{peor}(n)$ $=$ max$_{|I| = n}(t(I))$
+\newline
+\newline
+$T_{mejor}(n)$ $=$ min$_{|I| = n}(t(I))$
+\newline
+\newline
+$T_{promedio}(n)$ $=$ $\displaystyle \sum_{|I| = n}^{} P(I) ~.~ t(I)$
+\newline
+\newline
+donde $|I|$ refiere al tamaño de la instancia $I$.
+\newline
+\newline
+Intuitivamente, $T_{peor}(n)$ es el tiempo de ejecucion del algoritmo sobre la instancia que implica mayor tiempo de ejecucion entre las entradas de tamaño $n$, mientras que $T_{mejor}(n)$ nos habla del tiempo de ejecucion del algoritmo sobre la instancia que implica menor tiempo de ejecucion. Por ultimo, el analisis del caso promedio es una medida muy utilizada, y nos habla del tiempo de ejecucion esperable sobre instancias $"$tipicas$"$.
+\newline
+\newline
+\textbf{Comportamiento Asintotico}
+\newline
+\newline
+En general, cuando hacemos un analisis de la complejidad de un algoritmo, nos va a interesar poder determinar su \textbf{comportamiento asintotico}. Esta idea se basa en el \textbf{principio de invarianza}, que nos dice que, dado un algoritmo y dos implementaciones $M_{1}$ y $M_{2}$ que tienen un tiempo de ejecucion $T_{1}(n)$ y $T_{2}(n)$, siendo $n$ el tamaño de la entrada, existen $c \in \mathbb{R}^{+}$  y $n_{0} \in \mathbb{N}$ tales que:
+\newline
+\newline
+$T_{1}(n)$ $\leq$ $c$ · $T_{2}(n)$ $\forall$ $n \geq n_{0}$
+\newline
+\newline
+Por lo tanto, no nos va a interesar tanto conocer exactamente la cantidad de operaciones de un algoritmo, sino que nos va a interesar su \textbf{orden de magnitud}. La idea, entonces, va a ser buscar aquella funcion (logaritmica, lineal, cuadratica, exponencial, etc.) que exprese el comportamiento del algoritmo, para entradas suficientemente grandes. Para ello, se han propuesto distintas medidas del comportamiento asintotico: $O$ (cota superior), $\Omega$ (cota inferior) y $\Theta$ (orden exacto de la funcion).
+\newline
+\newline
+Esta notacion se dice $asintotica$ porque trabaja sobre el comportamiento de funciones en el limite, es decir, para valores suficientemente grandes de sus parametros. En consecuencia, los argumentos basados en la notacion asintotica podrian fallar en cuanto a su valor practico cuando trabajamos con entradas con valores del $"$mundo real$"$. En cualquier caso, suele ser de utilidad al momento de comparar algoritmos, y nos facilita algunas cuentas. Notemos que la utilizacion de las cotas asintoticas para comparar funciones
+de tiempo de ejecucion se basa en la hipotesis de que son suficientes para decidir el mejor algoritmo, prescindiendo de las constantes de proporcionalidad. Sin embargo, esta hipotesis puede no ser cierta cuando el tamaño de la entrada es pequeño, o cuando las constantes involucradas son demasiado grandes, en cuyo caso mantendremos el coeficiente del termino de mayor peso (pensar en si conviene usar un algoritmo cubico en segundos o un algoritmo cuadratico en dias).
+\newline
+\newline
+La notacion $O$ sirve para representar el limite o cota superior del tiempo de ejecucion de un algoritmo. Es decir, la notacion $f \in O(g)$ expresa que la funcion $f$ no crece mas rapido que alguna funcion proporcional a $g$, y decimos que $g$ es cota superior de $f$. Luego, si sabemos que un algoritmo tiene un tiempo de ejecucion $T_{peor} \in O(g)$, podemos asegurar que para todas las entradas de tamaño suficientemente grande, el tiempo $T_{peor}$ va a ser como mucho proporcional a $g$. Formalmente, dada una funcion $f$: $\mathbb{N} \to \mathbb{R}^{+}$ arbitraria que va desde los numeros naturales a los reales no negativos, siendo $n$ un representante del tamaño de la instancia del algoritmo y $f(n)$ la cantidad de recursos utilizados por el algoritmo para procesar esa instancia, decimos que $f \in O(g)$ si y solo si $\exists$ $n_{0}$, $c > 0$ tal que $n \geq n_{0}$ $\Rightarrow$ $f(n)$ $\leq$ $c$ · $g(n)$
+\newline
+\newline
+Por conveniencia, permitimos el uso incorrecto de notacion para decir que $f(n)$ esta en el orden de $g(n)$ incluso si $f(n)$ es negativo o indefinido para una cantidad finita de valores de $n$, y solo vamos a exigir que este bien definida cuando $n \geq n_{0}$. La herramienta mas poderosa y versatil para probar que cierta funcion esta en el orden de otra se conoce como la \textbf{regla del limite}, que nos dice que, dadas dos funciones arbitrarias $f$, $g$ ambas $\mathbb{N} \to \mathbb{R}_{\geq 0}$:
+\newline
+\newline
+1) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $\in$ $\mathbb{R}^{+}$, entonces $f(n) \in O(g(n))$ y $g(n) \in O(f(n))$. La vuelta no vale, ya que es posible que el limite no exista.
+\newline
+\newline
+2) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $0$, entonces $f(n) \in O(g(n))$ pero $g(n) \notin O(f(n))$. 
+\newline
+\newline
+3) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $+ \infty$, entonces $f(n) \notin O(g(n))$ pero $g(n) \in O(f(n))$. 
+\newline
+\newline
+Consideremos el problema de ordenamiento. Ya sabiamos que existen algoritmos como Insertion
+Sort o Selection Sort que pueden ordenar un arreglo de $n$ elementos en $O(n^{2})$. Sin embargo, existen otros algoritmos mas sofisticados como $heapsort$ que tienen costo $O(n ~ log(n))$. Esta claro que $n ~ log(n)$ $\in$ $O(n^{2})$.
+\newline
+\newline
+Por lo tanto, seria correcto decir que heapsort esta en $O(n^{2})$, o incluso $O(n^{3})$. Esto se debe a que la notacion $O$ esta diseñada solamente para dar cotas superiores acerca de la cantidad de recursos requeridos. Claramente, necesitamos una notacion dual para dar una cota inferior. La notacion $\Omega$ justamente nos permite representar el limite o cota inferior del tiempo de ejecucion del algoritmo.
+\newline
+\newline
+Consideremos nuevamente dos funciones $f$,$g$:$\mathbb{N} \to \mathbb{R}_{\geq 0}$ que vayan de los naturales a los reales no negativos. Luego, la notacion $f \in \Omega(g)$ expresa que la funcion $f$ esta acotada inferiormente por alguna funcion multiplo positivo de $g$ para valores de $n$ lo suficientemente grandes. Formalmente, decimos que $f \in \Omega(g)$ si y solo si
+\newline
+\newline
+$\exists$ $n_{0}$, $k > 0$ tal que $n \geq n_{0}$ $\Rightarrow$ $f(n)$ $\geq$ $k$ · $g(n)$
+\newline
+\newline
+A pesar de la gran similitud entre la notacion $O$ y la notacion $\Omega$, hay un aspecto en el que la dualidad falla. Recordemos que normalmente vamos a querer estudiar el tiempo de ejecucion en el $peor$ $caso$. Por lo tanto, cuando decimos que $T_{peor}(n) \in O(g)$ para el peor caso, estamos diciendo que \textbf{para toda} instancia de tamaño $n$, existe una constante real positiva $k$ tal que $t(I)$ $\leq$ $k$ · $g(n)$. En cambio,
+cuando decimos que $T_{peor}(n) \in \Omega(g)$, estamos diciendo que existe \textbf{al menos una} instancia de tamaño $n$ para la cual realmente tiene costo $t(I)$ $\geq$ $k$ · $g(n)$ ($\forall$ $n \geq n_{0}$). Por lo tanto, podrian existir infinitas instancias de tamaño $n$ que se podrian resolver en un menor tiempo.
+\newline
+\newline
+En general, vamos a utilizar la notacion $\Omega$ para dar cotas inferiores en los tiempos de ejecucion de algoritmos. Sin embargo, tambien es posible dar cotas inferiores a la dificultad propia de resolver cierto problema. Por ejemplo, vamos a ver que para \textbf{cualquier} algoritmo que sea capaz de ordenar $n$ elementos, basandose en comparaciones de a pares de elementos, se tiene que pertenece a $\Omega(n ~ log(n))$. 
+\newline
+\newline
+Luego, se dice que el $problema$ de ordenamiento por comparaciones tiene una complejidad en $\Omega(n ~ log(n))$. Este resultado es mucho mas fuerte que decir que cierto algoritmo particular tiene una cota inferior, e incluso nos dice cuando un algoritmo de ordenamiento es optimo (ver Arboles de Decision).
+\newline
+\newline
+Finalmente, nos queda la notacion $\Theta$(orden exacto), que vamos a definir como el conjunto de funciones que crecen asintoticamente de la misma forma, es decir: $\Theta(f)$ $=$ $O(f)$ $\cap$ $\Omega(f)$. Formalmente:
+\newline
+\newline
+$\Theta(f)$ $=$ \{$f$ $|$ $\exists$ $n_{0}$, $k_{1}$,$k_{2}$ $>$ $0$ tal que $n \geq n_{0}$ $\Rightarrow$ $k_{1}$ . $g(n)$ $\leq$ $f(n)$ $\leq$ $k_{2}$ . $g(n)$\}
+\newline
+\newline
+Podemos reformular las reglas de limite de la siguiente forma
+\newline
+\newline
+1) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $\in$ $\mathbb{R}^{+}$, entonces $f(n) \in \Theta(g(n))$ 
+\newline
+\newline
+2) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $0$, entonces $f(n) \in O(g(n))$ pero $f(n) \notin \Theta(g(n))$. 
+\newline
+\newline
+3) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $+ \infty$, entonces $f(n) \in \Omega(g(n))$ pero $f(n) \notin \Theta(g(n))$. 
+\newline
+\newline
+Es posible que cuando analicemos el costo de un algoritmo, este dependa simultaneamente de mas de un solo parametro. En estos casos, la nocion de $"$tamaño de entrada$$"$$ que estuvimos usando hasta ahora pierde un poco de sentido. Por esta razon, la notacion asintotica se generaliza para funciones de varias variables. Sea $g$ : $\mathbb{N}$ $\times$ $\mathbb{N}$ $\to$ $\mathbb{R}_{\geq 0}$ una funcion que va de los pares de numeros naturales a los reales no negativos, por ejemplo $g(m,n)$ $=$ $m$ $log(n)$. Sea $f$ : $\mathbb{N}$ $\times$ $\mathbb{N}$ $\to$ $\mathbb{R}_{\geq 0}$ otra funcion. Decimos que
+$f(m,n)$ esta en el orden de $g(m,n)$, denotado por $f(m,n) \in O(g)$, si $t(m,n)$ esta acotada superiormente por un multiplo positivo de $g(m,n)$ cuando tanto $m$ como $n$ son suficientemente grandes. Formalmente, $O(g(m,n))$ se define como
+\newline
+\newline
+$O(g)$ $=$ \{$t$: $\mathbb{N}$ $\times$ $\mathbb{N}$ $\to$ $\mathbb{R}_{\geq 0}$ $|$ ($\exists$ $c$ $\in$ $\mathbb{R}_{\geq 0}$), ($\forall^{\infty}$ $m,n$ $\in$ $\mathbb{N}$) $[t(m,n)$ $\leq$ $c$ . $g(n,m)]$\}
+\newline
+\newline
+donde $\forall^{\infty}$ quiere decir que la propiedad vale para todo natural, salvo por una cantidad finita de excepciones. Para el caso general de $n$ parametros, la definicion es similar.
+
+
+\newpage
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+Algoritmo &  Selection Sort   & Insertion Sort & Heap Sort & Merge Sort & Quick Sort \\ \hline
+Mejor caso  & $O(n^{2})$  & $O(n)$ & $O(n~log(n))$ & $O(n~log(n))$ & $O(n~log(n))$ \\ \hline
+Caso promedio & $O(n^{2})$  & $O(n^{2})$ & $O(n~log(n))$ & $O(n~log(n))$ & $O(n~log(n))$      \\ \hline
+Peor caso & $O(n^{2})$  & $O(n^{2})$ & $O(n~log(n))$ & $O(n~log(n))$ & $O(n^{2})$          \\ \hline
+Estabilidad & Inestable & Estable & Inestable & Estable*& Inestable   \\ \hline
+\end{tabular}
+\newline
+\newline
+\newline
+\newline
+* Puede haber implementaciones que lo hagan inestable
+
+\section{Complejidad de los algoritmos usando distintas estructuras}
+
+\begin{tabular}{|c|c|c|c|c|}
+	\hline
+	Operacion/Estructura & Arbol ABB   & Arbol AVL & Hash (cerrado) & Hash (abierto)  \\ \hline
+	Vacio  & $O(1)$  & $O(1)$ & - & -  \\ \hline
+	Insercion/definir  & CP = $O(log(n))$ PC = $O(n)$  & $\Theta(log(n))$ & $O(n)$* & -  \\ \hline
+	Busqueda/def? & CP = $O(log(n))$ PC = $O(n)$  & $\Theta(log(n))$ & $O(n)$* & -       \\ \hline
+	Borrado &  CP = $O(log(n))$ PC = $O(n)$  & $\Theta(log(n))$ & $O(n)$* & -           \\ \hline
+\end{tabular}
+\newline
+\newline
+\newline
+\newline
+\begin{tabular}{|c|c|c|c|}
+	\hline
+	Operacion/Estructura & Acceso secuencial indexado (ISAM)  & Arboles B & Arboles 2-3-4    \\ \hline
+	Vacio  & -  & - & -   \\ \hline
+	Insercion/definir/Encolar  & $O(n)$ & $O(log(n))$ & $O(log(n))$   \\ \hline
+	Busqueda/def? & $O(1)$  & $O(log(n))$ & $O(log(n))$  \\ \hline
+	Borrado/Desencolar &  -   & $O(log(n))$ & $O(log(n))$  \\ \hline
+\end{tabular}
+\newline
+\newline
+\newline
+\newline
+\begin{tabular}{|c|c|c|c|c|}
+	\hline
+	Operacion/Estructura & Tries  & Heap & Skip Lists & Splay Trees  \\ \hline
+	Vacio  & $O(1)$  & $O(1)$ & $O(1)$ & $O(1)$  \\ \hline
+	Insercion/definir/Encolar  & CP = $O(log(n))$ PC = $O(1)$  & $O(log(n))$ &  CP = $O(log(n))$ PC = $O(n)$ & $O(log(n))$**  \\ \hline
+	Busqueda/def? & CP = $O(log(n))$ PC = $O(1)$  & $O(log(n))$ & CP = $O(log(n))$ PC = $O(n)$ & $O(log(n))$**       \\ \hline
+	Borrado/Desencolar &  CP = $O(log(n))$ PC = $O(1)$  & $O(log(n))$ & CP = $O(log(n))$ PC = $O(n)$ & $O(log(n))$**           \\ \hline
+\end{tabular}
+\newline
+\newline
+\newline
+\newline
+CP = Caso Promedio
+\newline
+\newline
+PC = Peor Caso 
+\newline
+\newline
+* $n$ es la longitud de la lista asociada a $h(k)$
+\newline
+\newline
+** el costo es amortizado, el costo para secuencias de $m$ operaciones es $O(m~log(n))$
+
+
+
+\end{document}
+
+
