@@ -391,7 +391,184 @@ $O(g)$ $=$ \{$t$: $\mathbb{N}$ $\times$ $\mathbb{N}$ $\to$ $\mathbb{R}_{\geq 0}$
 \newline
 donde $\forall^{\infty}$ quiere decir que la propiedad vale para todo natural, salvo por una cantidad finita de excepciones. Para el caso general de $n$ parametros, la definicion es similar.
 
+\subsubsection{Propiedades y formulas de suma}
 
+\textbf{Formula de Stirling}. Nos sirve para aproximar factoriales grandes, y reescribir aquellas complejidades que dependan de una suma de logaritmos. La aproximacion se expresa como $log(n!)$ $\approx$ $n$ $log(n)$ $-$ $n$
+\newline
+\newline
+Luego, un algoritmo $A$ $\in \Theta(log(n!))$ $\Leftrightarrow$ $A \in \Theta(n~log(n))$.
+\newline
+\newline
+\textbf{Serie aritmetica}. La suma $\displaystyle \sum_{k=1}^{n} k$ $=$ $1 + 2 + ... + n$ es una serie aritmetica y tiene el valor $\displaystyle \sum_{k=1}^{n} k$ $=$ $\displaystyle \frac{n ~.~ (n-1)}{2} \in \Theta(n^{2})$
+\newline
+\newline
+\newline
+\textbf{Sumas de cuadrados y cubos}. Tenemos las siguientes sumas de cuadrados y cubos:
+\newline
+\newline
+$\displaystyle \sum_{k=0}^{n} k^{2}$ $=$ $\displaystyle \frac{n ~.~ (n+1) ~.~ (2n+1)}{6}$
+\newline
+\newline
+\newline
+$\displaystyle \sum_{k=0}^{n} k^{3}$ $=$ $\displaystyle \frac{n^{2} ~.~ (n+1)^{2}}{4}$
+\newline
+\newline
+\newline
+\textbf{Serie Geometrica}. $\forall$ $x \in \mathbb{R}$, $x \neq 1$, la suma $\displaystyle \sum_{k=0}^{n} x^{k}$ $=$ $1 + x + x^{2} + ... + x^{n}$ es una serie geometrica y vale $\displaystyle \sum_{k=0}^{n} x^{k}$ $=$ $\displaystyle \frac{x^{n+1} - 1}{x-1}$ 
+\newline
+\newline
+\newline
+Cuando la suma es infinita y $|x| < 1$, tenemos la serie geometrica decreciente $\displaystyle \sum_{k=0}^{\infty} x^{k}$ $=$ $\displaystyle \frac{1}{1-x}$
+\newline
+\newline
+\newline
+Si derivamos esta sumatoria y multiplicamos ambos lados por $x$, obtenemos $\displaystyle \sum_{k=0}^{\infty} kx^{k}$ $=$ $\displaystyle \frac{1}{(1-x)^{2}}$
+\newline
+\newline
+\newline
+\textbf{Serie Armonica}. Para enteros positivos $n$, el $n$-esimo numero armonico es $H_{n}$ $=$ $1$ $+$ $\displaystyle \frac{1}{2}$ $+$ $\displaystyle \frac{1}{3}$ $+$ $\displaystyle \frac{1}{4}$ $+$ ... $+$ $\displaystyle \frac{1}{n}$ $=$ $\displaystyle \sum_{k=1}^{n} \displaystyle \frac{1}{k}$ $\leq$ $log(n+1) \in \Theta(log(n))$ 
+\newline
+\newline
+\newline
+\textbf{Series Telescopicas}. Para cualquier secuencia $a_{0},a_{1},...,a_{n}$, $\displaystyle \sum_{k=1}^{n} a_{k} - a_{k-1}$ $=$ $a_{n} - a_{0}$ debido a que cada uno de los terminos $a_{1}$, $a_{2}$,..., $a_{n-1}$ es sumado y restado exactamente una vez.
+\newpage
+
+\subsection{Diseño jerarquico de TADs}
+
+Ahora nos toca ver como pasamos de la $especificacion$ ($"$el que$"$) al $dise$ñ$o$ ($"$el como$"$) del algoritmo. Recordemos que para una misma especificacion, podemos diseñar distintos algoritmos, y para saber que algoritmo nos conviene utilizar, deberemos considerar aspectos como la eficiencia en el tiempo de ejecucion y el espacio utilizado, de acuerdo con el $contexto~de~uso$, es decir, en que orden llegaran los datos, como se los consultara, cuales seran las operaciones mas frecuentemente usadas, cual debe ser su complejidad en el peor caso, etc.
+\newline
+\newline
+Al diseñar un algoritmo bajo una cierta especificacion, estamos pasando de un paradigma $funcional$ a un paradigma $imperativo$, y queremos que ese pase resulte lo mas ordenado, metodico posible. Notemos que cuanto mas abstracto sea el TAD que vamos a implementar, mas opciones de diseño tendremos disponibles. Tenemos como objetivo obtener un diseño jerarquico y modular, permitiendo un encapsulamiento y ocultamiento de la informacion. Cada uno de los niveles en la jerarquia de diseño tendra asociado un modulo de abstraccion. Es decir, habra distintos tipos abstractos de datos que deberemos diseñar, y a cada uno de ellos le correspondera un modulo de abstraccion. Por ejemplo, consideremos al TAD Conjunto y estos dos posibles diseños:
+\newline
+\newline
+\textbf{.} Un arreglo redimensionable, con una Insercion (sin repetidos y en orden) en $O(n)$ y una busqueda en $O(log(n))$
+\newline
+\newline
+\textbf{.} Una secuencia, con una insercion en $O(1)$ y una busqueda en $O(n)$
+\newline
+\newline
+Podriamos preguntarnos cual de estos dos diseños nos conviene, pero esto va a depender del $contexto~de~uso$ en el cual vamos a utilizar esta estructura de datos (¿vamos a tener muchas mas busquedas que inserciones?).
+\newline
+\newline
+En general, el orden en el cual se diseñan los TADs es arbitrario, pero resulta una buena practica comenzar por los mas importantes o de mayor nivel de abstraccion, al ser estos quienes imponen los requerimientos de eficiencia para los TADs menos importantes. La idea va a ser, por ejemplo, comenzar diseñando un modelo para representar al TAD \tadNombre{conjuntoDeNat}, en el cual utilizamos valores del TAD \tadNombre{secuenciaDeNat}, que se podria representar con punteros.
+\newline
+\newline
+Contamos con tipos de datos \textbf{primitivos} (\TipoVariable{bool}, \TipoVariable{nat}, \TipoVariable{int}, \TipoVariable{real}, \TipoVariable{char}, \TipoVariable{puntero}) para nuestro lenguaje de diseño, los cuales se asume que ya estan definidos. Tambien tienen la particularidad de que los parametros de tipos primitivos son los unicos que siempre se pasan por \textbf{valor}, mientras que los tipos no primitivos se pasan por \textbf{referencia} (salvo que se diga lo contrario, en cuyo caso se pasa una copia y se paga el costo de realizar dicha copia).
+\newline
+\newline
+Cuando estamos pasando del mundo funcional al mundo imperativo, nos van a aparecer algunas
+cuestiones que tenemos que resolver desde el punto de vista formal. En particular, cuando estamos definiendo la Interfaz, vamos a querer definir funciones de la siguiente forma:
+\newline
+\newline
+\InterfazFuncion{Pertenece}{\In{C}{conjuntoDeNat}, \In{n}{nat}}{bool}%
+[true]
+{$res$ $\igobs$ $n \in C$}%
+\newline
+\newline
+Sin embargo, en esta expresion estariamos mezclando variables del mundo imperativo con conceptos del mundo funcional (como la igualdad observacional). Para resolver este problema de manera formal, vamos a introducir un operador funcional que, dado un valor en el mundo imperativo, nos permite vincularlo con su valor correspondiente del mundo funcional. Es decir, introduciremos una notacion definida como una funcion que va del genero imperativo $G_{I}$ al genero teorico $G_{T}$:
+\newline
+\newline
+$\puntito$: $G_{I}$ $\rightarrow$ $G_{T}$
+\newline
+\newline
+Luego, reescribimos a la operacion $pertenece$ como:
+\newline
+\newline
+\InterfazFuncion{Pertenece}{\In{C}{conjuntoDeNat}, \In{n}{nat}}{bool}%
+[true]
+{$res$ $\igobs$ $n \in C$}%
+\newline
+\newline
+La $estructura~de~representacion$ describe los valores sobre los cuales se representara el genero que se esta implementando. Esta estructura de representacion tiene que ser capaz de representar todos los posibles valores del TAD y, ademas, debe poder describir como es que las operaciones del TAD se traducen en operaciones que se realizan sobre la estructura (satisfaciendo las exigencias del contexto de uso). Para ello, vamos a tener que explicar como se relaciona la representacion con la abstraccion (que quiere decir que). La estructura de representacion de las instancias solo sera accesible a traves de las operaciones que se hayan detallado en la interfaz del modulo de abstraccion, permitiendo separar cada nivel en la jerarquia de diseño, ocultando como es que realmente se representa cada tipo.
+\newline
+\newline
+Consideremos el siguiente problema. Se nos pide implementar un conjunto de naturales, bajo el siguiente contexto: $los~numeros~del~1~al~100~deben~manejarse~en~O(1)$, $mientras~que~el~resto~en~O(n)$. $Ademas,~se~debe~poder~conocer~rapidamente~la~cardinalidad$. Vamos a representar al conjunto en tres partes. Un arreglo de 100 posiciones booleanas (un 1 en la posicion $i$ indica que el elemento $i$ pertenece al conjunto). Esto nos va a permitir manejar a los numeros del 1 al 100 en $O(1)$. Ademas, vamos a incluir en nuestra representacion una secuencia, donde se almacenaran todos los elementos que pertenezcan al conjunto y que sean mayores que 100. Y por ultimo, vamos a incluir un $nat$ para la cardinalidad. Esto lo vamos a notar de la siguiente manera:
+\newline
+\begin{Estructura}{conj\_semi\_rapido}[estr]
+	\begin{Tupla}[estr]%
+		\tupItem{rapido}{arreglo [1,...,100] de nat}%
+		\tupItem{resto}{secu(nat)}%
+		\tupItem{cardinal}{nat}%
+	\end{Tupla}
+\end{Estructura}
+
+Ahora bien, si nos convencimos de que esta es una buena representacion, tenemos que preguntarnos si es posible representar a cualquier valor del TAD \tadNombre{Conjunto} y, por otro lado, si cualquier valor que tome esta estructura tiene una contraparte en el TAD.
+\newline
+\newline
+Esta claro que todo conjunto puede ser representado por esta estructura, sin embargo, no todos los valores corresponden a instancias validas. Por ejemplo, la tupla ([0,...,0], $\langle$37, 107, 28$\rangle$, 3) no representa ninguna instancia del TAD. Por lo tanto, es necesario tener algun predicado que nos permita distinguir entre representaciones validas de las representaciones invalidas, y asi poder establecer una relacion entre la representacion y el valor representado del TAD. Este predicado se conoce como invariante de representacion.
+\newline
+\newline
+Este invariante lo vamos a agregar a las precondiciones, y lo vamos a tener que cumplir en las postcondiciones de las operaciones del modulo (no asi en las operaciones auxiliares). Esto nos va a obligar, pero tambien permitir, mantener ciertas garantias sobre las estructuras de representacion, lo que nos puede permitir hacer las cosas mas eficientemente (podemos usar algoritmos que aprovechen las garantias del invariante).
+\newline
+\newline
+Volviendo al ejemplo, las condiciones del invariante de representacion, descriptas de manera informal, deberian ser las siguientes:
+\newline
+\newline
+1) Que $resto$ solo tenga numeros mayores que 100.
+\newline
+\newline
+2) Que $resto$ no tenga numeros repetidos.
+\newline
+\newline
+3) Que $cardinal$ tenga la longitud de resto mas la cantidad de celdas de $rapido$ que esten en 1 ($true$).
+\newline
+\newline
+Veamos ahora la descripcion formal del invariante. El invariante de representacion es una funcion booleana que tiene como dominio la version abstracta del genero de representacion (el $\puntito$), e indica si la instancia es o no valida. Luego, el invariante de representacion nos queda:
+\newline
+\Rep[estr][e]{(1) ($\forall n$:nat) (esta?($n,e.resto$) $\impluego$ $n > 100$) $\yluego$ (2) ($\forall n$:nat) (cant\_apariciones($n,e.resto$) $\leq$ $1$) $\yluego$ \newline (3) $e.cant$ $=$ $long(e.resto)$ $+$ cant\_trues($e.rapido$)}
+\medskip
+\medskip
+\medskip
+donde $esta?$, $cant\_de\_apariciones$ y $long$ son funciones de secuencias, y $contar\_trues$ es una funcion sobre arreglos. En los problemas mas complicados se vuelve muy importante analizar metodicamente la estructura de representacion a la hora de elegir los predicados del invariante. Una forma de organizarse es empezar mirando cada campo de la estructura de forma individual, para ver bien que condiciones tienen que cumplir. Una vez analizado esto, podemos ver la relacion que deben tener los distintos campos entre
+si para que su informacion sea consistente.
+\newline
+\newline
+Con esto podemos restringir el conjunto de valores posibles que podria tomar la estructura de representacion. Sin embargo, todavia nos falta poder vincular las distintas instancias validas de la estructura con el valor representado del TAD. Para ello, utilizamos la \textbf{funcion de abstraccion}. Esta funcion toma una instancia abstracta ($\puntito$) de la estructura de representacion y nos devuelve una instancia abstracta del genero representado. La funcion de abstraccion debe ser un homomorfismo con respecto a la signatura
+del TAD, es decir, para toda operacion $\puntito$ del modulo, se tiene que cumplir que:
+\newline
+\newline
+$Abs(\puntito(p_{1},...,p_{n}))$ $\igobs$ $\puntito$($Abs(p_{1})$,...,$Abs(p_{n})$)
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{abs}
+	\caption{Funcion de Abstraccion}
+	\label{drivers1}
+\end{figure}
+\newpage
+Normalmente, tenemos dos formas de describir la funcion de abstraccion. La primera de ellas es en funcion de sus observadores basicos, dado que estos permiten identificar de manera univoca a cualquier instancia. Otra forma de describirla es en funcion de los generadores del TAD. Veamos como podemos escribir la funcion de abstraccion del modulo de conjunto\_semi\_rapido:
+\newline
+\newline
+\AbsFc[estr]{conjunto\_semi\_rapido $C$}[e]{ $C$ / ($\forall n$:nat) ($n$ $\in$ $C$ $\impluego$ ($n \geq 100$ $\yluego$ $r.rapido[n]$) $\lor$ ($n > 100$ $\yluego$ esta?($n,e.resto$)))}
+\medskip
+\medskip
+La funcion de abstraccion debe ser total, restringiendose a las instancias que cumplan con el invariante de representacion. Ademas, no tiene por que ser inyectiva, es decir, dos estructuras diferentes pueden representar al mismo termino de un TAD, pero tiene que ser sobreyectiva sobre las clase de equivalencia del TAD (dadas por la igualdad observacional). Por ultimo, nos falta diseñar los algoritmos que implementan las distintas operaciones del modulo. Junto con los algoritmos, incluiremos la precondicion y la postcondicion. Veamos como notamos el algoritmo para la operacion \tadNombre{Agregar(...)}:
+\newline
+\newline
+\InterfazFuncion{Agregar}{\Inout{C}{conjunto\_semi\_rapido}, \In{e}{nat}}{}%
+[$C$ $\igobs$ $C_{0}$ $\land$ $e \notin C$]
+{$C$ $\igobs$ $Ag(C_{0},e)$}%
+\newline
+\newline
+Luego, una posible implementacion del algoritmo podria ser la siguiente:
+
+\begin{algorithm}[H]{i\tadNombre{Agregar}(\Inout{C}{estr}, \In{e}{nat})}
+	\begin{algorithmic}[1]
+		\State $C.cant++$                      
+		\If{$e < 100$}
+		\State $C.rapido[e]$ $=$ $true$                      
+		\Else
+		\State AgregarAtras($C.resto,e$)                     
+		\EndIf
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+
+Cuando estamos en la etapa de implementacion, tenemos la flexibilidad de ponerle un nombre
+especial para el algoritmo. En este caso, lo llamamos $i$, de implementacion, pero podriamos ponerle algun otro nombre. Otra cosa a tener en cuenta es que estamos trabajando directamente sobre la estructura de representacion (y no la abstraccion).
+
+%^%
 \newpage
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
@@ -455,9 +632,8 @@ PC = Peor Caso
 \newline
 \newline
 ** el costo es amortizado, el costo para secuencias de $m$ operaciones es $O(m~log(n))$
-
-
-
 \end{document}
+
+
 
 
