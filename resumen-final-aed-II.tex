@@ -738,6 +738,84 @@ Una ultima propiedad de los arboles ABB es que podemos recorrerlos en tiempo lin
 
 Para darnos cuenta de que el algoritmo es lineal en funcion de la cantidad de elementos, pensar que solo visitamos a cada nodo una unica vez, y que el costo de cada visita es constante. Esta forma de recorrer el arbol nos esta dando implicitamente una forma de ordenar $n$ elementos en tiempo $\Theta(n~log(n))$ en el caso promedio, lo cual nos estaria diciendo de que esta estructura es optima (en el caso promedio), en cuanto al costo asintotico de sus operaciones, ya que sabemos que el problema de ordenamiento basado en comparaciones de claves completas es $\Omega(n~log(n))$.
 
+\subsection{Arboles AVL}
+
+Queriamos obtener una estructura que nos permita mejorar la complejidad de las operaciones de diccionario para el peor caso, y con los arboles ABB seguimos teniendo el mismo problema de antes, ya que algunas operaciones tienen costo lineal en el peor caso. Uno de los conceptos claves que deberiamos tener en cuenta, a partir del desarrollo de los ABBs, es que el costo de las operaciones depende de la altura del arbol, por lo que si pudieramos controlar esta altura, podriamos mejorar la complejidad de las operaciones. Luego, nuestro objetivo es encontrar una estructura similar a los ABBs que nos asegure que el arbol se mantenga \textbf{balanceado}. La idea es que si logramos que las ramas del arbol sean lo mas
+parecidas entre si o, dicho de otro modo, que el arbol sea lo mas completo posible, tendriamos que la rama mas larga, que define el caso peor, seria lo mas corta posible.
+\newline
+\newline
+Existen varios metodos para mantener un arbol balanceado, garantizando la eficiencia en las operaciones de busqueda, insercion y borrado. Entre las tecnicas mas viejas tenemos el uso de arboles AVL y arboles 2-3; otras estructuras mas modernas incluyen a los Red-Black Trees y los Splay Trees. En esta seccion vamos a estudiar las propiedades de los arboles AVL para ver como consiguen mantener balanceado el arbol.
+\newline
+\newline
+Cuando hablamos de un arbol \textbf{perfectamente balanceado}, a lo que nos referimos es a que todas las ramas tengan casi la misma longitud (dos ramas difieren en a lo sumo una unidad), y que todos los nodos internos tengan ambos hijos. Se puede demostrar que un arbol perfectamente balanceado de $n$ nodos tiene altura $log_{2}(n) + 1$. El problema de mantener un arbol perfectamente balanceado es que no se conocen algoritmos eficientes que permitan mantener el invariante de los ABB a traves de sucesiones de inserciones y borrados, por lo que tendriamos una degradacion en la performance (mas adelante vamos a ver otra estructura conocida como $heap$, cuyo invariante es lo suficientemente debil como para que sea sencillo mantenerlo perfectamente balanceado).
+\newline
+\newline
+Luego, buscamos una propiedad que sea mas debil que el balanceo perfecto, pero que nos permita tener operaciones eficientes. Se dice que un arbol es $balanceado~en~altura$ si las alturas de los subarboles izquierdo y derecho \textbf{de cada nodo} difieren en a lo sumo una unidad. Antes pediamos que la altura de $todas$ las ramas difieran en a lo sumo una unidad, mientras que ahora lo que estamos pidiendo es que la $altura$ del subarbol derecho y el izquierdo difieran en a lo sumo una unidad, es decir, que la rama mas larga de uno y la rama mas larga del otro difieran en longitud a lo sumo una unidad. De esta manera,
+permitimos tener ramas que varien en mas de una unidad en su longitud, por lo que queda claro que la propiedad de balanceo en altura es mas debil que la propiedad de balanceo perfecto. Con esta idea en mente, definimos el $factor~de~balanceo$ (\textbf{FDB}) de un nodo $u$ como
+\newline
+\newline
+$FDB$ $=$ $altura(D_{u})$ $-$ $altura(I_{u})$,
+\newline
+\newline
+siendo $D_{u}$ el subarbol derecho de $u$ e $I_{u}$ el subarbol izquierdo, y decimos que un arbol es balanceado en altura si para todo nodo $u$ vale que $-1 \leq FDM(u) \leq 1$. Vamos a asumir que como parte de la estructura de los arboles AVL tenemos precalculado el factor de balanceo para cada nodo. La razon es que aunque seria posible averiguar los factores de balanceo calculando las alturas de los subarboles involucrados, este metodo encareceria demasiado los algoritmos.
+\newline
+\newline
+Lo que queremos ver es que un arbol AVL tiene una altura logaritmica en funcion de la cantidad de nodos. Para demostrar esto, lo que se hace es ver que para toda altura $h$, cualquier arbol AVL tiene una cantidad exponencial de nodos. Para ello, nos alcanza con ver que aquel arbol AVL de altura $h$ de menor cantidad de nodos, tiene una cantidad exponencial de nodos en funcion de la altura. Este tipo de arboles AVL, que tienen el minimo numero de nodos para una altura $h$, se conocen como \textbf{arboles de Fibonacci}, porque se puede probar que la cantidad de nodos de un arbol de Fibonacci $Fibo_{h}$ $=$ $Fibo_{h-1}$ $+$ $Fibo_{h-2}$ $+$ $1$, y que $Fibo_{h}$ $=$ $Fibo_{h-2}$ $- 1$, siendo $F_{i}$ el $i$-esimo termino de la sucesion de Fibonacci. Para ver esto, lo que tenemos que saber es que se puede construir un arbol de Fibonacci de altura $i+2$ a partir de unir dos arboles de Fibonacci: uno de altura $i$ con otro de altura $i+1$.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.58\textwidth]{arboles-fibonacci}
+	\caption{Arboles de Fibonacci}
+	\label{drivers1}
+\end{figure}
+
+A partir de esto, se puede probar que un arbol de Fibonacci con $n$ nodos tiene una altura menor a $1,44$ $log(n+2)$ $-$ $0,328$, por lo que quedaria demostrado que un AVL de $n$ nodos tiene altura $\Theta(log(n))$, al ser un arbol de Fibonacci lo $"$mas desbalanceado$"$ que puede llegar a ser un arbol AVL. Con todo esto en mente, nos falta ver si es posible realizar las operaciones de diccionarios de forma eficiente, manteniendo esta estructura de los AVLs.
+\newpage
+\textbf{Insercion:} Basicamente, la insercion en un arbol AVL consta de tres pasos: primero tenemos que insertar al elemento como lo hariamos en un ABB ($\Theta(log(n))$), recalculamos los FDBs partiendo desde abajo hacia arriba, y luego tenemos que realizar una serie de \textbf{rotaciones} que nos permitan recuperar el invariante del AVL, es decir, que $-1 \leq FDB(u) \leq 1$ para todo nodo $u$.
+\newline
+\newline
+Tenemos dos tipos de rotaciones: rotacion a derecha y rotacion a izquierda (ver Fig. 3.3). En ambos casos, si aplicamos una rotacion sobre un ABB, se mantiene el invariante del ABB. El costo de una rotacion es $O(1)$, porque lo unico que tenemos que hacer es cambiar de lugar unos pocos punteros.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.58\textwidth]{rotaciones}
+	\caption{Tipos de rotaciones}
+	\label{drivers1}
+\end{figure}
+
+Supongamos que teniamos un AVL antes de insertar un nuevo nodo $w$. Luego de realizar la insercion, como hariamos en un ABB, los unicos nodos cuya altura se podria ver afectada son aquellos que pertenecen a la rama que va desde la raiz hasta $w$. Como la altura de ningun otro nodo pudo verse afectada, estos nodos son lo unicos cuyo FDB pudo verse modificado. Por lo tanto, para recalcular los FDB nos basta con recorrer la rama afectada, que sabemos que tiene longitud proporcional a $log(n)$, por ser un arbol (casi) balanceado en altura.
+\newline
+\newline
+Sea $z$ el primer nodo desbalanceado que nos encontremos yendo de $w$ hacia la raiz (como $z$ esta desbalanceado, necesariamente tiene al menos un nieto). Ademas, sea $y$ el hijo de $z$ con mayor altura, que debe ser ancestro de $w$ (para que $z$ quede desbalanceado, se debe insertar un nodo en el arbol de mayor altura). Finalmente, sea $x$ el hijo de $y$ con mayor altura, siendo $x$ ancestro de $w$ (notemos que no puede haber empates porque sino el FDB de $z$ no se veria afectado al insertar $w$). Ademas, $x$ es nieto de $z$ y podria ser igual a $w$. Como $z$ se volvio desbalanceado por una insercion en el subarbol de su hijo
+$y$, la altura de $y$ es mayor en exactamente dos unidades que la altura de su hermano.
+\newline
+\newline
+Para rebalancear el subarbol enraizado en $z$, lo que vamos a hacer es aplicar una serie de rotaciones, dependiendo de si y es hijo izquierdo o derecho de $z$, $y$ de si $x$ es hijo derecho o izquierdo de $y$. Si renombramos temporalmente a $x$, $y$, $z$ como $a$, $b$, $c$, donde $a \leq b \leq c$, tenemos cuatro posibilidades de mapear $x, y, z$ a $a, b, c$ (ver Fig. 3.4). Nuestro objetivo es reemplazar a $z$ con el nodo llamado $b$, colocando como hijos a $a$ y $c$, reconectando al resto del arbol (sin romper el invariante de los ABB). Cuando $b = y$, tenemos que realizar una $rotacion$ $simple$ (rotamos $y$ para que quede como padre de $z$); sino, tenemos que realizar una $rotacion$ $doble$ (rotamos $x$ sobre $y$, y luego $x$ sobre $z$).
+\newline
+\newline
+Con esta reestructuracion, lo que conseguimos es mover hacia arriba al hijo $"$alto$"$ de $z$, mientras que al mismo tiempo empujamos hacia abajo al hijo $"$corto$"$ de $z$, recuperando el balanceo en el subarbol enraizado en $b$. Luego, hemos recuperado la propiedad de balanceo en altura aplicando una serie de rotaciones $locales$ sobre $x, y, z$. Ademas, como el subarbol enraizado en $b$ tiene una altura menor que el antiguo subarbol enraizado en $z$ (menor en una unidad), todos los ancestros de $z$ que podrian haber estado desbalanceados se vuelven balanceados (pensar que antes de la insercion estaba balanceado, y lo que hicimos fue recuperar la altura que teniamos antes de la insercion), por lo que recuperamos la propiedad de balanceo en altura de forma $global$.
+\newpage
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\textwidth]{rot-dos}
+	\caption{Operacion de \textbf{reestructuracion}: (a) rotacion a izquierda en $y$; (b) rotacion a derecha en $y$; (c) rotacion a derecha en $y$, seguida de rotacion izquierda en $z$; (d) rotacion a izquierda en $y$, seguida de rotacion a derecha en $z$.}
+	\label{drivers1}
+\end{figure}
+
+Con todo esto en cuenta, nos queda que el costo del primer y segundo paso es proporcional a la altura del arbol ($\Theta(log(n))$), y el costo del ultimo paso, que consiste en hacer a lo sumo dos rotaciones, nos queda en $O(1)$. Por lo tanto, concluimos que el costo total del algoritmo de insercion en los arboles AVL esta en $\Theta(log(n))$.
+\newpage
+\textbf{Borrado}: Al igual que en el caso de la insercion, comenzamos el borrado de un elemento sobre un AVL como si se tratase de un ABB tradicional. La dificultad agregada que tiene trabajar con los AVL es que al momento de borrar un elemento se podria romper el balanceo en altura. En particular, luego de remover un nodo del arbol, elevando al sucesor o al predecesor, algun nodo en el camino entre el padre $w$ del nodo borrado hasta la raiz  podria quedar desbalanceado. De hecho, a lo sumo se podria desbalancear un unico nodo (pensar que siempre borramos hojas).
+\newline
+\newline
+Al igual que en la insercion, vamos a reacomodar tres nodos para recuperar el balanceo. Sea $z$ el primer nodo desbalanceado que encontramos yendo hacia arriba desde $w$ hasta la raiz. Sea y el hijo de mayor altura de $z$ (y no puede ser ancestro de $w$), y sea $x$ el hijo de $y$ que se define de la siguiente manera: si uno de los hijos de $y$ es mas alto que el otro, $x$ es el hijo mas alto; sino, sea x el hijo de $y$ que esta del mismo lado que $y$, es decir, si $y$ es hijo derecho, $x$ es hijo derecho de $y$.
+\newline
+\newline
+Luego, aplicamos una operacion de reestructuracion sobre este subarbol, que restaura la propiedad de balanceo en altura de forma local, obteniendo un subarbol enraizado en un nodo que llamaremos temporalmente $b$. Desafortunadamente, esta reestructuracion podria reducir la altura del subarbol enraizado en $b$ en 1, lo que podria causar que el ancestro de $b$ quede desbalanceado. Si esto sucede, volvemos a aplicar la operacion de reestructuracion sobre el subarbol enraizado en el ancestro de $b$, y continuamos subiendo en el arbol hasta llegar a la raiz (en el peor caso). Como la altura del arbol esta en $O(log(n))$, a lo sumo vamos a tener que realizar $O(log(n))$ reestructuraciones, cada una con costo constante. Por lo tanto, la operacion de \tadNombre{Borrado} tambien cuesta $\Theta(log(n))$.
+
+
+
+
+
 %^%
 \newpage
 \begin{tabular}{|c|c|c|c|c|c|}
@@ -803,7 +881,5 @@ PC = Peor Caso
 \newline
 ** el costo es amortizado, el costo para secuencias de $m$ operaciones es $O(m~log(n))$
 \end{document}
-
-
 
 
