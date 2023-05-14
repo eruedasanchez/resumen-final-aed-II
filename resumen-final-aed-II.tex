@@ -568,6 +568,176 @@ Luego, una posible implementacion del algoritmo podria ser la siguiente:
 Cuando estamos en la etapa de implementacion, tenemos la flexibilidad de ponerle un nombre
 especial para el algoritmo. En este caso, lo llamamos $i$, de implementacion, pero podriamos ponerle algun otro nombre. Otra cosa a tener en cuenta es que estamos trabajando directamente sobre la estructura de representacion (y no la abstraccion).
 
+
+
+
+
+
+
+
+
+
+
+\newpage
+
+\section{Capitulo 3. Estructuras de Datos}
+
+En los capitulos anteriores estuvimos hablando del camino que hay que recorrer entre la descripcion informal hasta llegar a una solucion concreta, y vimos algunas herramientas formales para describir y realizar ese proceso. En esta parte, nos vamos a dedicar a estudiar soluciones concretas a problemas concretos, que nos van a permitir avanzar en la implementacion de problemas fundamentales de la informatica.
+
+\subsection{Conjuntos y diccionarios}
+
+Vamos a empezar con los TADs \tadNombre{Conjunto} y \tadNombre{Diccionario}, que constituyen uno de los nucleos de la algoritmia: el problema de organizar y buscar informacion en un sistema informatico. En los conjuntos, lo unico que nos interesa es saber si un elemento particular pertenece o no al conjunto, mientras que en los diccionarios, ademas de saber si una $clave$ esta definida, nos interesa poder encontrar su $significado$.
+\newline
+\newline
+Es facil ver que si tenemos una implementacion de un diccionario, podemos implementar un conjunto simplemente ignorando el significado de las claves. Por otro lado, tambien podemos implementar un diccionario a partir de un conjunto, por ejemplo, guardando a las claves junto con sus significados en una tupla $\langle$clave,significado$\rangle$. En caso de tener como significado a una estructura compleja, podemos guardarnos un puntero a la misma, en lugar de la estructura en si. Otra opcion para el manejo de claves con significados podria ser mantener dos estructuras paralelas. La idea es que en la posicion $i$
+de una tengamos la clave, y en la misma posicion $i$ de la otra tengamos su significado. Como podemos representar diccionarios a partir de conjuntos y conjuntos a partir de diccionarios, podemos decir que ambos problemas son equivalentes. A continuacion, vamos a trabajar sobre la representacion de este tipo de estructuras, buscando representaciones e implementaciones eficientes de las mismas.
+\newline
+\newline
+La primer idea que se nos ocurre para representar a los conjuntos es a traves de estructuras secuenciales: en cada posicion del arreglo almacenamos la tupla $\langle$clave,significado$\rangle$, y un puntero para saber donde termina el arreglo.
+\newline
+\newline
+Ahora, pensemos cuales van a ser los distintos ordenes de complejidad de las operaciones basicas:
+\newline
+\newline
+\textbf{.} \tadNombre{Vacio}: para crear un diccionario vacio, nos basta con crear un arreglo vacio y definir el puntero al ultimo como \tadNombre{NIL}, por lo que la operacion nos cuesta $O(1)$.
+\newline
+\newline
+\textbf{.} \tadNombre{Definir}: para definir un nuevo elemento, tenemos que agregar este nuevo elemento al final del arreglo y actualizar el puntero al ultimo elemento, por lo que la operacion nos cuesta $O(1)$.
+\newline
+\newline
+\textbf{.} \tadNombre{Definido?}: para saber si una clave esta o no definida, tenemos que realizar una busqueda secuencial por todo el arreglo, por lo que la operacion nos lleva $O(n)$.
+\newline
+\newline
+\textbf{.} \tadNombre{Significado}: para obtener el significado de una clave, nuevamente tenemos que realizar una busqueda secuencial con una costo $O(n)$.
+\newline
+\newline
+Otra posibilidad es mantener el arreglo ordenado, permitiendo hacer uso de la busqueda binaria, mejorando la complejidad de \tadNombre{Definido?} y \tadNombre{Obtener} hasta $O(log(n))$. El problema de mantener el arreglo ordenado es que al momento de \tadNombre{Definir} una nueva clave, debemos buscar la posicion que le toca en el arreglo, y correr todos los elementos siguientes, con un costo de $O(n)$. Por lo tanto, este segundo modelo seria mejor en contextos de uso estaticos, en el que se realicen muchas busquedas y pocas inserciones. Cualquiera de estas dos opciones tiene operaciones con complejidad en $O(n)$, por lo que nos gustaria tener alguna estructura mas eficiente, de manera tal que todas las operaciones se puedan realizar con un costo sub-lineal. Para ello, vamos a representar conjuntos a traves de $arboles$ $binarios$.
+\newline
+\newline
+Un grafo $G$ = $(V,E)$ es un conjunto de nodos ($V$) unidos por un conjunto de lineas, llamadas $ejes$ ($E$). Decimos que un grafo es conexo cuando podemos ir de cualquier nodo a cualquier otro nodo siguiendo una secuencia de ejes. Las secuencias de ejes pueden formar caminos, si no visitamos dos veces un mismo vertice, o ciclos, si visitamos a algun vertice mas de una vez. Un $arbol$ es un grafo conexo y aciclico. Si cuenta con un nodo distinguido $r$, llamado $raiz$, decimos que el arbol es $enraizado$ en $r$. Normalmente, cuando dibujamos un arbol enraizado, ponemos la raiz en la cima, similar a un arbol familiar, con los otros ejes saliendo hacia abajo de la raiz. Entonces, podemos describir las relaciones
+entre los nodos haciendo una analogia del arbol familiar, usando terminos como $padre$, $hijos$, $hermanos$, $ancestros$, etc.
+\newline
+\newline
+Un arbol $k$-ario es aquel en el que cada nodo puede tener a lo sumo $k$ hijos. En esta seccion, vamos a trabajar especificamente sobre arboles binarios, donde tenemos un nodo inicial (el nodo raiz), del cual pueden salir a lo sumo dos nodos (hijo izquierdo e hijo derecho), y por cada nodo que no sea el raiz, tenemos un nodo padre y podemos tener a lo sumo dos hijos.
+\newline
+\newline
+Una forma de particionar los nodos de un arbol es la siguiente. Decimos que un nodo es una hoja del arbol si no tiene hijos; caso contrario, decimos que el nodo es $interno$. Tambien podemos particionar al arbol en nodos $externos$ y nodos internos: un eje que no apunta a un nodo interno, apunta a un nodo externo. Por ejemplo, un nodo con ambos hijos apuntaria a dos nodos internos; un nodo con solo un hijo apuntaria a un nodo interno y a uno externo; un nodo hoja apuntaria a dos nodos externos.
+\newline
+\newline
+Pensando un poco sobre el costo de las operaciones de un diccionario sobre un arbol binario (sin ninguna restriccion particular), nos estarian quedando de la siguiente manera:
+\newline
+\newline
+\textbf{.} \tadNombre{Vacio}: para crear un diccionario vacio, nos basta con crear un arbol vacio, el cual tiene como raiz a un NIL, por lo que la operacion nos cuesta $O(1)$.
+\newline
+\newline
+\textbf{.} \tadNombre{Definir}: para definir un nuevo elemento, tenemos que definir una regla para agregarlo al arbol. Podemos tomar como regla que se agrega en el primer lugar posible en el que entra el nodo, sin tener que inaugurar un nuevo nivel. Esto lo podemos hacer manteniendo un puntero al ultimo, por lo que la operacion nos cuesta $O(1)$.
+\newline
+\newline
+\textbf{.} \tadNombre{Definido?}: para saber si una clave esta o no definida, tenemos que realizar una busqueda secuencial por todo el arbol, por lo que la operacion nos lleva $O(n)$.
+\newline
+\newline
+\textbf{.} \tadNombre{Significado}: para obtener el significado de una clave, nuevamente tenemos que realizar una busqueda secuencial con una costo $O(n)$.
+\newline
+\newline
+Podemos ver que no hemos mejorado en cuanto a la complejidad de las operaciones. Sin embargo, lo que podemos hacer es restringir un poco la forma en la que esta organizado el arbol binario, manteniendo un invariante sobre la estructura que nos permita mejorar el costo de las operaciones.
+
+\subsection{Arbol binario de busqueda (ABB)}
+
+Un Arbol Binario de Busqueda (ABB) es un arbol binario que satisface que para todo nodo, los valores de los elementos en su subarbol izquierdo son menores que el valor de ese nodo, y los valores de los elementos de su subarbol derecho son mayores. Luego, podemos definir el invariante de un arbol ABB de la siguiente forma:
+\newline
+\newline
+1) el valor de todos los elementos del subarbol izquierdo es menor que el valor de la raiz,
+\newline
+\newline
+2) el valor de todos los elementos del subarbol derecho es mayor que el valor de la raiz,
+\newline
+\newline
+3) el subarbol izquierdo es un ABB,
+\newline
+\newline
+4) el subarbol derecho es un ABB.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.58\textwidth]{abb}
+	\caption{Ejemplos de arboles binarios. (47 no puede pertenecer al subarbol derecho de 49)}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+Formalmente, tomando como estructura de representacion para los arboles binario $ab(nodo)$ la tupla $\langle$$I, r, D$$\rangle$, donde $I$ es el subarbol izquierdo, $r$ la raiz y $D$ el subarbol derecho, podemos plantear el siguiente invariante de representacion para los arboles ABB:
+\newline
+\Rep[$ab(nodo)$][e]{(0) ABB($e$) $=$ Nil?($e$) $\oluego$ \newline
+	 (1) ($\forall c$:$clave$) (esta?($c,Izq(e)$) $\impluego$ $c < clave(raiz(e))$) $\land$ \newline 
+	 (2) ($\forall c$:$clave$) (esta?($c,Der(e)$) $\impluego$ $c > clave(raiz(e))$) $\land$ \newline 
+	 (3) $ABB(Izq(e))$
+ 	\newline 
+ 	(4) $ABB(Der(e))$}
+\medskip
+\medskip
+\medskip
+Notemos que para poder construir un ABB, es necesario poder dar un orden total a las claves, es decir, que podamos determinar, dadas dos claves cualesquiera $c_{1}$, $c_{2}$, si $c_{1}$ $\leq$ $c_{2}$. Ahora, veamos algunos algoritmos basicos para los ABB:
+
+\begin{algorithm}[H]{i\tadNombre{Vacio}(\In{}{$\secuvacia$}, \Out{A}{ab(nodo)})}
+	\begin{algorithmic}[1]
+		\State \textbf{return} NIL 
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]{i\tadNombre{Definir}(\In{c}{clave}, \In{s}{significado}, \Inout{A}{ab(nodo)})}
+	\begin{algorithmic}[1]
+		\If{$A == nil$}
+		\State $A$ $\gets$ $ab(NIL, \langle c,s \rangle, NIL)$                      
+		\Else
+		\If{$c < r_{c}$}
+		\State $A$ $\gets$ $ab(definir(c,s,I), \langle r_{c},r_{s} \rangle, D)$
+		\Else                    
+		\State $A$ $\gets$ $ab(I, \langle r_{c},r_{s} \rangle, definir(c,s,D))$                     
+		\EndIf
+		\EndIf
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+
+Podemos ver que el costo de insercion va a depender de la cantidad de recursiones que tengamos que hacer para llegar desde el nodo raiz hasta el nodo externo en donde vamos a colocar el nuevo nodo. Por lo tanto, tanto la operacion de busqueda como la de insercion nos va a quedar en $\Theta(h)$, siendo $h$ la altura del arbol. En principio, esto pareceria ser mas eficiente que las primeras implementaciones de diccionarios que vimos, ya que si las claves que nos van llegando siguen una distribucion uniforme, es esperable que nos vaya quedando un arbol casi balanceado, por lo que nos quedaria un arbol de altura $\approx$ $log(n)$ en el caso promedio.
+\newline
+\newline
+Sin embargo, si vamos insertando de forma descuidada los distintos elementos, el ABB resultante podria quedar desbalanceado. Con esto nos referimos a que muchos nodos en el arbol tengan un solo hijo, de manera tal que las ramas se vuelvan largas y finas. Cuando esto ocurre, las operaciones en el arbol dejan de ser eficientes, ya que, en el peor caso, todos los nodos en el arbol podrian tener exactamente un hijo (exceptuando la unica hoja). Por lo tanto, para la busqueda de un elemento en el arbol nos quedaria en $O(n)$ comparaciones, al tener que comparar con todos los nodos del arbol.
+\newline
+\newline
+Para el algoritmo de borrado, \tadNombre{Borrar}(u: nodo, A: ab(nodo)), primero tenemos que realizar una busqueda para encontrar el elemento a borrar. Luego, tenemos tres casos:
+\newline
+\newline
+1) Si $u$ es una hoja, lo unico que tenemos que hacer es buscar al padre de $u$ en $A$, y luego eliminar la hoja $u$ (reemplazandolo por NIL). Si $u$ no tiene padre, significa que es la raiz, y como es hoja, estamos en el caso de un arbol de un unico nodo, por lo que al quitarlo, nos quedariamos con el arbol vacio.
+\newline
+\newline
+2) Si $u$ tiene un solo hijo, primero debemos buscar al padre $w$ de $u$. Si $u$ no tiene padre, significa que $u$ es la raiz, por lo que debemos reemplazar a la raiz de $A$ por la raiz del unico subarbol de $u$. Si u tiene padre, tenemos dos casos: o bien $u$ es hijo izquierdo o bien es hijo derecho. Si es hijo izquierdo, significa que $u$ es menor a $w$, al igual que todos los hijos de $u$. Entonces, podemos mover a todo el subarbol de $u$ (no importa si es subarbol derecho o izquierdo), y colocarlo donde antes estaba $u$, ya que sabemos que todos ellos son menores a $w$.
+\newline
+\newline
+\newline
+3) Si $u$ tiene dos hijos, lo que vamos a hacer es buscar un reemplazo de u dentro de alguno de los subarboles de $u$, el cual vamos a mover desde su posicion original a la posicion de $u$. Para ello, debemos encontrar algun nodo que al ubicarlo en la posicion de $u$, respete el invariante del ABB, es decir, debe ser mayor a todos los nodos del subarbol izquierdo de $u$ y debe ser menor a todos los nodos del subarbol derecho de $u$. Tenemos dos candidatos que cumplen esta condicion: el nodo de mas a la derecha dentro del subarbol izquierdo (predecesor de $u$) y el nodo de mas a la izquierda dentro del subarbol derecho (sucesor de $u$). Vamos a considerar el primer caso. El nodo que esta mas a la derecha dentro del subarbol izquierdo es mayor a todos los nodos del subarbol izquierdo, ademas, es menor que $u$, por lo que tambien es menor a todos los nodos del subarbol derecho. Por lo tanto, queda claro que al colocarlo en la posicion de $u$, se respeta el invariante. Para moverlo, lo que vamos a hacer es copiarlo a la posicion de $u$, y luego borrarlo dentro del subarbol izquierdo al que pertenecia. Sabemos que no vamos a caer devuelta en el caso
+3 porque este nodo no puede tener un hijo derecho; sino, no seria el de mas a la derecha. Luego, caemos en el caso 1 o en el caso 2, que sabiamos resolver. Por lo tanto, el costo de la operacion de borrado tambien nos va a quedar en $\Theta(h)$.
+\newline
+\newline
+Una ultima propiedad de los arboles ABB es que podemos recorrerlos en tiempo lineal, imprimiendo las claves ordenadas de menor a mayor, a traves de un algoritmo recursivo llamado \textbf{inorder tree walk}. Se llama asi porque primero imprime todas las claves del subarbol izquierdo, luego la clave de la raiz y finalmente todas las claves del arbol derecho (recursivamente). Similarmente, tenemos el \textbf{preorder tree walk} que imprime la raiz antes que cualquier subarbol, y el \textbf{postorder tree walk} que imprime la raiz despues de ambos subarboles (en los tres casos, se imprime primero el subarbol izquierdo y antes del subarbol derecho).
+
+\begin{algorithm}[H]{\tadNombre{Inorder-tree-walk(x)}}
+	\begin{algorithmic}[1]
+		\If{$x \neq NIL$}
+		\State Inorder-tree-walk($izq$)                      
+		\State imprimir $x$
+		\State Inorder-tree-walk($der$)
+		\EndIf
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+
+Para darnos cuenta de que el algoritmo es lineal en funcion de la cantidad de elementos, pensar que solo visitamos a cada nodo una unica vez, y que el costo de cada visita es constante. Esta forma de recorrer el arbol nos esta dando implicitamente una forma de ordenar $n$ elementos en tiempo $\Theta(n~log(n))$ en el caso promedio, lo cual nos estaria diciendo de que esta estructura es optima (en el caso promedio), en cuanto al costo asintotico de sus operaciones, ya que sabemos que el problema de ordenamiento basado en comparaciones de claves completas es $\Omega(n~log(n))$.
+
 %^%
 \newpage
 \begin{tabular}{|c|c|c|c|c|c|}
