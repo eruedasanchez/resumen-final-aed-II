@@ -7,12 +7,14 @@
 \usepackage{caratula}
 \usepackage{ifthen}
 \usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{aed2-tad,aed2-symb,aed2-itef}
+\usepackage{algorithmicx, algpseudocode, algorithm}
 \usepackage{graphicx}
 
 \materia{Algoritmos y Estructuras de Datos II}
 \titulo{Apunte para el final}
-\subtitulo{Fuertemente basado en las clases teoricas de Esteban Feuerstein y Alejandro Furfaro}
-\integrante{Ezequiel Rueda Sanchez}{}{ezequiel.ruedasanchez@gmail.com}
+\subtitulo{The FurfiOS corporation}
+\integrante{Ezequiel Rueda Sanchez}{522/16}{ezequiel.ruedasanchez@gmail.com}
 
 %  ü, é, á, í, ó, ú, ñ, Ñ%
 
@@ -565,19 +567,9 @@ Luego, una posible implementacion del algoritmo podria ser la siguiente:
 	\end{algorithmic}
 \end{algorithm}
 
+
 Cuando estamos en la etapa de implementacion, tenemos la flexibilidad de ponerle un nombre
 especial para el algoritmo. En este caso, lo llamamos $i$, de implementacion, pero podriamos ponerle algun otro nombre. Otra cosa a tener en cuenta es que estamos trabajando directamente sobre la estructura de representacion (y no la abstraccion).
-
-
-
-
-
-
-
-
-
-
-
 \newpage
 
 \section{Capitulo 3. Estructuras de Datos}
@@ -703,25 +695,57 @@ Notemos que para poder construir un ABB, es necesario poder dar un orden total a
 \end{algorithm}
 
 Podemos ver que el costo de insercion va a depender de la cantidad de recursiones que tengamos que hacer para llegar desde el nodo raiz hasta el nodo externo en donde vamos a colocar el nuevo nodo. Por lo tanto, tanto la operacion de busqueda como la de insercion nos va a quedar en $\Theta(h)$, siendo $h$ la altura del arbol. En principio, esto pareceria ser mas eficiente que las primeras implementaciones de diccionarios que vimos, ya que si las claves que nos van llegando siguen una distribucion uniforme, es esperable que nos vaya quedando un arbol casi balanceado, por lo que nos quedaria un arbol de altura $\approx$ $log(n)$ en el caso promedio.
-\newline
-\newline
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.35\textwidth]{abb2}
+	\caption{Insercion en ABB}
+	\label{drivers1}
+\end{figure}
+
+
+
 Sin embargo, si vamos insertando de forma descuidada los distintos elementos, el ABB resultante podria quedar desbalanceado. Con esto nos referimos a que muchos nodos en el arbol tengan un solo hijo, de manera tal que las ramas se vuelvan largas y finas. Cuando esto ocurre, las operaciones en el arbol dejan de ser eficientes, ya que, en el peor caso, todos los nodos en el arbol podrian tener exactamente un hijo (exceptuando la unica hoja). Por lo tanto, para la busqueda de un elemento en el arbol nos quedaria en $O(n)$ comparaciones, al tener que comparar con todos los nodos del arbol.
-\newline
-\newline
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.2\textwidth]{abb1}
+	\caption{Insercion en un ABB de nodos de manera creciente. Complejidad $O(n)$}
+	\label{drivers1}
+\end{figure}
+
 Para el algoritmo de borrado, \tadNombre{Borrar}(u: nodo, A: ab(nodo)), primero tenemos que realizar una busqueda para encontrar el elemento a borrar. Luego, tenemos tres casos:
 \newline
 \newline
 1) Si $u$ es una hoja, lo unico que tenemos que hacer es buscar al padre de $u$ en $A$, y luego eliminar la hoja $u$ (reemplazandolo por NIL). Si $u$ no tiene padre, significa que es la raiz, y como es hoja, estamos en el caso de un arbol de un unico nodo, por lo que al quitarlo, nos quedariamos con el arbol vacio.
-\newline
-\newline
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{abb3}
+	\caption{Borrar una hoja}
+	\label{drivers1}
+\end{figure}
+
 2) Si $u$ tiene un solo hijo, primero debemos buscar al padre $w$ de $u$. Si $u$ no tiene padre, significa que $u$ es la raiz, por lo que debemos reemplazar a la raiz de $A$ por la raiz del unico subarbol de $u$. Si u tiene padre, tenemos dos casos: o bien $u$ es hijo izquierdo o bien es hijo derecho. Si es hijo izquierdo, significa que $u$ es menor a $w$, al igual que todos los hijos de $u$. Entonces, podemos mover a todo el subarbol de $u$ (no importa si es subarbol derecho o izquierdo), y colocarlo donde antes estaba $u$, ya que sabemos que todos ellos son menores a $w$.
-\newline
-\newline
-\newline
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\textwidth]{abb4}
+	\caption{Borrar un nodo $u$ con un solo hijo $v$}
+	\label{drivers1}
+\end{figure}
+
 3) Si $u$ tiene dos hijos, lo que vamos a hacer es buscar un reemplazo de u dentro de alguno de los subarboles de $u$, el cual vamos a mover desde su posicion original a la posicion de $u$. Para ello, debemos encontrar algun nodo que al ubicarlo en la posicion de $u$, respete el invariante del ABB, es decir, debe ser mayor a todos los nodos del subarbol izquierdo de $u$ y debe ser menor a todos los nodos del subarbol derecho de $u$. Tenemos dos candidatos que cumplen esta condicion: el nodo de mas a la derecha dentro del subarbol izquierdo (predecesor de $u$) y el nodo de mas a la izquierda dentro del subarbol derecho (sucesor de $u$). Vamos a considerar el primer caso. El nodo que esta mas a la derecha dentro del subarbol izquierdo es mayor a todos los nodos del subarbol izquierdo, ademas, es menor que $u$, por lo que tambien es menor a todos los nodos del subarbol derecho. Por lo tanto, queda claro que al colocarlo en la posicion de $u$, se respeta el invariante. Para moverlo, lo que vamos a hacer es copiarlo a la posicion de $u$, y luego borrarlo dentro del subarbol izquierdo al que pertenecia. Sabemos que no vamos a caer devuelta en el caso
 3 porque este nodo no puede tener un hijo derecho; sino, no seria el de mas a la derecha. Luego, caemos en el caso 1 o en el caso 2, que sabiamos resolver. Por lo tanto, el costo de la operacion de borrado tambien nos va a quedar en $\Theta(h)$.
-\newline
-\newline
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.75\textwidth]{abb6}
+	\caption{Borrado en ABB de un nodo con dos hijos}
+	\label{drivers1}
+\end{figure}
+
+
 Una ultima propiedad de los arboles ABB es que podemos recorrerlos en tiempo lineal, imprimiendo las claves ordenadas de menor a mayor, a traves de un algoritmo recursivo llamado \textbf{inorder tree walk}. Se llama asi porque primero imprime todas las claves del subarbol izquierdo, luego la clave de la raiz y finalmente todas las claves del arbol derecho (recursivamente). Similarmente, tenemos el \textbf{preorder tree walk} que imprime la raiz antes que cualquier subarbol, y el \textbf{postorder tree walk} que imprime la raiz despues de ambos subarboles (en los tres casos, se imprime primero el subarbol izquierdo y antes del subarbol derecho).
 
 \begin{algorithm}[H]{\tadNombre{Inorder-tree-walk(x)}}
@@ -737,6 +761,7 @@ Una ultima propiedad de los arboles ABB es que podemos recorrerlos en tiempo lin
 \end{algorithm}
 
 Para darnos cuenta de que el algoritmo es lineal en funcion de la cantidad de elementos, pensar que solo visitamos a cada nodo una unica vez, y que el costo de cada visita es constante. Esta forma de recorrer el arbol nos esta dando implicitamente una forma de ordenar $n$ elementos en tiempo $\Theta(n~log(n))$ en el caso promedio, lo cual nos estaria diciendo de que esta estructura es optima (en el caso promedio), en cuanto al costo asintotico de sus operaciones, ya que sabemos que el problema de ordenamiento basado en comparaciones de claves completas es $\Omega(n~log(n))$.
+\newpage
 
 \subsection{Arboles AVL}
 
@@ -764,13 +789,21 @@ Lo que queremos ver es que un arbol AVL tiene una altura logaritmica en funcion 
 
 \begin{figure}[h]
 	\centering
+	\includegraphics[width=0.5\textwidth]{bal1}
+	\caption{En un arbol balanceado en altura $|FDB| \leq 1$ para cada nodo}
+	\label{drivers1}
+\end{figure}
+\newpage
+\begin{figure}[h]
+	\centering
 	\includegraphics[width=0.58\textwidth]{arboles-fibonacci}
 	\caption{Arboles de Fibonacci}
 	\label{drivers1}
 \end{figure}
 
 A partir de esto, se puede probar que un arbol de Fibonacci con $n$ nodos tiene una altura menor a $1,44$ $log(n+2)$ $-$ $0,328$, por lo que quedaria demostrado que un AVL de $n$ nodos tiene altura $\Theta(log(n))$, al ser un arbol de Fibonacci lo $"$mas desbalanceado$"$ que puede llegar a ser un arbol AVL. Con todo esto en mente, nos falta ver si es posible realizar las operaciones de diccionarios de forma eficiente, manteniendo esta estructura de los AVLs.
-\newpage
+\newline
+\newline
 \textbf{Insercion:} Basicamente, la insercion en un arbol AVL consta de tres pasos: primero tenemos que insertar al elemento como lo hariamos en un ABB ($\Theta(log(n))$), recalculamos los FDBs partiendo desde abajo hacia arriba, y luego tenemos que realizar una serie de \textbf{rotaciones} que nos permitan recuperar el invariante del AVL, es decir, que $-1 \leq FDB(u) \leq 1$ para todo nodo $u$.
 \newline
 \newline
@@ -783,6 +816,54 @@ Tenemos dos tipos de rotaciones: rotacion a derecha y rotacion a izquierda (ver 
 	\label{drivers1}
 \end{figure}
 
+\newpage
+
+\subsubsection{Rotaciones en los AVL}
+
+Casos posibles
+\newline
+\newline
+\textbf{.} RR: inserción en el subárbol derecho de un hijo derecho (del nodo que se desbalancea)
+\newline
+\newline
+\textbf{.} LR: inserción en el subárbol izquierdo de un hijo derecho (del nodo que se  desbalancea)
+\newline
+\newline
+\textbf{.} RL: inserción en el subárbol derecho de un hijo izquierdo (del nodo que se  desbalancea)
+\newline
+\newline
+\textbf{.} LL: inserción en el subárbol izquierdo de un hijo izquierdo (del nodo que se  desbalancea)
+
+\subsubsection{Rotacion simple (caso RR)}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{rotsimple}
+	\caption{Rotacion simple (caso RR)}
+	\label{drivers1}
+\end{figure}
+
+Esto se soluciona con una rotacion a izquierda.
+\newline
+\newline
+La inserción no influye en los antepasados de P porque luego de la rotación recuperan su factor de balanceo anterior.
+
+\subsubsection{Rotacion doble (caso LR)}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{rotdoble}
+	\caption{Rotacion doble (caso LR)}
+	\label{drivers1}
+\end{figure}
+
+Esto se soluciona aplicando primero una rotacion a derecha sobre el nodo Q y por ultimo, aplicamos una rotacion a izquierda sobre el nodo P.
+\newline
+\newline
+La inserción no influye en los antepasados de P.
+\newline
+\newline
+\newline
 Supongamos que teniamos un AVL antes de insertar un nuevo nodo $w$. Luego de realizar la insercion, como hariamos en un ABB, los unicos nodos cuya altura se podria ver afectada son aquellos que pertenecen a la rama que va desde la raiz hasta $w$. Como la altura de ningun otro nodo pudo verse afectada, estos nodos son lo unicos cuyo FDB pudo verse modificado. Por lo tanto, para recalcular los FDB nos basta con recorrer la rama afectada, que sabemos que tiene longitud proporcional a $log(n)$, por ser un arbol (casi) balanceado en altura.
 \newline
 \newline
@@ -811,6 +892,176 @@ Al igual que en la insercion, vamos a reacomodar tres nodos para recuperar el ba
 \newline
 \newline
 Luego, aplicamos una operacion de reestructuracion sobre este subarbol, que restaura la propiedad de balanceo en altura de forma local, obteniendo un subarbol enraizado en un nodo que llamaremos temporalmente $b$. Desafortunadamente, esta reestructuracion podria reducir la altura del subarbol enraizado en $b$ en 1, lo que podria causar que el ancestro de $b$ quede desbalanceado. Si esto sucede, volvemos a aplicar la operacion de reestructuracion sobre el subarbol enraizado en el ancestro de $b$, y continuamos subiendo en el arbol hasta llegar a la raiz (en el peor caso). Como la altura del arbol esta en $O(log(n))$, a lo sumo vamos a tener que realizar $O(log(n))$ reestructuraciones, cada una con costo constante. Por lo tanto, la operacion de \tadNombre{Borrado} tambien cuesta $\Theta(log(n))$.
+\newline
+\newline
+\textbf{Ejemplo}
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{borr1}
+	\caption{Ejemplo de borrado en AVL. Arbol inicial}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{borr2}
+	\caption{Ejemplo. Calculo del factor de balanceo para verificar que se trata de un arbol AVL}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{borr3}
+	\caption{Ahora, supongamos que queremos borrar el nodo numero 7. El borrado se realiza como en un ABB tradicional. Y como en este caso, el nodo 7 es una hoja, simplemente lo borramos y listo}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.35\textwidth]{borr4}
+	\caption{Una vez borrado el nodo numero 7, recalculamos el factor de balanceo del arbol para verificar que siga siendo un AVL}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.55\textwidth]{borr5}
+	\caption{Ahora, supongamos que queremos borrar el nodo numero 6. Estamos en el caso que solo tiene un hijo, es decir, el subarbol izquierdo}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{borr6}
+	\caption{Eliminamos el nodo numero 6 y colgamos al nodo hijo (numero 2) del nodo padre (numero 14) del numero 6. Finalmente, recalculamos el factor de balanceo de cada uno de los nodos}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.32\textwidth]{borr7}
+	\caption{Ahora, supongamos que queremos borrar el nodo numero 14. Estamos en el caso que el nodo tiene 2 subarboles hijos}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{borr8}
+	\caption{En este caso, buscamos el predecesor/sucesor inmediato (nodo numero) del nodo 14. Una vez encontrado (nodo numero 2), lo coloco en la posicion del nodo numero 14 y como es una hoja, lo coloco y listo.
+		\newline
+		\newline
+		Al realizarlo, observamos que el nodo numero 2 tiene un factor de balanceo 2 y por lo tanto, no es un arbol AVL.}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.35\textwidth]{borr9}
+	\caption{Para solucionar el factor de balanceo del nodo numero 2, utilizamos las rotaciones. Como tenemos un balanceo RR, aplicamos una rotacion a izquierda del nodo numero 2.}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{borr10}
+	\caption{Finalmente, ahora si se cumple el factor de balanceo para nodo del arbol y confirmamos un arbol AVL.}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.45\textwidth]{borr11}
+	\caption{Ahora, supongamos que queremos borrar el nodo numero 18. Realizo el borrado como en cualquier ABB y como es una hoja , lo borro y listo.}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.35\textwidth]{borr12}
+	\caption{Una vez borrado el nodo numero 18, calculo el factor de balanceo de cada nodo del arbol y confirmo que sigue siendo un arbo AVL. }
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.46\textwidth]{borr13}
+	\caption{Ahora, supongamos que quiero borrar el nodo numero 75. Realizo el borrado como en cualquier ABB y como es una hoja , lo borro y listo.}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{borr14}
+	\caption{Una vez borrado el nodo numero 75, calculo el factor de balanceo de cada nodo del arbol y confirmo que sigue siendo un arbo AVL.}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{borr15}
+	\caption{Ahora, supongamos que quiero borrar el nodo numero 19. Realizo el borrado como en cualquier ABB y como es una hoja , lo borro y listo.}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.35\textwidth]{borr16}
+	\caption{Al realizarlo, observamos que el nodo numero 21 tiene un factor de balanceo 2 y por lo tanto, no es un arbol AVL.}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{borr17}
+	\caption{Como estamos en el caso balanceo LR, tenemos que que aplicar 2 rotaciones.}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.6\textwidth]{borr18}
+	\caption{Comenzamos aplicando la rotacion a la derecha del nodo numero 50.}
+	\label{drivers1}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.55\textwidth]{borr19}
+	\caption{Luego, aplicamos la rotacion a la izquierda del nodo numero 21}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{borr20}
+	\caption{Finalmente, recalculando el factor de balanceo, obtenemos que cada nodo cumple y por lo tanto, confirmamos que es un arbol AVL.}
+	\label{drivers1}
+\end{figure}
+
+
+\subsection{Radix searching}
+
+Los metodos de busqueda que funcionan a partir de examinar la clave de a partes, en lugar de
+considerar la clave completa, son conocidos como $radix~searching~methods$. Por ejemplo, si las claves son enteros, sus partes podrian ser los bits que las codifican; si las claves son strings, las partes podrian ser sus caracteres. La motivacion de estas estructuras es encontrar una implementacion de diccionarios que termine dependiendo del $tama$ñ$o$ de las claves, y no tanto de la $cantidad$ de claves.
+\newline
+\newline
+Las principales ventajas de los metodos de radix searching son que proveen una eficiencia razonable en el peor caso, sin la complicacion de balanceo los arboles AVL; proveen una forma sencilla de manejar claves de longitud variable; ahorran espacio guardando parte de la clave dentro de la estructura de busqueda; y proveen un acceso rapido a los datos, siendo competitivos tanto con los arboles balanceados como las tecnicas de hashing. Las desventajas de estos metodos son el uso ineficiente del espacio para algunas implementaciones, y que la eficiencia puede verse degradada si no tenemos un acceso eficiente a las partes que componen las claves.
+
+\subsubsection{Arboles de busqueda digital}
+
+El metodo de radix searching mas simple esta basado en el uso de los $arboles~de~busqueda~digital$(ABD). Los algoritmos de insercion y busqueda de los ABD son identicos a los algoritmos de los ABB, salvo por una diferencia: no vamos a recorrer el arbol a partir del resultado de la comparacion de claves completas, sino que vamos a recorrer el arbol en funcion de los bits (digitos o caracteres) de la clave. En el primer nivel, se considera el bit mas significativo; en el segundo nivel, el segundo bit mas significativo; y asi siguiendo, hasta encontrar la clave o llegar a un nodo externo.
+\newline
+\newline
+En la Fig. 3.5 podemos ver un ejemplo de un ABD. Supongamos que queremos insertar el elemento $X$ en el arbol. En cada paso, nos movemos a derecha o a izquierda dependiendo de si la $i$-esima posicion de la clave tenemos 1 o 0. Una vez alcanzamos un nodo externo, lo reemplazamos por $X$.
 
 
 
@@ -880,6 +1131,5 @@ PC = Peor Caso
 \newline
 \newline
 ** el costo es amortizado, el costo para secuencias de $m$ operaciones es $O(m~log(n))$
+
 \end{document}
-
-
