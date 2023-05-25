@@ -1084,7 +1084,32 @@ por la longitud maxima de las claves. Si tenemos $n$ claves de longitud $b$, en 
 Las claves de busqueda pueden ser muy largas, posiblemente de mas de 20 caracteres. En estas situaciones, el costo de comparar una clave por igualdad puede terminar siendo dominante en el costo de la busqueda, por lo que no puede ser ignorado. En los arboles de busqueda digital, todavia tenemos que comparar claves en cada nodo. En esta seccion, vamos a ver una estructura de datos que nos permite usar los bits de las claves para guiar la busqueda, de la misma manera que haciamos en los ABD, pero comparando un solo digito en cada nodo, en lugar de comparar claves completas. Ademas, esta estructura es ordenada, por lo que nos va a permitir diseñar un algoritmo de ordenamiento recursivo.
 \newline
 \newline
-Esta estructura se conoce como $trie$, derivado de la palabra retrieval. La idea es que tengamos dos tipos de nodos: los nodos internos solo van a contener enlaces a otros nodos del arbol, mientras que los nodos hoja van a contener las claves y no van a tener punteros. Esto nos va a permitir usar los bits de las claves para guiar la busqueda, al igual que haciamos en los ABD, mientras mantenemos el siguiente invariante en cada nodo: todas las claves cuyo bit actual es 0 caen en el subarbol izquierdo y todas las demas en el subarbol derecho. Empezando desde la raiz, vamos recorriendo el arbol moviendonos a derecha o a izquierda dependiendo de si el $i$-esimo bit mas significativo es 0 o 1, hasta llegar a una hoja que contiene la clave o a un nodo externo, en cuyo caso el elemento no estaba en el arbol. Notemos que este algoritmo nos permite encontrar el prefijo comun mas largo entre una clave de busqueda y el resto
+Esta estructura se conoce como $trie$, derivado de la palabra $retrieval$. La idea es que tengamos dos tipos de nodos: los nodos internos solo van a contener enlaces a otros nodos del arbol, mientras que los nodos hoja van a contener las claves y no van a tener punteros. Esto nos va a permitir usar los bits de las claves para guiar la busqueda, al igual que haciamos en los ABD, mientras mantenemos el siguiente invariante en cada nodo: todas las claves cuyo bit actual es 0 caen en el subarbol izquierdo y todas las demas en el subarbol derecho. Empezando desde la raiz, vamos recorriendo el arbol moviendonos a derecha o a izquierda dependiendo de si el $i$-esimo bit mas significativo es 0 o 1, hasta llegar a una hoja que contiene la clave o a un nodo externo, en cuyo caso el elemento no estaba en el arbol. Notemos que este algoritmo nos permite encontrar el prefijo comun mas largo entre una clave de busqueda y el resto de las claves.
+\newline
+\newline
+Para insertar una clave en el $trie$, primero realizamos una busqueda.
+\newline
+\newline
+\textbf{.} Si la busqueda termina en un enlace a NIL (y no en una hoja), creamos un nuevo nodo hoja que contenga la clave a insertar y hacemos que este enlace apunte al nodo creado (pensar que como no llegamos a una hoja, no hay ninguna otra clave en el trie con este prefijo).
+\newline
+\newline
+\textbf{.} Si la busqueda termina en una hoja, debemos continuar bajando por el trie, agregando un nodo interno por cada bit que compartan la clave de busqueda y la clave encontrada, terminando ambas claves como hojas de un nodo que se corresponda con el bit mas significativo en el que difieran. En algunas implementaciones, en lugar de parar cuando no necesitamos mas bifurcaciones, se representa la clave completa, caracter por caracter. Esto requiere de mayor espacio, pero facilita el procesamiento de datos con longitud variable.
+\newline
+\newline
+Para un trie construido a partir de $n$ claves aleatorias de $b$ bits, intuitivamente se necesitan $\Theta(log(n))$ comparaciones de bits en el caso promedio (mas una comparacion de clave completa). En el peor caso, nos queda en $O(b)$ comparaciones de bits.
+\newline
+\newline
+Una propiedad de los tries es que su estructura es independiente del orden de insercion: hay un unico trie para cualquier conjunto de claves distintas. Este hecho es una caracteristica distintiva de los tries: todas las demas estructuras que vimos dependen tanto del conjunto de claves como del orden en el que se las inserta. Ademas, los tries tienen la propiedad de que las claves aparecen en orden, de manera tal de que podemos implementar un algoritmo de ordenamiento de forma recursiva, recorriendo el arbol
+$in-order$.
+\newline
+\newline
+Esta estructura tiene dos problemas a resolver: cuando tenemos dos claves con un prefijo en comun muy largo, se nos forma una rama muy larga en la que todos los nodos tienen un unico hijo, lo que lleva a la creacion de nodos innecesarios en el arbol, y el segundo problema que tenemos es que hay dos tipos distintos de nodos en el arbol, lo cual complica la implementacion de los algoritmos, agregando un cierto overhead. A continuacion, vamos a ver algunas variantes de los tries que buscan reducir la cantidad de nodos utilizados y reducir la altura del arbol.
+\newline
+\newline
+\textbf{Patricia:} Morrison desarrollo una forma de evitar ambos problemas, metodo al que llamo Patricia ($"$Practical Algorithm To Retrieve Information Coded In Alphanumeric$"$). Patricia nos permite la busqueda de $n$ claves de longitud arbitraria en un arbol de tan solo $n$ nodos, requiriendo una unica comparacion de clave completa por busqueda. La ramificacion $"$unidireccional$"$ se evita de la siguiente forma. Cada nodo contiene el indice del bit que debe ser evaluado para decidir que camino tomar. De esta manera, miramos directamente el bit donde se toma la decision significativa, salteando todas las comparaciones de bits innecesarias. El efecto es similar a compactar los caminos intermedios que no tienen bifurcaciones, en un unico eje. Por otro lado, la necesidad de tener distintos tipos de nodos se evita de la siguiente manera. Vamos a almacenar los datos en los nodos internos y vamos a reemplazar los enlaces a los nodos externos con enlaces que
+apuntan hacia un nodo interno adecuado, subiendo en el arbol.
+
+
 
 
 
