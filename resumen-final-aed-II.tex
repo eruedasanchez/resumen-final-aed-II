@@ -1063,6 +1063,29 @@ El metodo de radix searching mas simple esta basado en el uso de los $arboles~de
 \newline
 En la Fig. 3.5 podemos ver un ejemplo de un ABD. Supongamos que queremos insertar el elemento $X$ en el arbol. En cada paso, nos movemos a derecha o a izquierda dependiendo de si la $i$-esima posicion de la clave tenemos 1 o 0. Una vez alcanzamos un nodo externo, lo reemplazamos por $X$.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{abd}
+\caption{Arboles de busqueda digital}
+\label{drivers1}
+\end{figure}
+
+\newpage
+
+Los bits de las claves controlan la busqueda y la insercion, pero notemos que los ABD no cumplen con el invariante de los ABB. Es decir, no es necesario que todos los nodos a la izquierda de un nodo sean menores que este ni que todos los nodos a la derecha sean mayores. Lo que si es cierto es que las claves a la izquierda de un nodo son mas chicas que las claves a su derecha, ya que comparten los primeros $k$ bits y los nodos de la derecha tienen un 1 en su siguiente bit, mientras que los nodos de la izquierda tienen un 0. Sin embargo, el nodo que estamos mirando podria tener la clave mas chica entre todas, la
+mas grande, o cualquier valor entre todas las claves en ese subarbol.
+\newline
+\newline
+Los ABD se caracterizan por tener la propiedad de que cada clave esta en algun lugar a lo largo del camino especificado por sus bits. Esta propiedad es suficiente para buscar e insertar elementos en el arbol, teniendo que pagar el costo de realizar una comparacion de clave completa por cada nivel (porque la clave podria estar en cualquier posicion del camino). Podemos notar que la altura del arbol de busqueda digital es exactamente igual al mayor numero de bits sucesivos iguales entre dos claves cualesquiera, es decir, la longitud del mayor prefijo comun entre dos claves. Por lo tanto, la altura del arbol esta acotada
+por la longitud maxima de las claves. Si tenemos $n$ claves de longitud $b$, en el peor caso vamos a tener $O(b)$ comparaciones de claves. Por lo tanto, el caso peor para los arboles ABD es mucho mejor que el peor caso de los ABB convencionales, especialmente si tenemos muchas claves relativamente cortas, es decir, si $n$ es mucho mayor a $b$. En el caso promedio, asumiendo una distribucion uniforme en la codificacion de las claves, vamos a tener $O(log(n))$ comparaciones de claves.
+
+\subsubsection{Tries}
+
+Las claves de busqueda pueden ser muy largas, posiblemente de mas de 20 caracteres. En estas situaciones, el costo de comparar una clave por igualdad puede terminar siendo dominante en el costo de la busqueda, por lo que no puede ser ignorado. En los arboles de busqueda digital, todavia tenemos que comparar claves en cada nodo. En esta seccion, vamos a ver una estructura de datos que nos permite usar los bits de las claves para guiar la busqueda, de la misma manera que haciamos en los ABD, pero comparando un solo digito en cada nodo, en lugar de comparar claves completas. Ademas, esta estructura es ordenada, por lo que nos va a permitir diseñar un algoritmo de ordenamiento recursivo.
+\newline
+\newline
+Esta estructura se conoce como $trie$, derivado de la palabra retrieval. La idea es que tengamos dos tipos de nodos: los nodos internos solo van a contener enlaces a otros nodos del arbol, mientras que los nodos hoja van a contener las claves y no van a tener punteros. Esto nos va a permitir usar los bits de las claves para guiar la busqueda, al igual que haciamos en los ABD, mientras mantenemos el siguiente invariante en cada nodo: todas las claves cuyo bit actual es 0 caen en el subarbol izquierdo y todas las demas en el subarbol derecho. Empezando desde la raiz, vamos recorriendo el arbol moviendonos a derecha o a izquierda dependiendo de si el $i$-esimo bit mas significativo es 0 o 1, hasta llegar a una hoja que contiene la clave o a un nodo externo, en cuyo caso el elemento no estaba en el arbol. Notemos que este algoritmo nos permite encontrar el prefijo comun mas largo entre una clave de busqueda y el resto
+
 
 
 
