@@ -1461,6 +1461,43 @@ En este caso, vamos a eliminar al 29. Tenemos varios casos a analizar cuando eli
 \end{figure}
 \newpage
 
+\subsubsection{Caso 1b. Borrado de una clave $k$ ubicada en una hoja}
+
+Ahora supongamos que queremos eliminar la clave 9. Observemos que si la eliminamos como en el caso anterior, el nodo no es valido porque solo tiene 1 clave no vacia.
+\newline
+\newline
+Cuando no es un nodo valido, debe preguntarle primero a su hermano izquierdo si puede prestarle un elemento. Como no tiene hermano izquierdo, le consulta al hermano derecho. Como el hermano derecho si puede prestarle porque al darle un elemento, sigue teniendo al menos 2 claves no vacias.
+\newline
+\newline
+En el caso de que le preste el hermano izquierdo, le prestara el elemento que se encuentre mas a la derecha en su respectivo nodo. En el caso de que le preste el hermano derecho, le prestara el elemento que se encuentre mas a la izquierda en su respectivo nodo. En este caso, como le presta el hermano derecho, el elemento mas a la izquierda es el 15.  
+\newline
+\newline
+Luego, el 15 reemplaza al padre de ambos nodos (la clave numero 13) y el 13 baja al nodo donde esta el elemento a eliminar (clave numero 9) de manera que quede ordenada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{elim-nueve}
+\caption{Borrado de la clave 9}
+\label{drivers1}
+\end{figure}
+
+\subsubsection{Caso 1c. Borrado de una clave $k$ ubicada en una hoja}
+
+Ahora supongamos que queremos eliminar la clave 18. Observemos que si la eliminamos como en el caso anterior, el nodo no es valido porque solo tiene 1 clave no vacia.
+\newline
+\newline
+Cuando no es un nodo valido, debe preguntarle primero a su hermano izquierdo si puede prestarle un elemento. Como el hermano izquierdo no puede prestarle porque se convierte en un nodo invalido, le consulta al hermano derecho El hermano derecho tampoco puede prestarle porque tambien se convierte en un nodo invalido.
+\newline
+\newline
+Entonces, le solicita ayuda a su padre y este se une con el elemento restante del nodo (16) al nodo de su hermano izquierdo.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{elim-dieciocho}
+\caption{Borrado de la clave 18}
+\label{drivers1}
+\end{figure}
+\newpage
 
 
 
