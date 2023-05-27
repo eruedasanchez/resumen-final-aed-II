@@ -1421,6 +1421,46 @@ Entonces, el 12 pasa a la raiz del arbol y las claves menores a el se ubican del
 \caption{Insercion de la clave 2}
 \label{drivers1}
 \end{figure}
+\newpage
+
+\subsection{Borrado}
+
+Cuando realizamos insercion de elementos, creamos un nodo atemporal, divimos y creamos un nuevo nodo. En el caso del borrado, vamos a realizar todo lo contrario. Es decir, cuando se borra, no divimos sino que $unimos$ o $fusionamos$. Queremos realizar la eliminacion de los siguientes elementos: 29,9,18,62.
+\newline
+\newline
+En este caso:
+\newline
+\newline
+\textbf{.} Cada nodo tiene $k = 4$ claves
+\newline
+\newline
+\textbf{.} Es de orden $k+1 = 5$ ya que puede tener $5$ hijos por cada nodo
+\newline
+\newline
+\textbf{.} Un nodo valido tendra como minimo $m$ $=$ $\displaystyle \frac{3}{2}$ $=$ 1.5 $\uparrow$ $=$ $2$ claves no vacias
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{elim-orig}
+\caption{Arbol B original}
+\label{drivers1}
+\end{figure}
+
+\subsubsection{Caso 1. Borrado de una clave $k$ ubicada en una hoja}
+
+Cuando queremos eliminar una clave $k$, lo primero que debemos hacer es buscarla. Por lo tanto, necesitamos un $metodo$ $de$ $busqueda$.
+\newline
+\newline
+En este caso, vamos a eliminar al 29. Tenemos varios casos a analizar cuando eliminamos una hoja. Observemos que al eliminar el 29, el nodo sigue siendo un nodo valido porque tiene al menos 2 claves no vacias. Por lo tanto, puedo borrar tranquilamente al 29.  
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{elim-veintinueve}
+\caption{Borrado de la clave 29}
+\label{drivers1}
+\end{figure}
+\newpage
+
 
 
 
