@@ -1108,6 +1108,68 @@ Esta estructura tiene dos problemas a resolver: cuando tenemos dos claves con un
 \newline
 \textbf{Patricia:} Morrison desarrollo una forma de evitar ambos problemas, metodo al que llamo Patricia ($"$Practical Algorithm To Retrieve Information Coded In Alphanumeric$"$). Patricia nos permite la busqueda de $n$ claves de longitud arbitraria en un arbol de tan solo $n$ nodos, requiriendo una unica comparacion de clave completa por busqueda. La ramificacion $"$unidireccional$"$ se evita de la siguiente forma. Cada nodo contiene el indice del bit que debe ser evaluado para decidir que camino tomar. De esta manera, miramos directamente el bit donde se toma la decision significativa, salteando todas las comparaciones de bits innecesarias. El efecto es similar a compactar los caminos intermedios que no tienen bifurcaciones, en un unico eje. Por otro lado, la necesidad de tener distintos tipos de nodos se evita de la siguiente manera. Vamos a almacenar los datos en los nodos internos y vamos a reemplazar los enlaces a los nodos externos con enlaces que
 apuntan hacia un nodo interno adecuado, subiendo en el arbol.
+\newpage
+
+\section{Arboles B}
+
+Comenzamos presentando las caracteristicas de estos arboles.
+\newline
+\newline
+\textbf{.} Arbol $N$-ario balanceado y ordenado. Es $balanceado$ porque se cumple que $|FDB| \leq 1$ y ademas, se autobalancea. Es $ordenado$ porque para cada nodo, los valores menores a la clave contenida en este se encuentran en el subarbol izquierdo y los valores mayores a la clave contenida en este se encuentran en el subarbol derecho.
+\newline
+\newline
+\textbf{.} En cada nodo tiene $k$ claves ($k > 1$)
+\newline
+\newline
+\textbf{.} Es de orden $k+1$ ya que puede tener $k+1$ hijos por cada nodo
+\newline
+\newline
+\textbf{.} El nodo tambien es conocido como $pagina$
+\newline
+\newline
+\textbf{.} Un nodo valido tendra como minimo $\displaystyle \frac{k}{2}$ (redondeando hacia arriba) claves no vacias a excepcion de la raiz
+\newline
+\newline
+Vamos a estudiar las operaciones  de insercion y borrado de una clave en un arbol B.
+
+\subsection{Insercion}
+
+Queremos realizar la insercion de los siguientes elementos: 7,12,15,50,22,46,23,8,39,26,14,49,7,1,2.
+\newline
+\newline
+En este caso:
+\newline
+\newline
+\textbf{.} Cada nodo tiene $k = 3$ claves
+\newline
+\newline
+\textbf{.} Es de orden $k+1 = 4$ ya que puede tener $4$ hijos por cada nodo
+\newline
+\newline
+\textbf{.} Un nodo valido tendra como minimo $m$ $=$ $\displaystyle \frac{3}{2}$ $=$ 1.5 $\uparrow$ $=$ $2$ claves no vacias
+
+\subsubsection{Resolucion}
+
+Para la insercion del 7, comenzamos preguntando si existe un arbol. Como no existe, voy a crear la raiz y coloco al 7 como primer valor de la celda.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-siete}
+\caption{Insercion de la clave 7}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 12, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como todavia no tiene hijos, pero tiene espacio en la celda para almacenar al 12, le pregunta al 7 si $7 < 12$.
+\newline
+Como $7 < 12$ es verdadero y la siguiente celda esta libre, se coloca al 12 a la izquierda del 7.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-doce}
+\caption{Insercion de la clave 12}
+\label{drivers1}
+\end{figure}
+\newpage
 
 
 
