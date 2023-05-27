@@ -1171,6 +1171,43 @@ Como $7 < 12$ es verdadero y la siguiente celda esta libre, se coloca al 12 a la
 \end{figure}
 \newpage
 
+Para la insercion del 15, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como todavia no tiene hijos, pero tiene espacio en la celda para almacenar al 15, le pregunta al 7 si $7 < 15$.
+\newline
+Como $7 < 15$ es verdadero y la siguiente celda no esta libre, le pregunta al 12 si $12 < 15$ y como $12 < 15$ es verdadero y la siguiente celda esta libre se coloca al 15 a la izquierda del 12.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-quince}
+\caption{Insercion de la clave 15}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 50, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como todavia no tiene hijos y no tiene espacio en la celda para almacenar al 50, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 50 en una posicion de modo que la celda quede ordenada. Es decir:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-cincuenta-pre}
+\caption{Insercion de la clave 50 en la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+
+Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 12).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-cincuenta-pre-dos}
+\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+\newpage
+
+
+
+
+
+
+
+
 
 
 
