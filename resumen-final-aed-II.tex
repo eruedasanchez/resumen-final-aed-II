@@ -1348,6 +1348,42 @@ Como $12 < 49$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22
 \end{figure}
 \newpage
 
+Para la insercion del 17, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 17 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 17$.
+\newline
+\newline
+Como $12 < 17$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 17$ $Abs!$ y la siguiente celda no esta libre, debo irme por el subarbol izquierdo del 22. Recusivamente, preguntando a la celda que contiene al 14 y 15 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 17 debe insertarse en dicha de manera que quede ordenada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-diecisiete}
+\caption{Insercion de la clave 17}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 1, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 1 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 1$.
+\newline
+\newline
+Como $12 < 17$ $Abs!$ y la siguiente celda no esta libre, debo irme por el subarbol izquierdo del 12. Recusivamente, preguntando a la celda que contiene al 7 y 8 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 1 debe insertarse en dicha de manera que quede ordenada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-uno}
+\caption{Insercion de la clave 1}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 2, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 2 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 2$.
+\newline
+\newline
+Como $12 < 2$ $Abs!$ y la siguiente celda no esta libre debo irme por el subarbol izquierdo del 12. Recusivamente, preguntando a la celda que contiene al 1, 7 y 8 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 2 debe insertarse en dicha de manera que quede ordenada. Pero no tiene espacio en la celda para almacenar al 2, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 2 en una posicion de modo que la celda quede ordenada. Es decir:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-dos-pre}
+\caption{Insercion de la clave 2 en la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+
 
 
 
