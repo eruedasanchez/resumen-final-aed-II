@@ -1201,6 +1201,40 @@ Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la c
 \end{figure}
 \newpage
 
+Entonces, el 12 pasa a ser la nueva raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-cincuenta}
+\caption{Insercion de la clave 50}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 22, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 22 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 22$.
+\newline
+\newline
+Como $12 < 22$ es verdadero y la siguiente celda esta libre, debo irme por el subarbol derecho del 12. Recusivamente, preguntando a la celda que contiene al 15 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 22 debe insertarse en dicha de manera que quede ordenada. Es decir, como $15 < 22$, avanza y $50 < 22$ $Abs!$, coloca al 22 en esa posicion y empuja a todos los demas elementos hacia la derecha.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-veintidos}
+\caption{Insercion de la clave 22}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 46, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 46 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 46$.
+\newline
+\newline
+Como $12 < 46$ es verdadero y la siguiente celda esta libre, debo irme por el subarbol derecho del 12. Recusivamente, preguntando a la celda que contiene al 15, 22 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 22 debe insertarse en dicha de manera que quede ordenada. Pero no tiene espacio en la celda para almacenar al 46, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 46 en una posicion de modo que la celda quede ordenada. Es decir:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-cuarentaseis-pre}
+\caption{Insercion de la clave 46 en la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+\newpage
+
 
 
 
