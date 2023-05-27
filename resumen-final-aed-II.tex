@@ -1499,6 +1499,29 @@ Entonces, le solicita ayuda a su padre y este se une con el elemento restante de
 \end{figure}
 \newpage
 
+\subsubsection{Caso 2. Borrado de una clave $k$ ubicada en un nodo interno}
+
+En este caso, queremos eliminar al nodo 62. Como es un nodo interno, debemos buscar el predecesor o sucesor inmediato. Si elegimos al sucesor inmediato (clave numero 63), se elimina a la clave 63 de su nodo y dicho nodo se convierte en invalido. Como el hermano derecho no puede prestarle y no tiene hermano izquierdo, se une con su padre al nodo de su hermano derecho.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{elim-sesentados-pre}
+\caption{Borrado de la clave 62}
+\label{drivers1}
+\end{figure}
+
+Pero observemos ahora que el nodo que contiene a la clave 45 es invalido. Entonces, le pregunta al hermano si puede prestarle. Como el hermano izquierdo no puede prestarle, le pregunta al hermano derecho y como no tiene hermano derecho, le solicita ayuda al padre.
+\newline
+\newline
+Por lo tanto, se fusionan o unen en el nodo hermano izquierdo (contiene al 20 y 23) el 39 y el 45 de manera que quede ordenado el nodo.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{elim-sesentados}
+\caption{Borrado de la clave 62}
+\label{drivers1}
+\end{figure}
+
 
 
 
