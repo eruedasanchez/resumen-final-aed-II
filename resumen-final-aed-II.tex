@@ -1235,6 +1235,37 @@ Como $12 < 46$ es verdadero y la siguiente celda esta libre, debo irme por el su
 \end{figure}
 \newpage
 
+Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 22).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-cuarentaseis-pre-dos}
+\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+
+Entonces, el 22 pasa a la raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-cuarentaseis}
+\caption{Insercion de la clave 46}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 23, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 23 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 46$.
+\newline
+\newline
+Como $12 < 23$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 23$ es verdadero y la siguiente celda no esta libre, debo irme por el subarbol derecho del 22. Recusivamente, preguntando a la celda que contiene al 46 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 23 debe insertarse en dicha de manera que quede ordenada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-veintitres}
+\caption{Insercion de la clave 23}
+\label{drivers1}
+\end{figure}
+\newpage
+
 
 
 
