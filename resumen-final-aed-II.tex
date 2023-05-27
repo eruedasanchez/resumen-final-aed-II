@@ -1266,6 +1266,39 @@ Como $12 < 23$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22
 \end{figure}
 \newpage
 
+Para la insercion del 8, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 8 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 8$.
+\newline
+\newline
+Como $12 < 8$ $Abs!$ y la siguiente celda no esta libre, debo irme por el subarbol izquierdo del 12. Recusivamente, preguntando a la celda que contiene al 7 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 8 debe insertarse en dicha de manera que quede ordenada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-ocho}
+\caption{Insercion de la clave 8}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 39, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 39 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 39$.
+\newline
+\newline
+Como $12 < 39$ es verdadero y la siguiente celda esta libre, avanzo. Como $22 < 39$ es verdadero y la siguiente celda esta libre debo irme por el subarbol derecho del 22. Recusivamente, preguntando a la celda que contiene al 23, 46 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 39 debe insertarse en dicha de manera que quede ordenada. Pero no tiene espacio en la celda para almacenar al 39, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 39 en una posicion de modo que la celda quede ordenada. Es decir:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-treintanueve-pre}
+\caption{Insercion de la clave 46 en la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+
+Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 39).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-treintanueve-pre-dos}
+\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+\newpage
 
 
 
