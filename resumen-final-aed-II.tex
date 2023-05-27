@@ -1321,8 +1321,32 @@ Como $12 < 26$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22
 \label{drivers1}
 \end{figure}
 
+\newpage
 
+Para la insercion del 14, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 14 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 14$.
+\newline
+\newline
+Como $12 < 14$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 14$ $Abs!$ y la siguiente celda no esta libre (no hay mas), debo irme por el subarbol izquierdo del 22. Recusivamente, preguntando a la celda que contiene al 15 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 14 debe insertarse en dicha de manera que quede ordenada.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-catorce}
+\caption{Insercion de la clave 14}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 49, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 49 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 14$.
+\newline
+\newline
+Como $12 < 49$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 49$ es verdadero y la siguiente celda no esta libre, avanzo. Como $39 < 49$ no hay mas celdas, debo irme por el subarbol derecho del 39. Recusivamente, preguntando a la celda que contiene al 46 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 49 debe insertarse en dicha de manera que quede ordenada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-cuarentanueve}
+\caption{Insercion de la clave 49}
+\label{drivers1}
+\end{figure}
+\newpage
 
 
 
