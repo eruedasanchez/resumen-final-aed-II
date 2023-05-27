@@ -1383,6 +1383,44 @@ Como $12 < 2$ $Abs!$ y la siguiente celda no esta libre debo irme por el subarbo
 \caption{Insercion de la clave 2 en la celda atemporal de $k+1 = 4$ posiciones}
 \label{drivers1}
 \end{figure}
+\newpage
+
+Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 2).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-dos-pre-dos}
+\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+
+Entonces, el 2 pasa a la raiz del arbol pero como no hay espacio para ubicarlo, se vuelve a crear un nodo atemporal.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-dos-pre-tres}
+\caption{Insercion de la clave 2 en la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+
+Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 12).
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.3\textwidth]{ins-dos-pre-cuatro}
+\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
+\label{drivers1}
+\end{figure}
+\newpage
+
+Entonces, el 12 pasa a la raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.9\textwidth]{ins-dos}
+\caption{Insercion de la clave 2}
+\label{drivers1}
+\end{figure}
 
 
 
