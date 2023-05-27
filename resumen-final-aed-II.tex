@@ -1300,6 +1300,27 @@ Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la c
 \end{figure}
 \newpage
 
+Entonces, el 39 pasa a la raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-treintanueve}
+\caption{Insercion de la clave 39}
+\label{drivers1}
+\end{figure}
+
+Para la insercion del 26, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 8 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 26$.
+\newline
+\newline
+Como $12 < 26$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 26$ es verdadero y la siguiente celda no esta libre, avanzo. Finalmente, como $39 < 26$ $Abs!$ y la siguiente celda no esta libre (no hay mas), debo irme por el subarbol izquierdo del 39. Recusivamente, preguntando a la celda que contiene al 23 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 26 debe insertarse en dicha de manera que quede ordenada.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{ins-veintiseis}
+\caption{Insercion de la clave 26}
+\label{drivers1}
+\end{figure}
+
 
 
 
