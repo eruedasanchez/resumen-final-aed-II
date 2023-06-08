@@ -1,0 +1,179 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper,hmargin=0.5cm,bottom=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xargs}
+\usepackage{xspace}
+\usepackage{caratula}-
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{graphicx}
+
+\materia{Algoritmos y Estructuras de Datos II}
+\titulo{Examen Final}
+\subtitulo{23 de febrero 2023}
+\integrante{Ezequiel Rueda Sanchez}{522/16}{ezequiel.ruedasanchez@gmail.com}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Ejercicio 1}
+
+Responder Verdadero o Falso. Justificar.
+\newline
+\newline
+a) Lo que hace que una operación sea un observador básico es que deba escribirse en base a los generadores. \textbf{Falso}
+\newline
+\newline
+Lo que hace que una operación sea un observador básico es que es una funcion que permite ver detalles particulares de las instancias.
+\newline
+\newline
+b) Sí una operación rompe la congruencia debe ser transformada en observador básico. \textbf{Falso}
+\newline
+\newline
+La afirmacion es falsa porque transformarla en observador basico es una opcion. La otra opcion puede ser eliminarla de las operaciones y se evita romper la congruencia. 
+\newline
+\newline
+c) Dos instancias del mismo TAD pueden ser observacionalmente iguales y aun así ser distinguibles por una operación. \textbf{Verdadero}
+\newline
+\newline
+Esta afirmacion es verdadera y la justifico con el siguiente ejemplo. Supongamos que tenemos el TAD \tadNombre{Negocio} y el observador basico \TipoVariable{totalVendido: negocio $\rightarrow$ nat} y otra operacion \TipoVariable{ventas: negocio $\rightarrow$ secu(producto)}.
+\newline
+\newline
+En este caso, dados dos negocios $n_{1}$ y $n_{2}$, la igualdad observacional nos dice que \TipoVariable{totalVendido($n_{1}$)} $\igobs$ \TipoVariable{totalVendido($n_{2}$)}.
+\newline
+\newline 
+Pero, podemos obtener que \TipoVariable{ventas($n_{1}$)} $\equiv$ $<jeans,campera,remera>$ y \TipoVariable{ventas($n_{2}$)} $\equiv$ $<bermuda,campera,camisa>$ donde el valor de las bermudas y jeans son iguales y el valor de las remeras y camisas tambien obtiendo el mismo total vendido pero las ventas son distintas, lo cual produce una inconsistencia.  
+\newline
+\newline 
+d) Sí un enunciado dice "Siempre que vale $A$ sucede inmediatamente $B$ y $B$ no puede suceder de ninguna otra manera" y la correspondiente axiomatización incluye las operaciones $A$ y $B$ entonces el TAD está mal escrito. \textbf{No lo se}
+\newpage 
+
+\section{Ejercicio 2}
+
+Responder Verdadero o Falso. Justificar.
+\newline
+\newline 
+1) La precondición y la postcondición de las operaciones de la interfaz tiene que cumplir el invariante de representación. \textbf{Verdadero}
+\newline
+\newline
+Esta afirmacion es verdadera porque el invariante de representacion es una funcion booleana que indica que condiciones en la estructura de representacion son validas. La estructura de representacion se va a utilizar para la implementacion de los algoritmos y por lo tanto, estos deben cumplir la precondicion y satisfacer la postcondicion.
+\newline
+\newline
+2) La complejidad de las operaciones determina el invariante de representación. \textbf{Falso}
+\newline
+\newline
+La complejidad de las operaciones determina la estructura de representacion que se va a elegir para la implementacion de los algoritmos.
+\newline
+\newline
+3) El invariante determina las complejidades de las operaciones. \textbf{Falso}
+\newline
+\newline
+La estrucutura de representacion elegida va a determinar la complejidad de las operaciones. 
+\newpage
+
+\section{Ejercicio 3}
+
+Indique y justifique si son verdaderas o falsas las siguientes afirmaciones:
+\newline
+\newline
+a) El análisis “del potencial” y el “del banquero” son técnicas para demostrar la *complejidad promedio de una operación de una estructura de datos. \textbf{NO SE}
+\newline
+\newline
+b) La complejidad del caso promedio de una operación es siempre es menor o igual a la complejidad del peor caso. \textbf{Falso}
+\newline
+\newline
+Vamos a probarlo con el siguiente ejemplo. Supongamos que tenemos una operacion $T(n)$ cuyo algoritmo es implementado recursivamente y se resuelve con la siguiente ecuacion de recurrencia:
+\newline
+\newline
+$T(n)$ $=$ $aT(\displaystyle \frac{n}{c}) + f(n)$ con $n > 1$
+\newline
+\newline
+Luego, en el peor caso obtenemos que $a = 2$, $c = 2$ y $f(n)$ $=$ $log(n)$. Entonces, por el Teorema Maestro, $f(n) \in O(n^{log_{c}(a) - \epsilon})$ para $\epsilon > 0$, es decir, $log(n) \in O(n^{log_{2}(2) - \epsilon})$ $=$ $log(n) \in O(n)$ y por lo tanto, $T(n)$ $=$ $\Theta(n^{log_{c}(a)})$, o sea, $T(n)$ $=$ $\Theta(n)$.    
+\newline
+\newline
+Ahora,en el caso promedio obtenemos que $a = 2$, $c = 2$ y $f(n)$ $=$ $n$. Entonces, por el Teorema Maestro, $f(n) \in \Theta(n^{log_{c}(a)})$ para $\epsilon > 0$, es decir, $n \in \Theta(n^{log_{2}(2) - \epsilon})$ $=$ $n \in \Theta(n)$ y por lo tanto, $T(n)$ $=$ $\Theta(log(n)~n^{log_{c}(a)})$, o sea, $T(n)$ $=$ $\Theta(n~log(n))$.
+\newline
+\newline
+Como $\Theta(n)$ $<$ $\Theta(n~log(n))$, concluimos que no siempre se cumple que la complejidad del caso promedio de una operación es siempre es menor o igual a la complejidad del peor caso. 
+\newline
+\newline
+c) Las Skip lists son estructuras de datos que tienen un peor caso de inserción y búsqueda igual a los AVLs. \textbf{Verdadero}
+\newline
+\newline
+Esta afirmacion es verdadera porque las busquedas e insercion en un AVL tiene costo $O(log(n))$ donde $n$ representa la cantidad de elementos del arbol. Ahora, para realizar cualquier busqueda o insercion en una skip list de $n$ elementos, a lo sumo vamos a tener que visitar un maximo de 2 nodos por nivel y como tenemos $log_{2}(n)$ niveles, hay que visitar $2log_{2}(n)$ nodos pero se puede acotar por $O(log(n))$ que coincide con la complejidad de los AVL's. 
+\newline
+\newline
+d) La operación de inserción en el método de acceso secuencial indexado tiene un peor caso $O(log(n))$. \textbf{Falso}
+\newline
+\newline
+La operación de inserción en el método de acceso secuencial indexado tiene un peor caso $O(n)$ con $n$ el tamaño del arreglo dado que una nueva insercion puede implicar una reorganizacion completa de las paginas de los discos  
+\newpage
+
+\section{Ejercicio 4}
+
+Decidir si las siguientes afirmaciones son Verdaderas o Falsas. Justificar o dar un contraejemplo.
+\newline
+\newline
+1) Si $f$ es $O(g)$ y $g$ es $\Omega(f)$, $f$ es $\Theta(g)$. \textbf{Falso}
+\newline
+\newline
+Lo probamos con un contraejemplo. Supongamos que $f$ $=$ $n$ y $g$ $=$ $n^{2}$. Luego, $n \in O(n^{2})$ y $n^{2} \in \Omega(n)$ pero $n \in \Theta(n^{2})$ es absurdo.
+\newline
+\newline
+2) Si $f$ es $O(n)$, entonces para cualquier entrada $f$ es $\Omega(n)$. \textbf{Falso}
+\newline
+\newline
+Lo probamos con un contraejemplo. Supongamos que $f$ $=$ $log(n)$. Entonces, $log(n) \in O(n)$ pero $log(n) \in \Omega(n)$ es absurdo.
+\newline
+\newline
+3) Si $f$ es $\Omega(n)$, entonces para cualquier entrada $f$ es $\Theta(n)$. \textbf{Falso}
+\newline
+\newline
+Lo probamos con un contraejemplo. Supongamos que $f$ $=$ $n^{2}$. Entonces, $n^{2} \in \Omega(n)$ pero $n^{2} \in \Theta(n)$ es absurdo.
+\newline
+\newline
+4) La complejidad del mejor caso de un algoritmo para un cierto problema es menor que cualquier limite inferior para el problema. \textbf{Falso}
+\newline
+\newline
+Supongamos el caso de \TipoVariable{insertionSort}. Sabemos que la complejidad en el mejor caso es $O(n)$. Ahora, un limite inferior para este problema podria ser $log(n)$ y sabemos que $n > log(n)$ lo cual prueba que la afirmacion del enunciado no es verdadera.
+\newline
+\newline
+5) Sea $S$ arreglo de claves representado por max-heap. Sean $S[i]$ y $S[j]$ claves del heap tal que $i < j$ y $S[i] < S[j]$ $\rightarrow$ el arreglo obtenido intercambiar de $S[i]$ y $S[j]$ sigue siendo max-heap. \textbf{Falso}
+\newline
+\newline
+Supongamos que $S$ $=$ $[89,67,84,66,65,82,83,1,43,21,5,79,70]$. Ahora, tomo $i = 9$ y $j = 12$ con $S[i] = 21 < S[j] = 70$.
+\newline
+\newline
+Al realizar el intercambio propuesto, obtenemos $S$ $=$ $[89,67,84,66,65,82,83,1,43,70,5,79,21]$ y no sigue siendo un max-heap porque el nodo 65 ahora tiene como hijo al nodo 70 y como $70 > 65$, se rompe la condicion de max-heap.  
+\newline
+\newline
+6) Sea $S$ arreglo de claves representado por max-heap. Sean $S[i]$ y $S[j]$ claves del heap tal que $i < j$ y $S[i] > S[j]$ $\rightarrow$ el arreglo obtenido intercambiar de $S[i]$ y $S[j]$ sigue siendo max-heap. \textbf{Falso}
+\newline
+\newline
+Supongamos que $S$ $=$ $[89,67,84]$. Ahora, tomo $i = 0$ y $j = 1$ con $S[i] = 89 > S[j] = 67$.
+\newline
+\newline
+Al realizar el intercambio propuesto, obtenemos $S$ $=$ $[67,89,84]$ y no sigue siendo un max-heap porque el nodo 67 ahora tiene como hijo al nodo 89 y como $89 > 67$, se rompe la condicion de max-heap.  
+
+ 
+
+%\begin{figure}[h]
+	%\centering
+	%\includegraphics[width=0.8\textwidth]{ej2seguridad}%
+	%\caption{Diagrama del Stack}
+	%\label{drivers1}
+%\end{figure}%
+
+
+
+\TipoVariable{}
+
+
+
+\end{document}
+
+
