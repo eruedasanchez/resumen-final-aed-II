@@ -114,3 +114,25 @@ Hay otra de $subespecificar$ que es mas sutil pero muy util. Sirve para posponer
 Por ejemplo, supongamos que estamos modelando un examen final de AEDII, el cual se toma de forma oral y tenemos una operacion para llamar al siguiente alumno al aula. Durante el modelado, no sabemos que criterio se va a utilizar para llamar a los alumnos. Podria ser alfabetico, por DNI, por LU, etc. Si en la axiomatizacion de llamar al siguiente alumno, declaramos \TipoVariable{prim(ordenarAlfabeticamente(alumnosQueRinden))} estamos preescribiendo exactamente la forma en que se llaman a los alumnos. Pero aun, no sabemos cual es el criterio. Podemos entonces, intencionalmente, subespecificar el problema y decir \TipoVariable{dameUno(alumnosQueRinden)} para luego definir el criterio exacto durante la implementacion.  
 \newpage
 
+\section{Ejercicio 3}
+
+Determinar que algoritmos de sorting permite mostrar un ordenamiento parcial del arreglo, cuando el programa se interrumpe en un determinando momento. 
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+\textbf{.} Selection sort: El invariante de este algoritmo nos dice que los elementos entre la posición 0 y la posición i se encuentran ordenados y son los mas pequeños del arreglo original. Por lo tanto, este algoritmo permite mostrar un ordenamiento parcial del arreglo, cuando el programa se interrumpe en un determinando momento. 
+\newline
+\newline
+\textbf{.} Insertion sort: El invariante de este algoritmo nos dice que los elementos entre la posición 0 y la posición i se encuentran ordenados pero noson los mas pequeños del arreglo original. Por lo tanto, este algoritmo no permite mostrar un ordenamiento parcial del arreglo, cuando el programa se interrumpe en un determinando momento.
+\newline
+\newline
+\textbf{.} Heapsort: En este algoritmo, si al aplicar la funcion \TipoVariable{arrayToHeap(A)} donde \TipoVariable{A} es un arreglo y lo convertimos a un min-heap, podemos asegurar que este algoritmo permite mostrar un ordenamiento parcial del arreglo, cuando el programa se interrumpe en un determinando momento.
+\newline
+\newline
+\textbf{.} Mergesort: Este algoritmo permite mostrar un ordenamiento parcial del arreglo cuando el programa se interrumpe en un determinando momento debido a que se ejecuta la funcion \TipoVariable{merge()} luego de dividir recursivamente el arreglo y justamente esta se encarga de mantener un orden parcial de los elementos del arreglo.
+\newline
+\newline
+\textbf{.} Quicksort: Este algoritmo no permite mostrar un ordenamiento parcial del arreglo cuando el programa se interrumpe en un determinando momento debido a que al ir eligiendo los $pivotes$ o $bounds$ recursivamente, se van a ir ordenando parcialmente los elementos menores y mayores a dicho $bound$ pero esto no asegura que al interrumpir al programa en algun momento el arreglo originial se encuentre parcialmente ordenado.
+\newpage
