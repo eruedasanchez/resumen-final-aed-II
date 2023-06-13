@@ -136,3 +136,31 @@ Determinar que algoritmos de sorting permite mostrar un ordenamiento parcial del
 \newline
 \textbf{.} Quicksort: Este algoritmo no permite mostrar un ordenamiento parcial del arreglo cuando el programa se interrumpe en un determinando momento debido a que al ir eligiendo los $pivotes$ o $bounds$ recursivamente, se van a ir ordenando parcialmente los elementos menores y mayores a dicho $bound$ pero esto no asegura que al interrumpir al programa en algun momento el arreglo originial se encuentre parcialmente ordenado.
 \newpage
+
+\section{Ejercicio 4}
+
+Responder verdadero o falso. Justificar.
+\newline
+\newline
+a) La precondión y la postcondión de las operaciones de la interfaz tienen que cumplir el invariante de representación.
+\newline
+\newline
+b) La complejidad de las operaciones determina el invariante de representación.
+\newline
+\newline
+c) El invariante de representación determina las complejidades de las operaciones.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+a) La afirmacion es \textbf{falsa} porque la precondión y la postcondión de las operaciones de la interfaz tienen que cumplir el invariante de representación pero no las operaciones auxiliares y estas se encuentran definidas en la interfaz. 
+\newline
+\newline
+b) La afirmacion es \textbf{falsa} porque la complejidad de las operaciones determina la estructura de representacion que vamos a elegir para implementar los algoritmos que satisfagan las complejidades de las operaciones.
+\newline
+\newline
+c) La afirmacion es \textbf{verdadera} porque el invariante de representacion nos permite mantener ciertas garantias sobre la estructura de representacion utilizando algoritmos que aprovechen las garantias del invariante, lo cual impacta directamente en las complejidades de las operaciones.
+
+\end{document}
+
