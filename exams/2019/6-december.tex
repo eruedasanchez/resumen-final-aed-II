@@ -1,0 +1,109 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper,hmargin=0.5cm,bottom=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xargs}
+\usepackage{xspace}
+\usepackage{caratula}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{aed2-tad,aed2-symb,aed2-itef}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{graphicx}
+
+\materia{Algoritmos y Estructuras de Datos II}
+\titulo{Examen Final}
+\subtitulo{6 de diciembre 2019}
+\integrante{Ezequiel Rueda Sanchez}{522/16}{ezequiel.ruedasanchez@gmail.com}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Ejercicio 3}
+
+Implementar el algoritmo Floyd usando la técnica Divide \& Conquer. Dado un árbol completo $T$, se debe retornar un árbol $H$ con los mismos elementos que $T$, pero que cumpla el invariante heap. Se puede asumir que ya tiene implementados \TipoVariable{siftDown} y \TipoVariable{siftUp} con la complejidad adecuada. Dar la complejidad y justificar.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+Comenzamos presentando la implementacion del algoritmo de Floyd.
+
+\begin{algorithm}[H]{\textbf{floydAlgorithm}(\Inout{A}{arreglo(nat)})}
+	\begin{algorithmic}[1]
+		\State $n$ $\gets$ tam($A$)                               
+		\For{$i=\frac{n}{2}$; $i \geq 0$; $i--$}                  
+		\State siftDown($q(A),i$)                                    
+		\EndFor
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+
+Ahora, analizamos y calculamos la complejidad del algoritmo.
+\newline
+\newline
+Comenzamos colocando las $n$ claves destinadas para nuestro heap en el mismo orden en el que
+vienen. La forma del heap resultante es correcta ya que es completamente balanceado e izquierdista, pero las claves estan completamente desordenadas. 
+\newline
+\newline
+Entonces, consideremos el arreglo en el orden inverso, empezando desde su $n$-esima posicion. Esta representa una hoja del arbol, por lo que si miramos unicamente el subarbol que la tiene como raiz, ese subarbol es un heap. Lo mismo ocurriria en el caso de las ultimas $\displaystyle \frac{n}{2}$ posiciones en el arreglo, al ser todas hojas (para que un nodo pueda tener hijos, la posicion $2i + 1$ debe ser una posicion valida dentro del heap). Si continuamos retrocediendo sobre el arreglo, vamos a encontrarnos con un primer nodo interno con hijos. Es posible que el subarbol enraizado en este elemento no sea un heap, pero sus hijos representan un heap bien formado. Por lo tanto, para recuperar la condicion de heap, podemos aplicar la operacion de \TipoVariable{siftDown} sobre la raiz de este subarbol. Siguiendo esta idea, podemos construir un heap aplicando $\displaystyle \frac{n}{2}$ llamadas no triviales a \TipoVariable{siftDown}.
+\newline
+\newline
+Multiplicando la cantidad de llamadas a \TipoVariable{siftDown}, obtenemos una cota superior de $O(n~log(n))$. Sin embargo, esta es una cota superior, ya que solo la ultima llamada considera la totalidad del arbol. Por lo tanto, nos conviene hacer un analisis mas fino para estudiar la complejidad de este algoritmo.
+\newline
+\newline
+Sabemos que en un arbol binario de $n$ = $2^{k} - 1$ nodos tenemos $\displaystyle \frac{(n+1)}{2}$ nodos que son hojas raices de un subarbol de altura 0, $\displaystyle \frac{(n+1)}{4}$ nodos que son hojas raices de un subarbol de altura 1, $\displaystyle \frac{(n+1)}{8}$ nodos que son hojas raices de un subarbol de altura 2, etc. Ademas, sabemos que el costo de SiftDown depende linealmente de la altura del subarbol considerado. En general, a lo sumo vamos a tener $\displaystyle \frac{(n+1)}{2^{h+1}}$ nodos de altura $h$.
+\newline
+\newline
+Por lo tanto, $n_{h}$ $=$ $n_{i} + 1$ donde $n_{h}$ representa el numero de hojas y $n_{i}$ numero de nodos internos.
+\newline
+\newline
+Ya tenemos una forma de contar cuantos nodos hay en cada nivel. Ahora, veamos la otra parte que esta determinando el costo del Algoritmo de Floyd, que es cuanta cantidad maxima de intercambios necesito hacer para un nodo en un nivel dado. 
+\newline
+\newline
+Una llamada de bajar sobre un nodo de nivel $i$, provoca como máximo $k - i$ intercambios (op. dominante) 
+\newline
+\newline
+\textbf{.} 1 intercambio si $i$ es penúltimo nivel, 2 si $i$ es el antepenúltimo, ..., $k-1$ intercambios si $i$ = 1
+\newline
+\newline
+\# max de intercambios = 
+\newline
+\newline
+(\# nodos en el penúltimo nivel) · 1 + (\# nodos en el antepenúltimo nivel) · 2 + ... + (\# nodos en el nivel 2) · ($k-2$) + 
+\newline
+\newline
+(\# nodos en el nivel 1) · ($k-1$), con $k$ = $lg(n+1)$
+\newline
+\newline
+\newline
+\newline
+Ahora, reemplazando las hojas y nodos de las diapositivas anteriores por la cantidad de intercambios obtenemos:
+\newline
+\newline
+\# max de intercambios = 
+\newline
+\newline
+($\displaystyle \frac{(n+1)}{4}$) · 1 + ($\displaystyle \frac{(n+1)}{8}$) · 2 + ... + 2 . ($log(n+1)$ - 2) + 1 . ($log(n+1)$ - 1) 
+\newline
+\newline
+\newline
+$\displaystyle \sum_{i=2}^{log(n+1)}$ $\displaystyle \frac{n+1}{2^{i}}(i-1)$ $=$ $(n+1)$ $\displaystyle \sum_{i=2}^{log(n+1)}$ $\displaystyle \frac{i-1}{2^{i}}$ $=$ $(n+1)$ ($\displaystyle \sum_{i=2}^{log(n+1)}$ $\displaystyle \frac{i}{2^{i}}$ $-$ $\displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{1}{2^{i}}$) 
+\newline
+\newline
+\newline
+Entonces, consideremos la primer y segunda mitad de la igualdad:
+\newline
+\newline
+$\displaystyle \sum_{i=2}^{\infty}$ $\displaystyle \frac{i}{2^{i}}$ $=$ $\displaystyle \frac{3}{2}$~~~~~~~~~~~~~~~~~~$\displaystyle \sum_{i=2}^{log(n+1)}$ $\displaystyle \frac{1}{2^{i}}$ $>$ $0$
+\newline
+\newline
+\newline
+Deducimos que:
+\newline
+\newline
+$(n+1)$ ($\displaystyle \sum_{i=2}^{log(n+1)}$ $\displaystyle \frac{i-1}{2^{i}}$ $<$ $(n+1)$ ($\displaystyle \frac{3}{2}$ $-$ $\displaystyle \sum_{i=2}^{log(n+1)}$ $\displaystyle \frac{1}{2^{i}}$) $<$ $\displaystyle \frac{3}{2}$ $(n+1)$ $\Rightarrow$ \# max de intercambios = $O(n)$
+ \end{document}
