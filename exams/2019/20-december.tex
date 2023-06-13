@@ -1,0 +1,53 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper,hmargin=0.5cm,bottom=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xargs}
+\usepackage{xspace}
+\usepackage{caratula}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{aed2-tad,aed2-symb,aed2-itef}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{graphicx}
+
+\materia{Algoritmos y Estructuras de Datos II}
+\titulo{Examen Final}
+\subtitulo{20 de diciembre 2019}
+\integrante{Ezequiel Rueda Sanchez}{522/16}{ezequiel.ruedasanchez@gmail.com}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Ejercicio 1}
+
+Describir que rol juega la función de abstracción en la correctitud de un diseño con respecto al TAD.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+La \textbf{funcion de abstraccion} es una herramienta que nos permite vincular las distintas instancias validas de la estructura con el valor representado del TAD. Esta funcion toma una instancia abstracta de la estructura de representacion y nos devuelve una instancia abstracta del genero representado.
+\newline
+\newline
+La funcion de abstraccion debe ser total, restringiendose a las instancias que cumplan con el invariante de representacion. 
+\newline
+\newline
+Ademas, no tiene por que ser inyectiva, es decir, dos estructuras distintas pueden representar al mismo termino de un TAD, pero tiene que ser sobreyectiva sobre las clases de equivalencia del TAD (dadas por la igualdad observacional). Es decir, todo termino del TAD que resulte de interes en el contexto de aplicacion, deberia ser representable al menos por una estructura.   
+\newline
+\newline
+Por ultimo, no tiene que ser sobreyectiva sobre los terminos del genero representado. Es decir, no podemos aseegurar que todo termino de TAD o construible con un TAD va a ser la imagen de la funcion de abstraccion para alguna estructura de representacion que estemos utilizando en ese momento.
+\newline
+\newline
+Por lo tanto, el rol que juega la funcion de abstraccion en la correctitud de un diseño con respecto al TAD es que debe ser un homomorfismo respecto de la signatura del TAD, o sea, para toda operacion $\puntito$ es decir,
+\newline
+\newline
+$Abs(i \puntito (p_{1},...,p_{n}))$ $\igobs$ $\puntito$($Abs(p_{1})$,...,$Abs(p_{n})$)
+\newline
+\newline
+Es decir, que la abstraccion de la implementacion de una operacion $\puntito$ tiene que ser observacioalmente equivalente a la implementacion de la abstraccion de esa operacion. 
+  
+\newpage
