@@ -59,6 +59,51 @@ d) La afirmacion es \textbf{verdadera} porque nos permite vincular las distintas
 e) COMPLETAR!!!
 \newpage
 
+\section{Ejercicio 2}
+
+Un viejo estereo de auto funciona de la siguiente manera. Solo capta radio en las bandas AM, FM y SW (onda corta) y ademas de botones para seleccionar la banda tiene botones para subir y bajar la frecuencia de a 10Hz. Cada banda tiene un rango de frecuencias distinto, por lo que al cambiar de banda vuelve a la frecuencia en la que estaba la ultima vez que se selecciono dicha banda. El volumen esta fijo y tiene 5 botones para memorizar estaciones. Estos botones funcionan de la siguiente manera: si se los pulsa durante dos segundos memorizan la estacion actualmente seleccionada. Si se los presiona menos tiempo van a la estacion memorizada. Se propone la siguiente signtura del TAD \tadNombre{Estereo}.
+\newline
+\newline
+\begin{tad}{\tadNombre{Empresa}}
+	\medskip	
+	\tadObservadores
+	\medskip
+	\tadOperacion{banda}{estereo}{nat}{}
+	\medskip
+	\tadOperacion{frecuencia}{estereo}{nat}{}
+	\medskip
+	
+	\tadGeneradores
+	\medskip
+	\tadOperacion{nuevo}{}{estereo}{}
+	\medskip
+	\tadOperacion{cambiar\_frecuencia}{estereo, int}{estereo}{}
+	\medskip
+	\tadOperacion{cambiar\_banda}{estereo, nat}{estereo}{}
+	\medskip
+	\tadOperacion{presionar\_boton\_dos\_segundos}{estereo, nat}{estereo}{}
+	\medskip
+	\tadOperacion{presionar\_boton}{estereo, nat}{estereo}{}
+	\medskip
+	\medskip
+	
+	\tadAxiomas[$\forall$]
+	
+	\tadAlinearAxiomas{suma edades(llega\_empleado(crear\_empleado(d,e,l),a,f)}
+	\medskip
+	\tadAxioma{suma\_edades(crear(c))}{0}
+	\medskip
+	\tadAxioma{suma edades(llega\_empleado(crear\_empleado(d,e,l),a,f)}{e + suma\_edades(f)}
+	\medskip
+	\medskip
+
+\end{tad}
+
+Corregir los errores si los hubiera y presentar la axiomatizacion del observador \TipoVariable{frecuencia}.
+
+
+\newpage
+
 
 
 \end{document}
