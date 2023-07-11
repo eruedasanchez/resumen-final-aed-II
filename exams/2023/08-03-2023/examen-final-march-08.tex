@@ -205,7 +205,36 @@ b) Discutir las diferencias y similitudes entre la implementacion de arboles B e
 Discutir la aplicabilidad de todos los metodos de ordenamiento al caso que la secuencia a ordenar este representada a traves de una lista encadenada (en lugar de un arreglo). Incluir en la discusion el analisis de complejidad correspondiente. 
 \newline
 \newline
-
-
+\textbf{Resolucion}
+\newline
+\newline
+\textbf{.} Caso Selection Sort
+\newline
+\newline
+Este metodo de ordenamiento resulta aplicable porque en el caso donde la secuencia esta representada a traves de un arreglo, en cada iteracion $i$ del ciclo principal, se busca al elemento de menor valor entre las posiciones $i$ y $n$ donde $n$ representa el tamaño del arreglo y se lo intercambia con el elemento que se encuentra en la posicion $i$. Y si la implementacion se realiza sobre una lista enlazada, tambien se cuenta con la operacion para poder indexar elementos y de este modo, poder realizar los intercambios necesarios en cada iteracion. La complejidad sigue siendo $O(n^{2})$. 
+\newline
+\newline
+\textbf{.} Caso Insertion Sort
+\newline
+\newline
+Este metodo de ordenamiento resulta aplicable porque como en el caso de Selection Sort, necesitamos tener indexados a los elementos para poder accederlos e insertarlos en su posicion correspondiente en la lista. La complejidad sigue siendo $O(n^{2})$.
+\newline
+\newline
+\textbf{.} Caso HeapSort
+\newline
+\newline
+Este metodo de ordenamiento resulta aplicable porque tanto a los arreglos como a las listas enlazadas puedo representarlas como $heaps$ para poder aplicarles el Algoritmo de Floyd en el primer lugar y luego ir insertando los elementos en la lista en su posicion correspondiente a medida que los voy desencolando del heap. La complejidad sigue siendo $O(n~log(n))$.
+\newline
+\newline
+\textbf{.} Caso MergeSort
+\newline
+\newline
+Este metodo de ordenamiento resulta aplicable porque contamos con operaciones para indexar los elementos y calcular la longitud de la lista para poder partir la lista original por la mitad, ordenar recursivamente cada mitad y luego aplicarle la operacion de $merge$. La complejidad sigue siendo $O(n~log(n))$.
+\newline
+\newline
+\textbf{.} Caso QuickSort
+\newline
+\newline
+Este metodo de ordenamiento resulta aplicable porque es similar al caso de Mergesort donde, al tener una lista enlazada, contamos con la operacion para poder indexar elementos y de este modo, podemos elegir el $bound$ o $pivot$ que utilizaremos para colocar a los elementos menores a el en una sublista y a los elementos mayores a el en otra sublista; y repetir este procedimiento para cada sublista de manera recursiva hasta llegar al caso base. La complejidad sigue siendo $O(n^{2})$. 
 
 \end{document}
