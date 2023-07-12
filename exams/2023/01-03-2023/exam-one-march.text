@@ -26,3 +26,44 @@
 \section{Ejercicio 1}
 
 Determine los problemas de axiomatizar otras operaciones sobre generadores. Dar un ejemplo de una operación que rompa la congruencia y otro que no.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+Generalmente, evitamos axiomatizar otras operaciones sobre generadores para evitar que una funcion que aparezca en esta seccion devuelva valores que rompan con la $congruencia$ del TAD. Para ello, elegimos axiomatizar otras operaciones sobre los observadores basicos ya que estos deben permitirnos distinguir todas las instancias. 
+\newline
+\newline
+Ahora vamos a ver el caso donde una operacion rompe la congruencia. Supongamos que tenemos el siguiente TAD.
+\newline
+\begin{tad}{\tadNombre{Negocio}}
+	\medskip	
+	\tadObservadores
+	\medskip
+	\tadOperacion{totalVendido}{negocio}{nat}{}
+	\medskip
+	\medskip
+	
+	\tadGeneradores
+	\medskip
+	\tadOperacion{inugurar}{}{negocio}{}
+	\medskip
+	\tadOperacion{vender}{negocio, producto}{negocio}{}
+	\medskip
+	
+	\tadOtrasOperaciones
+	\medskip
+	\tadOperacion{ventas}{negocio}{secu(producto)}{}
+\end{tad}
+\medskip
+De acuerdo con esta especificacion, dos negocios van a ser iguales si el total vendido es el mismo pero podria suceder que el detalle de las ventas difieran.
+\newline
+\newline
+Entonces, la funcion \TipoVariable{ventas()} rompe la congruencia, es decir, diferencia elementos que quedan en la misma clase de equivalencia de acuerdo a la igualdad observacional. Por lo tanto, para la etapa de modelado, o bien desaparece la funcion \TipoVariable{ventas()} de otras operaciones o se convierte en observador basico y por ende, en miembro de la igualdad observacional. Si no hacemos esto, se genera una $inconsistencia$, es decir, hay instancias del TAD \tadNombre{Negocio} que son equivalentes segun los observadores basicos pero que son diferenciables de acuerdo a los axiomas efectivamente escritos.
+\newpage
+
+
+
+
+
+
