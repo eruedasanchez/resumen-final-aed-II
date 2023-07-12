@@ -62,6 +62,11 @@ De acuerdo con esta especificacion, dos negocios van a ser iguales si el total v
 Entonces, la funcion \TipoVariable{ventas()} rompe la congruencia, es decir, diferencia elementos que quedan en la misma clase de equivalencia de acuerdo a la igualdad observacional. Por lo tanto, para la etapa de modelado, o bien desaparece la funcion \TipoVariable{ventas()} de otras operaciones o se convierte en observador basico y por ende, en miembro de la igualdad observacional. Si no hacemos esto, se genera una $inconsistencia$, es decir, hay instancias del TAD \tadNombre{Negocio} que son equivalentes segun los observadores basicos pero que son diferenciables de acuerdo a los axiomas efectivamente escritos.
 \newpage
 
+\section{Ejercicio 2}
+
+Explicar el invariante de un B-tree. Determinar por qué queremos árboles balanceados y la consecuencia en sus algoritmos. Dar ejemplos de árboles balanceados y no balanceados.
+\newpage
+
 
 
 
