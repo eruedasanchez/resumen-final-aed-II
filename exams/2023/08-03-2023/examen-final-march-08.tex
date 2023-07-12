@@ -100,6 +100,67 @@ Un viejo estereo de auto funciona de la siguiente manera. Solo capta radio en la
 \end{tad}
 
 Corregir los errores si los hubiera y presentar la axiomatizacion del observador \TipoVariable{frecuencia}.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+Comenzamos realizando las siguientes correcciones al TAD.
+\newline
+\newline
+TAD \tadNombre{Banda} es \tadNombre{Enum\{AM,FM,SW\}} 
+\newline
+\newline
+TAD \tadNombre{Rango} es \tadNombre{Tupla(nat,nat)} 
+\newline
+\begin{tad}{\tadNombre{Estereo}}
+	\medskip	
+	\tadObservadores
+	\medskip
+	\tadOperacion{frecuencia}{estereo, banda}{nat}{}
+	\medskip
+	\tadOperacion{rango}{estereo, banda}{rango}{}
+	\medskip
+	\tadOperacion{estacion\_memorizada}{estereo, nat/btn}{tupla(banda,nat)}{1 $\leq$ $btn$ $\leq$ 5}
+	\medskip
+	
+	\tadGeneradores
+	\medskip
+	\tadOperacion{nuevo}{dicc(banda;rango)/dbr}{estereo}{$\neg$($\emptyset$?(claves($dbr$)))}
+	\medskip
+	\tadOperacion{subir\_frecuencia}{estereo, banda}{estereo}{}
+	\medskip
+	\tadOperacion{bajar\_frecuencia}{estereo, banda}{estereo}{}
+	\medskip
+	\tadOperacion{cambiar\_banda}{estereo, banda}{estereo}{}
+	\medskip
+	\tadOperacion{presionar\_boton\_dos\_segundos}{estereo, nat}{estereo}{}
+	\medskip
+	\tadOperacion{presionar\_boton}{estereo, nat}{estereo}{}
+	\newpage
+	\tadAxiomas[$\forall$ $e$:estereo, $dbr$:dicc(banda,rango), $b,b'$:banda, $btn$:nat]
+	
+	\tadAlinearAxiomas{frecuencia(presionar\_boton\_dos\_segundos(e,btn),b)}
+	\medskip
+	\tadAxioma{frecuencia(nuevo(dbr),b)}{$\pi_{1}$(obtener(b,dbr))}
+	\medskip
+	\medskip
+	\tadAxioma{frecuencia(bajar\_frecuencia(e,b'),b)}{\IF b = b' THEN {\IF frecuencia(e,b') = $\pi_{1}$(rango(e,b')) THEN $\pi_{2}$(rango(e,b')) ELSE frecuencia(e,b') $-$ 10 FI}  ELSE frecuencia(e,b) FI}
+	\medskip
+	\medskip
+	\tadAxioma{frecuencia(subir\_frecuencia(e,b'),b)}{\IF b = b' THEN {\IF frecuencia(e,b') = $\pi_{2}$(rango(e,b')) THEN $\pi_{1}$(rango(e,b')) ELSE frecuencia(e,b') $+$ 10 FI}  ELSE frecuencia(e,b) FI}
+	\medskip
+	\medskip
+	\tadAxioma{frecuencia(cambiar\_banda(e,b'),b)}{frecuencia(e,b)}
+	\medskip
+	\medskip
+	\tadAxioma{frecuencia(presionar\_boton\_dos\_segundos(e,btn),b)}{frecuencia(e,b)}
+	\medskip
+	\medskip
+	\tadAxioma{frecuencia(presionar\_boton(e,btn),b)}{\IF $\pi_{1}$(estacion\_memorizada(e,btn)) = b THEN $\pi_{2}$(estacion\_memorizada(e,btn)) ELSE frecuencia(e,b) FI}
+	\medskip
+	\medskip
+\end{tad}
 \newpage
 
 \section{Ejercicio 3}
