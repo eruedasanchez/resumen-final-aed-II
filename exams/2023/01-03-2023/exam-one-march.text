@@ -67,6 +67,12 @@ Entonces, la funcion \TipoVariable{ventas()} rompe la congruencia, es decir, dif
 Explicar el invariante de un B-tree. Determinar por qué queremos árboles balanceados y la consecuencia en sus algoritmos. Dar ejemplos de árboles balanceados y no balanceados.
 \newpage
 
+\section{Ejercicio 3}
+
+Explique que función/característica tiene que cumplir una función de hash. Determine por qué no es bueno tener como clave de una tabla hash un objeto mutable como una lista. 
+\newline
+\newline
+
 
 
 
