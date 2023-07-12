@@ -72,6 +72,14 @@ Explicar el invariante de un B-tree. Determinar por qué queremos árboles balan
 Explique que función/característica tiene que cumplir una función de hash. Determine por qué no es bueno tener como clave de una tabla hash un objeto mutable como una lista. 
 \newline
 \newline
+\textbf{Resolucion}
+\newline
+\newline
+Una funcion de hash es una funcion que nos permite indexar cualquier tipo de datos (no unicamente enteros). Es decir, actua como una funcion de correspondencia entre cualquier tipo de datos y un entero.
+\newline
+\newline
+Luego, no es bueno tener como clave de una tabla de hash un objeto mutable como una lista porque en el peor caso todos los elementos hashean a una misma posicion de la tabla y se insertan en la misma enlazada donde el costo de la busqueda, insercion y borrado pasa a ser $\Theta(n)$ con $n$ la cantidad de elementos a insertar.  
+\newpage
 
 
 
