@@ -81,6 +81,12 @@ Una funcion de hash es una funcion que nos permite indexar cualquier tipo de dat
 Luego, no es bueno tener como clave de una tabla de hash un objeto mutable como una lista porque en el peor caso todos los elementos hashean a una misma posicion de la tabla y se insertan en la misma enlazada donde el costo de la busqueda, insercion y borrado pasa a ser $\Theta(n)$ con $n$ la cantidad de elementos a insertar.  
 \newpage
 
+\section{Ejercicio 4}
+
+Definir la estructura de Divide \& Conquer en un array. Cómo obtener complejidad logarítmica en un algoritmo. Que modificación hay que hacerle a búsqueda binaria para que su complejidad sea lineal.
+\newpage
+
+
 
 
 
