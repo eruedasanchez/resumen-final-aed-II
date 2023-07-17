@@ -188,7 +188,20 @@ En los casos 1 y 3 es $T(n)$ $\in$ $\Theta(f(n) + n^{log_{c}(a)})$
 \newline
 \newline
 Hay otras formulaciones con pequeñas variantes
+\newpage
 
+\section{Ejercicio 4}
+
+Relacionar el invariante de representación con la complejidad temporal y la función de abstracción con la demostración de que un diseño es correcto respecto a su especificación.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+El invariante de representacion es una funcion booleana con dominio en el genero de representacion que devuelve $true$ cuando recibe una instancia valida. Por lo tanto, nos permite separar instancias validas de invalidas y de esta manera, lo podemos agregar a las postcondiciones, como una forma de garantizar que los algoritmos no rompen la estructura y sabemos que de acuerdo a la estructura elegida, se determina la complejidad de los algoritmos. Ademas, se agregan a las precondiciones como una garantia con la que cuentan los algoritmos logrando poder determinar que estructura de datos se va a poder elegir para la estructura de representacion la cual impacta directamente en la complejidad temporal.   
+\newline
+\newline
+Luego, si la funcion de abstraccion es un homomorfismo respecto de la signatura del TAD, es decir, si la abstraccion de la implementacion de una determinada operacion $o$ es observacionalmente equivalente a la implementacion de la abstraccion de la operacion $o$, entonces queda demostrado que el diseño es correcto con respecto a su especificacion. 
 \newpage
 
 
