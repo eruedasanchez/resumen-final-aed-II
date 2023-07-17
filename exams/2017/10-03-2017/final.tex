@@ -139,4 +139,40 @@ a) Sean $S[i]$ y $S[j]$ claves del heap tal que $i < j$ y $S[i]$ $<$ $S[j]$ $\ri
 b) Sean $S[i]$ y $S[j]$ claves del heap tal que $i < j$ y $S[i]$ $>$ $S[j]$ $\rightarrow$ el arreglo obtenido al intercambiar $S[i]$ y $S[j]$ sigue siendo max-heap.
 \newline
 \newline
+\textbf{Resolucion}
+\newline
+\newline
+a) La afirmacion es \textbf{falsa} y lo mostramos con el siguiente contraejemplo.
+\newline
+\newline
+Supongamos que tenemos el arreglo $S$ $=$ $[89,68,64,67,67,39,45,21,5,23,66,4,33]$ y queda representado como el siguiente maxHeap.
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\textwidth]{maxheapuno}
+	\caption{Contraejemplo. MaxHeap original}
+	\label{drivers1}
+\end{figure}
+
+Ahora, si tomamos $i = 6 < j = 10$, $S[i] = 45 < S[j] = 66$, intercambiamos y no se cumple el invariante de maHeap dado que el nodo 66 $>$ nodo $64$.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.65\textwidth]{maxheapdos}
+	\caption{MaxHeap modificado (no cumple condicion de heap!)}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+b) La afirmacion es \textbf{falsa} y tomamos como contraejemplo el mismo del inciso anterior. 
+\newline
+\newline
+En este caso, consideramos $i = 0$ $<$ $j=11$ donde $S[i] = 89 > S[j] = 4$ pero al intercambiar los elementos, el nodo 4 no cumple la condicion de maxHeap dado que $4$ $>$ $68$ y $4$ $>$ $64$ $Abs!$.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{maxheaptres}
+	\caption{MaxHeap modificado (no cumple condicion de heap!)}
+	\label{drivers1}
+\end{figure}
+\newpage
