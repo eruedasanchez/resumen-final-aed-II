@@ -1,0 +1,74 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper,hmargin=0.5cm,bottom=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xargs}
+\usepackage{xspace}
+\usepackage{caratula}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{aed2-tad,aed2-symb,aed2-itef}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{graphicx}
+
+\materia{Algoritmos y Estructuras de Datos II}
+\titulo{Examen Final}
+\subtitulo{20 de septiembre 2017}
+\integrante{Ezequiel Rueda Sanchez}{522/16}{ezequiel.ruedasanchez@gmail.com}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Ejercicio 1}
+
+Realice un análisis detallado de los casos del teorema maestro y justifique la conclusión de estos en relación a la condición que satisface.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+Comenzamos mostrando el resultado de las recurrencias en el \textbf{Teorema maestro}.
+\newline
+\newline
+$T(n) = \left\{ \begin{array}{lcc}
+	aT(\displaystyle \frac{n}{c}) + f(n) &   si  & n > 1 \\
+	\\          1 &   si  & n = 1     \\
+\end{array}
+\right.$
+\newline
+\newline
+\newline
+La solucion es:
+\newline
+\newline
+1) $T(n)$ $=$ $\Theta(n^{log_{c}(a)})$ si $f(n)$ $=$ $O(n^{log_{c}(a) - \epsilon})$ para $\epsilon > 0$
+\newline
+\newline
+2) $T(n)$ $=$ $\Theta(n^{log_{c}(a)}log(n))$ si $f(n)$ $=$ $\Theta(n^{log_{c}(a)})$ para $\epsilon > 0$
+\newline
+\newline
+3) $T(n)$ $=$ $\Theta(f(n))$ si $f(n)$ $=$ $\Omega(n^{log_{c}(a) + \epsilon})$ para $\epsilon > 0$ y $af(\displaystyle \frac{n}{c}) < kf(n)$ para $k < 1$ y $n$ suficientemente grande. 
+\newline
+\newline
+En los casos 1 y 3 es $T(n)$ $\in$ $\Theta(f(n) + n^{log_{c}(a)})$
+\newline
+\newline
+En estos casos:
+\newline
+\newline
+\textbf{.} $a$ es la cantidad de subproblemas a resolver.
+\newline
+\newline
+\textbf{.} $c$ es la cantidad de particiones y $\displaystyle \frac{n}{c}$ es el tamaño de los subproblemas a resolver. 
+\newline
+\newline
+\textbf{.} $f(n)$ es el costo de lo que se hace en cada llamado ademas de los llamados recursivos, asi incluye el costo de la division ($D(n)$) y la combinacion de los resultados ($C(n)$). 
+\newline
+\newline
+\textbf{.} Asumimos que el costo de resolver un caso base cuesta $\Theta(1)$.
+
+
+\newpage
