@@ -39,3 +39,40 @@ c) Dos instancias del mismo TAD pueden ser observacionalmente iguales y aun así
 d) Si un enunciado dice $"$Siempre que vale $A$ sucede inmediatamente $B$ y $B$ no puede suceder de ninguna otra manera$"$ y la correspondiente axiomatización incluye las operaciones $A$ y $B$ entonces el TAD está mal escrito.
 \newline
 \newline
+\textbf{Resolucion}
+\newline
+\newline
+a) La afirmacion es \textbf{falsa} porque lo que hace que una operacion sea un observador basico es que permita diferenciar instancias del TAD en clases de equivalencia. Luego, los observadores basicos se axiomatizan en base a sus generadores generalmente. 
+\newline
+\newline
+b) La afirmacion es \textbf{falsa} porque transformarla en observador basico es solo una opcion. Tambien se podria quitarla de las operaciones y asi, evitamos cualquier tipo de inconsistencia.   
+\newline
+\newline
+c) La afirmacion es \textbf{verdadera} y lo justifico con el siguiente ejemplo.
+\newline
+\begin{tad}{\tadNombre{Negocio}}
+	\medskip
+	\tadObservadores
+	\medskip
+	\tadOperacion{totalVendido}{negocio}{nat}{}
+	\medskip
+	\tadGeneradores
+	\medskip
+	\tadOperacion{inaugurar}{}{negocio}{}
+	\medskip
+	\tadOperacion{vender}{negocio, producto}{negocio}{}
+	\medskip
+	\medskip
+	
+	\tadOtrasOperaciones
+	\medskip
+	\tadOperacion{ventas}{negocio}{secu(producto)}{}
+	\medskip
+\end{tad}
+\medskip
+\medskip
+En este caso, dos instancias del TAD \tadNombre{Negocio} son observacionalmente iguales pero la operacion \TipoVariable{ventas()} permite diferenciar instancias de acuerdo a los axiomas ya que esta funcion rompe la congruencia, es decir, diferencia elementos que quedan en la misma clase de equivalencia de acuerdo con los observadores basicos. Por ejemplo, dos instancias pueden tener el mismo total vendido pero los productos vendidos pueden ser totalmente distintos.   
+\newline
+\newline
+d) La afirmacion es \textbf{...} porque 
+\newpage
