@@ -72,10 +72,125 @@ El algoritmo de \textbf{HeapSort} no utiliza memoria adicional y con respecto al
 \newline
 \newline
 El algoritmo de \textbf{MergeSort} utiliza memoria adicional para ir almacenando los arreglos parcialmente ordenados y con respecto al input, generalmente es un algoritmo estable pero puede haber implementaciones que lo hagan inestable en el caso que ante igualdad de valores, se pase al arreglo ordenado el que se encuentra en la segunda mitad.  
+\newpage
 
+\section{Ejercicio 3}
 
+Explicar los métodos de resolución de recurrencias vistos en la materia, y compararlos.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+La situación típica para estos casos es dividir en $a$ subproblemas, de tamaño máximo $\displaystyle \frac{n}{c}$, el costo de determinar subproblemas (divide) y unirlos (conquer) es $b n^{d}$. Suponemos que la base ($n=1$) cuesta $b$. 
+
+\subsection{Solucion de la recurrencia tipica}
+
+Costo (suponiendo $n = c^{k}$).
+\newline
+\newline
+$T(n)$ $=$ $a$ $T(\displaystyle \frac{n}{c})$ $+$ $b n^{d}$ $=$ $a$ $T(c^{k-1})$ $+$ $b n^{d}$
+\newline
+\newline
+$=$ $a(aT(c^{k-2}) + b c^{d(k-1)}) + bc^{kd}$ $=$ $a^{2}T(c^{k-2}) + abc^{d(k-1)} + bc^{kd}$ 
+\newline
+\newline
+$=$ $a^{2}(aT(c^{k-3}) + b c^{d(k-2)}) + abc^{d(k-1)} + bc^{kd}$ 
+\newline
+\newline
+$=$ $a^{3} T(c^{k-3}) + a^{2}b(c^{k-2})^{d} + abc^{d(k-1)} + bc^{kd}$ 
+\newline
+\newline
+$=$ $a^{3} T(c^{k-3}) + a^{2}bc^{d(k-2)} + abc^{d(k-1)} + bc^{kd}$ 
+\newline
+\newline
+Por lo tanto, en cada paso que realicemos vamos a obtener la siguiente expresion:
+\newline
+\newline
+$a^{i} T(c^{k-j}) + \displaystyle \sum_{i=0}^{j-1} a^{i}bc^{d(k-1)}$
+\newline
+\newline
+¿Hasta cuando realizamos estos pasos? Hasta que $c^{(k-j)} = 1$.
+\newline
+\newline
+$c^{(k-j)} = 1$ $\Leftrightarrow$ $c^{k}$ $=$ $c^{j}$ $\Leftrightarrow$ $n$ $=$ $c^{j}$ $\Leftrightarrow$ $log(n)$ $=$ $log(c^{j})$ $\Leftrightarrow$ $log(n)$ $=$ $j$ $log(c)$ $\Leftrightarrow$ $\displaystyle \frac{log(n)}{log(c)}$ $=$ $j$ $\Leftrightarrow$ $log_{c}(n)$ $=$ $j$.
+\newline
+\newline
+O sea, $j = log_{c}(n)$. Por lo tanto, obtenemos la siguiente expresion:
+\newline
+\newline
+$a^{k}b + b \displaystyle \sum_{i=0}^{k-1} a^{i}c^{d(k-i)}$ donde $b$ significa que el costo del caso base es constante y se utiliza simplemente para poder operar de manera conveniente sobre la sumatoria.
+\newline
+\newline
+\newline
+$a^{k}b + b \displaystyle \sum_{i=0}^{k-1} a^{i}c^{d(k-i)}$ $=$ $b \displaystyle \sum_{i=0}^{k} a^{i}c^{d(k-i)}$ $=$ $b \displaystyle \sum_{i=0}^{k} a^{i}c^{dk-di}$ $=$ $bc^{dk} \displaystyle \sum_{i=0}^{k} a^{i}c^{-di}$ $=$ $bc^{dk} \displaystyle \sum_{i=0}^{k} \displaystyle \frac{a^{i}}{c^{di}}$ $=$ $b(c^{k})^{d} \displaystyle \sum_{i=0}^{k} (\displaystyle \frac{a}{c^{d}})^{i}$ $=$ $bn^{d} \displaystyle \sum_{i=0}^{log_{c}(n)} (\displaystyle \frac{a}{c^{d}})^{i}$
+
+\subsubsection{Analisis por casos $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}$ $(\displaystyle \frac{a}{c^{d}})^{i}$}
+
+\textbf{.} Primer caso: $a = 1$, $d = 0$ (o sea, un solo subproblema, la combinación tiene costo constante) 
+\newline
+\newline
+Entonces $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}$ $(\displaystyle \frac{a}{c^{d}})^{i}$ $=$ $b$ $\displaystyle \sum_{i=0}^{log_{c}(n)} 1$ $=$ $O(log_{c}(n))$ donde un ejemplo de esto representa la Busqueda Binaria 
+\newline
+\newline
+\newline
+\textbf{.} Segundo Caso: $d = 1$ (o sea $"$conquer lineal$"$) 
+\newline
+\newline
+1) Caso $a < c$ (o sea, $"$pocos subproblemas$"$) 
+\newline
+\newline
+Como $\displaystyle \frac{a}{c} < 1$, la serie converge $\rightarrow$ $bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)}$ $(\displaystyle \frac{a}{c})^{i}$ $=$ $bn$ . $const$ $=$ $O(n)$ 
+\newline
+\newline
+\textbf{.} $d = 1$ (o sea $"$conquer lineal$"$) 
+\newline
+\newline
+1) Caso $a = c$, $bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)} 1$ $=$ $O(n~log_{c}(n))$ donde un ejemplo de esto representa
+\newline
+\newline
+\newline
+2) Caso $a > c$ (o sea, muchos subproblemas)
+\newline
+\newline
+$bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)}$ $(\displaystyle \frac{a}{c})^{i}$ $=$ $bn$ $\displaystyle \frac{(\displaystyle \frac{a}{c})^{log_{c}(n) + 1} - 1}{(\displaystyle \frac{a}{c})-1}$ por Serie Geometrica.
+\newline
+\newline
+\newline
+$bn$ $\displaystyle \frac{(\displaystyle \frac{a}{c})^{log_{c}(n) + 1} - 1}{(\displaystyle \frac{a}{c})-1}$ $\subset$ $O(n~(\displaystyle \frac{a}{c})^{log_{c}(n)})$ $=$ $O(n~.~\displaystyle \frac{a^{log_{c}(n)}}{c^{log_{c}(n)}})$ $=$ $O(n~.~\displaystyle \frac{a^{log_{c}(n)}}{n})$ $=$ $O(a^{log_{a}(n)~.~log_{c}(a)})$ $=$ $O((a^{log_{a}(n)})^{log_{c}(a)})$ $=$ $O(n^{log_{c}(a)})$ 
+
+\subsection{Teorema Maestro (Master Theorem)}
+
+Permite resolver relaciones de recurrencia de la forma:
+\newline
+\newline
+$T(n) = \left\{ \begin{array}{lcc}
+	aT(\displaystyle \frac{n}{c}) + f(n) &   si  & n > 1 \\
+	\\          1 &   si  & n = 1     \\
+\end{array}
+\right.$
+\newline
+\newline
+\newline
+La solucion es:
+\newline
+\newline
+$T(n)$ $=$ $\Theta(n^{log_{c}(a)})$ si $f(n)$ $=$ $O(n^{log_{c}(a) - \epsilon})$ para $\epsilon > 0$
+\newline
+\newline
+$T(n)$ $=$ $\Theta(n^{log_{c}(a)}log(n))$ si $f(n)$ $=$ $\Theta(n^{log_{c}(a)})$ para $\epsilon > 0$
+\newline
+\newline
+$T(n)$ $=$ $\Theta(f(n))$ si $f(n)$ $=$ $\Omega(n^{log_{c}(a) + \epsilon})$ para $\epsilon > 0$ y $af(\displaystyle \frac{n}{c}) < kf(n)$ para $k < 1$ y $n$ suficientemente grande. 
+\newline
+\newline
+En los casos 1 y 3 es $T(n)$ $\in$ $\Theta(f(n) + n^{log_{c}(a)})$
+\newline
+\newline
+Hay otras formulaciones con pequeñas variantes
 
 \newpage
+
 
 
 
