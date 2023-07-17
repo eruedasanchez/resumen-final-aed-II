@@ -75,3 +75,21 @@ En estos casos:
 
 Explique la forma general de un algoritmo de Divide \& Conquer. ¿Cualquier algoritmo recursivo es un algoritmo de Divide \& Conquer? ¿Qué condiciones se espera que se satisfagan para que se justifique la aplicación de la técnica algorítmica? Ejemplifique un caso.
 \newpage
+
+\section{Ejercicio 3}
+
+Decimos que un algoritmo de ordenamiento es estable si a lo largo de la ejecución los elementos que ya se encuentran en la posición que les corresponde nunca son intercambiados. Detalle cuáles de los algoritmos de ordenamiento que conoce son estables y justifique.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+De los algoritmos vistos en clases, los unicos que son estables son Insertion Sort y Merge Sort. A continuacion, justifico la eleccion de estos.
+\newline
+\newline
+\textbf{Insertion Sort} es un algoritmo estable porque en el caso que tengamos dos registros distintos con claves iguales, la operacion de insertar, coloca a los elementos en su posicion definitiva en el arreglo y supongamos que al ordenar por clave primaria, dos de ellas coinciden, primero se va a insertar la primera en su posicion correspondiente y la segunda nunca se va a insertar antes que la primera porque no va a cumplir la condicion de $a[j].fst > a[i].fst$ en la operacion de insercion. 
+\newline
+\newline
+\textbf{Merge Sort} es un algoritmo estable porque en el caso que tengamos dos registros $i$ y $j$ con claves iguales, al realizar la operacion de Merge, vamos a colocar a la clave que fue insertada en el arreglo ordenado. Aunque podria haber implementaciones de Merge Sort en los que la operacion de Merge ante igualdad de claves, inserte primero en el arreglo ordenado la clave $j$ antes que la clave $i$ cuando en el arreglo original se encuentra primero la clave $i$ y luego la clave $j$. Esto romperia la condicion de estabilidad aunque generalmente se utiliza la primera implementacion mencionada.
+
+\newpage
