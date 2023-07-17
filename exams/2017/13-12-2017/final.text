@@ -1,0 +1,58 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[paper=a4paper,hmargin=0.5cm,bottom=1.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{xargs}
+\usepackage{xspace}
+\usepackage{caratula}
+\usepackage{ifthen}
+\usepackage{aed2-tad,aed2-symb,aed2-itef,aed2-diseno}
+\usepackage{aed2-tad,aed2-symb,aed2-itef}
+\usepackage{algorithmicx, algpseudocode, algorithm}
+\usepackage{graphicx}
+
+\materia{Algoritmos y Estructuras de Datos II}
+\titulo{Examen Final}
+\subtitulo{13 de diciembre 2017}
+\integrante{Ezequiel Rueda Sanchez}{522/16}{ezequiel.ruedasanchez@gmail.com}
+
+
+\begin{document}
+
+
+\maketitle
+
+\section{Ejercicio 1}
+
+Demostrar por qué la altura de un árbol de Fibonacci es logarítmica respecto a la cantidad de nodos.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+Para demostrar que la altura $h$ de un arbol de Fibonacci es logaritmica respecto a la cantidad de nodos, nos alcanza con probar que este arbol de altura $h$ de menor cantidad de nodos, tienen una cantidad exponencial de nodos en funcion de su altura. 
+\newline
+\newline
+Para esto, podemos probar que la cantidad de nodos de un arbol de Fibonacci $Fibo_{h}$ $=$ $Fibo_{h-1}$ $+$ $Fibo_{h-2}$ $+$ $1$ y que 
+\newline
+$Fibo_{h}$ $=$ $Fibo_{h-2}$ $-$ $1$ siendo $Fibo_{i}$ es $i$-esimo termino de la sucesion de Fibonacci. Para ver esto, solo hace falta saber que se puede construir un arbol de Fibonacci de altura $h+2$ a partir de unir dos arboles: uno de altura $i$ con otro de altura $i+1$. A partir de esto, probamos que un arbol de $n$ nodos tiene una altura menor a 1.44 $log(n+2)$ $-$ $0.328$ por lo que queda demostrado que tiene una altura de $log(n)$.     
+\newline
+\newline
+En el siguiente grafico, podemos ver como se van conformando los arboles de Fibonacci:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.6\textwidth]{avl2}%
+\caption{Conformacion de los Arboles de Fibonacci}
+\label{drivers1}
+\end{figure}
+
+Ahora, vemos como se relacionan los Arboles de Fibonacci:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{avl3}%
+	\caption{Relacion de los Arboles de Fibonacci}
+	\label{drivers1}
+\end{figure}
+\newpage
