@@ -204,6 +204,18 @@ El invariante de representacion es una funcion booleana con dominio en el genero
 Luego, si la funcion de abstraccion es un homomorfismo respecto de la signatura del TAD, es decir, si la abstraccion de la implementacion de una determinada operacion $o$ es observacionalmente equivalente a la implementacion de la abstraccion de la operacion $o$, entonces queda demostrado que el diseño es correcto con respecto a su especificacion. 
 \newpage
 
+\section{Ejercicio 5}
+
+Describir detalladamente qué son los observadores básicos y explicar por qué se los usa para definir las otras operaciones, y por qué mantienen las características del lenguaje.
+\newline
+\newline
+\textbf{Resolucion}
+\newline
+\newline
+Los \textbf{observadores basicos} son operaciones que nos permiten diferenciar instancias del TAD en clases de equivalencia. Las otras operaciones son el resto de las operaciones que se declaran en un TAD y en general, se axiomatizan en base a los observadores basicos para evitar que devuelvan valores que rompan con la $congruencia$ del TAD (en caso contrario, tendriamos que repensar si las incluimos a los observadores basicos). Por ultimo, los observadores mantienen las caracteristicas del lenguaje porque con ellos podemos escribir la igualdad observacional que nos indica cuando instancias del tipo son iguales. 
+
+\end{document}
+
 
 
 
