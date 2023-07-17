@@ -88,3 +88,39 @@ a) Se tiene un arreglo de naturales $A[1,...,n]$ y se desea ordenarlos (de mayor
 b) Se tiene un arreglo redimensionable de naturales $A[1,...,n]$ y se desea ordenarlos. Sin embargo, durante el proceso de ordenamiento es posible que se agreguen nuevos elementos al final del arreglo.
 \newline
 \newline
+\textbf{Resolucion}
+\newline
+\newline
+a) En este caso, voy a elegir el metodo de \textbf{Heapsort} pero con algunas modificaciones. 
+
+\begin{algorithm}[H]{\textbf{ordenarMayorMenor}(\Inout{A}{arreglo(nat)})}
+	\begin{algorithmic}[1]
+		\State $suma$ $\gets$ 0             				     \Comment $O(1)$
+		\State maxHeap $H$ $\gets$ array2Heap($A$)               \Comment $O(n)$
+		\For{$i=0$; $i < tam(A)$; $i++$} 	                     \Comment $O(n)$
+		\State $max$ $\gets$ proximo($H$)                        \Comment $O(1)$
+		\If{$i == k$ \&\& $!$($suma$ $<$ $X$)}
+		\State $i$ $\gets$ $tam(A) - 1$             			 \Comment $O(1)$
+		\Else
+		\State desencolar($H$)                              \Comment $O(log(n))$
+		\State $suma$ $\gets$ $suma$ $+$ $max$                   \Comment $O(1)$
+		\State $A[i]$ $\gets$ $max$                              \Comment $O(1)$
+		\EndIf
+		\EndFor
+		
+		\medskip
+		\Statex \underline{Complejidad:} $O(n ~.~ log(n))$
+	\end{algorithmic}
+\end{algorithm}
+
+Elegi optar por el metodo de \textbf{Heapsort} dado que la operacion \TipoVariable{arrayToHeap()} permite convertir un arreglo a maxHeap con costo $O(n)$ donde $n$ es el tamaño del arreglo. De este modo, puedo acceder al elemento mas grande del arreglo con costo constante $O(1)$. 
+\newline
+\newline
+Luego, voy a iterar en el peor caso, el ciclo principal for $n$ veces (costo $O(n)$). En cada iteracion, voy a consultar si estoy parado en el $k$ elemento mas gracias a la estructura de maxHeap. Esta condicion tiene costo $O(1)$. En el caso de estar iterando el $k$ elemento mayor del arreglo, consulto si cumple la condicion \TipoVariable{$suma$ $<$ $X$} dado que si esto no se cumple, $i$ toma el valor de $n-1$ para luego aumentar una unidad, pasar a valer $n$, salir del ciclo principal y terminar la ejecucion como pide el enunciado. Caso contrario, desencolo con costo $O(log(n))$ el maximo del $heap$ y lo coloco en su posicion correspondiente en el arreglo (costo $O(1)$) quedando eventualmente el arreglo ordenado de mayor a menor.
+\newline
+\newline
+En el peor caso, voy a desencolar a los $n$ elementos del heap y los voy a colocar en el arreglo por lo que el costo del ciclo principal es $O(n ~.~ log(n))$. 
+\newline
+\newline
+Finalmente, el costo del algoritmo es $O(n)$ $+$ $O(n ~.~ log(n))$ $=$ $O(max\{n,n ~.~ log(n)\})$ $=$ $O(n ~.~ log(n))$ siendo la complejidad asitotica maxima que se puede lograr. 
+\newpage
