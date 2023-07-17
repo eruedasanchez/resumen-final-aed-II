@@ -196,6 +196,28 @@ c) Responder a) y b) para códigos de longitud fija. Justificar.
 Considerar una tabla hash con direccionamiento abierto, en la cual se marca de forma diferenciada las posiciones que contienen un elemento, aquellas que nunca contuvieron un elemento y aquellas que en algún momento tuvieron un elemento pero fue borrado. Describir los algoritmos de inserción, búsqueda y borrado y analizar sus complejidades asintóticas. Comparar con la versión de hashing en la cual no se puede distinguir los borrados de $"$vacio$"$.
 \newline
 \newline
+\textbf{Resolucion}
+\newline
+\newline
+\textbf{.} Algoritmo de busqueda.
 
+\begin{algorithm}[H]{\textbf{busqueda}(\In{T}{tabla(hash)}, \In{k}{clave})}
+	\begin{algorithmic}[1]
+		\State $i$ $\gets$ 0             				     \Comment $O(1)$
+		\While{$i$ $!=$ $m$ $||$ $T[j]$ $=$ $CONTIENE\_ELEM$ $||$ $T[j]$ $=$ $BORRADO\_ELEM$} 	     \Comment $O(n)$
+		\State $j$ $\gets$ $h(k,i)$                        \Comment $O(1)$
+		\If{$T[j] = k$ $||$ $BORRADO\_ELEM = k$}
+		\State \textbf{return} $j$             			 \Comment $O(1)$
+		\EndIf
+		\State $i$ $\gets$ $i+1$                              \Comment $O(1)$
+		\EndWhile
+		\State \textbf{return} $NIL$                              \Comment $O(1)$
+		
+		\medskip
+		\Statex \underline{Complejidad:} $O(...)$
+	\end{algorithmic}
+\end{algorithm}
+
+\end{document}
 
 
