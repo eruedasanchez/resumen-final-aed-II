@@ -12,8 +12,8 @@
 \usepackage{graphicx}
 
 \materia{Algoritmos y Estructuras de Datos II}
-\titulo{Apunte para el final}
-\subtitulo{The FurfiOS corporation}
+\titulo{Apunte examen final}
+\subtitulo{Segundo cuatrimestre 2021}
 \integrante{Ezequiel Rueda Sanchez}{522/16}{ezequiel.ruedasanchez@gmail.com}
 
 %  ü, é, á, í, ó, ú, ñ, Ñ%
@@ -23,24 +23,245 @@
 
 \maketitle
 
-\section{Capitulo 1. Especificacion}
+\section{Clase Teórica 01. Especificación I}
+
+\subsection{Introducción}
+
+Típicamente, nos enfrentamos a la siguiente situación. Tenemos un $problema$ que no es presentado en una manera difusa, vaga y se pretende que lo podamos resolver a traves de una computadora de forma eficiente. Lo problematico es transitar este recorrido que va desde la definición informal del problema a su resolución computacional. Este camino tiene una serie de pasos que los llamamos \textbf{especificación}, \textbf{diseño} e \textbf{implementación}. 
+
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{etapas-res-problem}
+%	\caption{Etapas en la resolucion de un problema}
+%	\label{drivers1}
+%\end{figure}
+
+\subsection{Contexto}
+
+Un \textbf{algoritmo} es un procedimiento para resolver un problema, descripto por una secuencia ordenada y finita de pasos bien determinados que nos llevan de un estado inicial a uno final.
+\newline
+\newline
+Ahora bien, el algoritmo, más alla de ser un objeto en si mismo, es una herramienta para resolver problemas donde los más complejos se van a resolver combinando parte de ellos y se van a poder modificar para resolver distintas variantes o \textbf{problemas genéricos}.   
+\newline
+\newline
+Entonces, ¿Qué es resolver un problema \textit{genérico}?
+\newline
+\newline
+Se trata de, dada su descripción, proponer un algoritmo que resuelva cualquier instancia del mismo. Por ejemplo, no proponer un algoritmo que resuelva la suma de 7 y 5 sino proponer un algoritmo que resuelva la suma de dos números enteros cualesquiera.  
+\newline
+\newline
+Para ello, necesitamos herramientas que nos ayuden a transitar el camino desde el enunciado informal hasta la implementación en la computadora. Sobre ello vamos a trabajar a lo largo del curso.
+
+\subsection{Resolución de problemas}
+
+El dueño de un restaurant quiere asegurarse de que los pedidos sean atendidos con prolijidad. Los mozos llevan los pedidos hasta la cocina donde los colocan. Cuando el cocinero se libera, saca el primer pedido y prepara el plato indicado. El dueño quiere saber cuál es el próximo plato a preparar, cuántos pedidos atiende el cocinero cada día y cuál fue el día con menos pedidos.
+\newline
+\newline
+No parece que el problema se pueda expresar directamente en un lenguaje matemático, pero está claro que necesitamos algo riguroso y formal para poder pasar al algoritmo. 
+\newline
+\newline
+Sin embargo, podemos observar que se pretenden obtener resultados de varios tipos distintos: al menos naturales (los dias que pasan) y platos. Además, hay varias operaciones asociadas a estos tipos.
+\newline
+\newline
+Para poder modelar este problema, vamos a usar una herramienta nueva: \textbf{Tipos Abstracto de Datos (TAD)}. Veamos un poco más en detalle este concepto.
+\newline
+\newline
+\textbf{.} Tipo: conjunto de valores asociados a operaciones
+\newline
+\newline
+\textbf{.} Tipo abstracto: no nos interesa tanto "la forma" de los valores sino saber que operaciones podemos realizar sobre ellos donde la única manera de obtener información sobre ellos es a través de las operaciones que definan.
+\newline
+\newline
+El problema maneja platos, dias y (al menos un) restaurant.
+\newline
+\newline
+¿Qué nos interesa saber de cada una de estas $"$cosas$"$?
+\newline
+\newline
+\textbf{.} Los dias pasan por lo que vamos a querer contarlos.
+\newline
+\newline
+\textbf{.} Solo nos interesa poder diferenciar los platos entre si.
+\newline
+\newline
+\textbf{.} De los restaurants, varias cosas, asi que lo dejamos de lado por un momento.
+\newpage
+Comenzamos usando renombres:
+\newline
+\newline
+\textbf{.} TAD \tadNombre{DIA} es \tadNombre{NAT}  
+\newline
+\newline
+\textbf{.} TAD \tadNombre{PLATO} es \tadNombre{STRING}.
+\newline
+\newline
+¿Por qué tenemos que renombrar estos TADs y no utilizar STRING o NAT directamente? Lo que queriamos hacer era utilizar un lenguaje de especificación que nos permita abstraer ciertos conceptos, por lo que usar STRING directamente no sería correcto. Para el restaurant no tiene sentido un STRING, pero los PLATOS si. De esta manera, nos alejamos de la manera en la que representamos los datos en una computadora y nos acercamos a la definición del problema.
+\newline
+\newline
+Pasemos ahora al restaurant...
+\newline
+\begin{tad}{\tadNombre{Restaurant}}
+	\medskip	
+	\textbf{generos} restaurant
+	\newline
+	
+	\textbf{operaciones}
+	\medskip
+	\tadOperacion{inaugurar}{}{restaurant}{}
+	\medskip
+	\tadOperacion{cantPlatosPendientes}{restaurant}{nat}{}
+	\medskip
+	\tadOperacion{proximoPedido}{restaurant/r}{plato}{cantPlatosPendientes($r$) $>$ 0}
+	\medskip
+	\tadOperacion{prepararPlato}{restaurant/r}{restaurant}{cantPlatosPendientes($r$) $>$ 0}
+	\medskip
+	\tadOperacion{tomarPedido}{restaurant, plato}{restaurant}{}
+	\medskip
+	\tadOperacion{nuevoDia}{restaurant}{restaurant}{}
+	\medskip
+	\tadOperacion{diaActual}{restaurant}{dia}{}
+	\medskip
+	\tadOperacion{platosPorDia}{restaurant/r, dia/d}{nat}{$d$ $\leq$ diaActual($r$)}
+	\medskip
+	\tadOperacion{diaMenosPedidos}{restaurant}{dia}{}
+	\medskip
+\end{tad}
+\medskip
+A esto lo llamamos \textbf{signatura} del TAD. La signatura nos indica que operaciones tiene el tipo, con qué parámetros y qué devuelven.
+\newline
+\newline
+Las operaciones de los TAD's son \textit{funciones totales}. O sea, funciones que están definidas para cada valor del dominio. Por eso, en casos como \TipoVariable{preparar\_plato()} debemos restringir el dominio.
+\newline
+\newline
+Ahora, necesitamos darle \textbf{semántica}, es decir, comportamiento a las operaciones. En los TADs usaremos para eso los \textbf{axiomas}.
+\newline
+\newline
+Entonces, veamos los axiomas del TAD \tadNombre{RESTAURANT}.
+\newline
+\begin{tad}{\tadNombre{Restaurant}}
+\medskip
+\tadAxiomas[$\forall$ $r$ : \tadNombre{Restaurant}, $p$ : \tadNombre{Plato}, $d$ : \tadNombre{Dia}]
+\medskip
+\tadAlinearAxiomas{diaActual(tomarPedido(r,p))}
+\medskip
+\tadAxioma{diaActual(inaugurar())}{0}
+\medskip
+\tadAxioma{diaActual(nuevoDia(r))}{diaActual(r)+1}
+\medskip
+\tadAxioma{diaActual(tomarPedido(r,p))}{diaActual(r)}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{cantPlatosPendientes(tomarPedido(r,p))}
+\medskip
+\tadAxioma{cantPlatosPendientes(inaugurar())}{0}
+\medskip
+\tadAxioma{cantPlatosPendientes(tomarPedido(r,p))}{cantPlatosPendientes(r)+1}
+\medskip
+\tadAxioma{cantPlatosPendientes(prepararPlato(r))}{cantPlatosPendientes(r)-1}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{cantPlatosPendientes(tomarPedido(r,p))}
+\medskip
+\tadAxioma{proximoPedido(r)}{ult(secuenciaDePedidos(r))}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{secuenciaDePedidos(tomarPedido(r,p))}
+\medskip
+\tadAxioma{secuenciaDePedidos(inaugurar())}{$\secuvacia$}
+\medskip
+\tadAxioma{secuenciaDePedidos(tomarPedido(r,p))}{p $\puntito$ secuenciaDePedidos(r)}
+\medskip
+\tadAxioma{secuenciaDePedidos(prepararPlato(r))}{com(secuenciaDePedidos(r))}
+\medskip
+\medskip
+
+\tadAlinearAxiomas{platosPorDia(d, tomarPedido(r,p))}
+\medskip
+\tadAxioma{platosPorDia(d, inaugurar())}{0}
+\medskip
+\tadAxioma{platosPorDia(d, tomarPedido(r,p))}{platosPorDia(d,r)}
+\medskip
+\tadAxioma{platosPorDia(d, prepararPlato(r))}{\IF diaActual(r) = d THEN platosPorDia(d,r)+1 ELSE platosPorDia(d,r) FI}
+\medskip
+\tadAxioma{platosPorDia(d, nuevoDia(r))}{\IF diaActual(r)+1 = d THEN 0 ELSE platosPorDia(d,r) FI}
+\medskip
+\medskip
+
+Por ultimo, vamos a axiomatizar la funcion diaMenosPedidos(r) de la siguiente forma:
+\newline
+\newline
+($\forall$ $d'$:dia) (0 $\leq$ $d'$ $\leq$ diaActual($r$) $\impluego$ platosPorDia($r$, diaMenosPedidos($r$)) $\leq$ platosPorDia($r,d'$))
+\medskip
+\end{tad}
+
+\subsection{TAD's}
+
+¿Qué es un TAD?
+\newline
+\newline
+\textbf{.} Desde el punto de vista formal, es una herramienta lógico/matematica. Eso es bueno porque nos da la rigurosidad que necesitamos para entender claramente qué hay que hacer.
+\newline
+\newline
+\textbf{.} Desde el punto de vista práctico, es una herramienta poderosa y flexible que nos permite resolver o formalizar infinidad de problemas.
+\newline
+\newline
+\textbf{.} Desde el punto de vista histórico, uno de los primeros intentos por abordar este problema.
+\newline
+\newline
+Una de las ventajas de la teoría de los tipos abstractos de datos es que no requiere de tipos primitivos que deban definirse por fuera de la misma. 
+
+\subsection{Secciones de un TAD}
+
+Las secciones de un TAD son:
+\newline
+\newline
+\textbf{.} Géneros: Los géneros (en general va a haber sólo uno, pero podrían ser más) son el nombre que recibe el conjunto de valores del tipo. Pensar en el monoide conmutativo ($\mathbb{N}$, +) y en el conjunto de los números naturales $\mathbb{N}$. 
+\newline
+\newline
+\textbf{.} Usa: Inclusión de los géneros y operaciones definidos en otros tipos abstractos de datos que utiliza el tipo que estamos definiendo.
+\newline
+\newline
+\textbf{.} Exporta: Qué operaciones y géneros se dejan a disposición de los usuarios del tipo.
+\newline
+\newline
+\textbf{.} Generadores: Son operaciones que permiten construir instancias del tipo. Un conjunto de generadores está bien definido si una combinación de ellos permite construir cualquier instancia posible del tipo.
+\newline
+\newline
+\textbf{.} Observadores: Son operaciones que nos permiten, utilizadas en conjunto, diferenciar instancias del tipo.
+\newline
+\newline
+\textbf{.} Axiomas: Son las reglas que nos explican el comportamiento de las funciones o describen el comportamiento desde el punto de vista semántico de un objeto del TAD. 
+
+
+
+\newpage
+
+
+
+
+
+
+
+\section{Capitulo 1. Especificación}
 
 \subsection{Introduccion}
 
 Tipicamente, nos enfrentamos a la siguiente situacion. Tenemos un $problema$ que no es presentado en una manera difusa, vaga y se pretende que lo podamos resolver a traves de una computadora de forma eficiente. Lo problematico es transitar este recorrido que va desde la definicion informal del problema a su resolucion computacional. Este camino tiene una serie de pasos que, tipicamente, los llamamos $especificacion$, $disenio$ e $implementacion$. 
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.7\textwidth]{etapas-res-problem}
-	\caption{Etapas en la resolucion de un problema}
-	\label{drivers1}
-\end{figure}
+%\begin{figure}[h]
+%	\centering
+%	\includegraphics[width=0.7\textwidth]{etapas-res-problem}
+%	\caption{Etapas en la resolucion de un problema}
+%	\label{drivers1}
+%\end{figure}
 
 En esta materia vamos a estudiar algoritmos y estructuras de datos. Recordemos que es un \textbf{algoritmo}.
 \newline
 \newline
-Un \textbf{algoritmo} es un procedimiento para resolver un problema, descripto por una secuencia ordenada y finita de pasos bien determinados que nos llevan de un estado inicial a uno final en un tiempo finito. 
-\newline
+Un \textbf{algoritmo} es un procedimiento para resolver un problema, descripto por una secuencia ordenada y finita de pasos bien determinados que nos llevan de un estado inicial a uno final \newline
 \newline
 Un \textbf{algoritmo} siempre debe brindar una respuesta, siendo posible que la respuesta sea $"$no hay respuesta$"$. La descripcion debe ser clara y precisa, sin dejar lugar a la utilizacion de la intuicion o la creatividad. Por ejemplo, una receta es un algoritmo si no dice $"$sal a gusto$"$.  
 \newline
