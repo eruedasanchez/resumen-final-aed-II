@@ -956,3 +956,380 @@ a) Si $k \neq 0$ y $k < \infty$, entonces $\Theta(f) = \Theta(g)$
 \newline
 b) Si $k = 0$, entonces $\Theta(g) \neq \Theta(f)$ porque ambas funciones no están creciendo al mismo ritmo o tasa.
 \newpage
+
+\section{Clase Teórica 04. Diseño de Tipos Abstractos de Datos}
+
+Ahora, nos vamos a enfocar en el diseño jerárquico de TADs.
+\newline
+\newline
+Entonces, ¿Qué significa diseñar?
+\newline
+\newline
+Diseñar significa pasar de la descripción del \textbf{qué} del problema al \textbf{cómo}.
+\newline
+\newline
+Queremos permitir un cambio de paradigma (del utilizado para especificar al utilizado para programar) que resulte ordenado, metódico, mas o menos formal.
+\newline
+\newline
+\textbf{Ejemplo}
+\newline
+\newline
+Consideremos el TAD \tadNombre{Conjunto}.
+\newline
+\newline
+Veamos dos implementaciones posibles.
+\newline
+\newline
+1. Un arreglo dimensionable donde:
+\newline
+\newline
+\textbf{.} La inserción (sin repetidos) tiene un costo de $O(n)$ donde los elementos se colocan en su posición correspondiente, es decir, luego de la inserción, quedan ordenados.
+\newline
+\newline
+\textbf{.} La búsqueda tiene un costo de $O(log(n))$ dado que se realiza aplicando búsqueda binaria.
+\newline
+\newline
+2. Una secuencia donde:
+\newline
+\newline
+\textbf{.} La inserción (sin repetidos) tiene un costo de $O(1)$ porque los elementos se colocan al final o al principio de la secuencia.
+\newline
+\newline
+\textbf{.} La búsqueda tiene un costo de $O(n)$ dado que en el peor caso habrá que recorrer toda la secuencia.
+\newline
+\newline
+¿Cuál estructura me conviene?
+\newline
+\newline
+Depende del contexto de uso en el cual este usando la estructura de datos.
+\newline
+\newline
+\textbf{La etapa de diseño} es una capa intermedia que nos va a permitir pasar de la especificación a la implementación del código.
+\newline
+\newline
+Por lo tanto, en la etapa de diseño debemos:
+\newline
+\newline
+\textbf{.} Proveer una \textbf{representación} para los valores
+\newline
+\newline
+\textbf{.} Definir las \textbf{funciones} del tipo, es decir, proveer algoritmos para implementar las funciones del tipo. 
+\newline
+\newline
+\textbf{.} Demostrar que eso es \textbf{correcto}.
+\newline
+\newline
+¿Qué significa jerárquico?
+\newline
+\newline
+Que pensaremos la resolución del \textit{cómo} a partir de representaciones de un tipo sobre otros separando responsabilidades en la construcción de la solución. 
+
+\subsection{Contexto de uso}
+
+¿Cómo discriminamos entre dos soluciones?
+\newline
+\newline
+De acuerdo al contexto de uso, y los requerimientos de eficiencia.
+
+\subsection{Metodología de diseño}
+
+Desde un punto de vista abstracto, diseñar implica las siguientes tareas:
+\newline
+\newline
+\textbf{.} Elección del TAD a diseñar siempre siguiendo una filosofía \textit{top-down}, es decir, comenzando siempre por el TAD más abarcativo.
+\newline
+\newline
+\textbf{.} Introducción de los elementos no funcionales
+\newline
+\newline
+\textbf{.} Vinculación entre la representación y su abstracción
+\newline
+\newline
+\textbf{.} Iteración sobre los tipos restantes (filosofia \textit{top-down}).
+\newline
+\newline
+Dentro de esta metodología, vamos a tener que enfocarnos en dos aspectos claves:
+\newline
+\newline
+\textbf{.} Los \textbf{aspectos de la interfaz} de un tipo describen todo elemento relacionado con los aspectos de uso de dicho tipo, es decir, toda cuestión referida a lo que resulte visible desde afuera.
+\newline
+\newline
+\textbf{.} Las \textbf{pautas de la implementación} serán todo aspecto que refiera a cuestiones vinculadas a los medios a través de los cuales el tipo garantiza esos aspectos de uso.
+\newline
+\newline
+La definición de la \textbf{Interfaz} de un módulo de diseño implica tomar en cuenta de varias cosas y esencialmente debe explicarle al eventual usuario todos los aspectos relativos a los servicios que exporta:
+\newline
+\newline
+\textbf{Servicios exportados}: desccribe para cada operación su complejidad, aspectos de aliasing, efectos colaterales sobre los argumentos, etc.
+\newline
+\newline
+\textbf{Interfaz}: define en el paradigma imperativo las operaciones exportadas junto con su precondición y postcondición. Esto establecerá la relación entre la implementación de las operaciones y su especificación. 
+
+\subsubsection{Transparencia referencial, aliasing, etc}
+
+Una función es \textbf{referencialmente transparente} si su resultado solo depende de sus parámetros explicitos.
+\newline
+\newline
+Por ejemplo:
+\newline
+\newline
+\textbf{.} Si \textit{f(x) = \{return x+1\}}, $f(4)$  $+$ $f(3)$ es referencialmente transparente.
+\newline
+\newline
+\textbf{.} Si \textit{f(x) = \{y = G*(x+1); G++; return y\}}, no es referencialmente transparente porque no conocemos el valor de la variable global $G$.
+\newline
+\newline
+\textbf{Aliasing} significa la posibilidad de tener más de un nombre para la misma cosa. En concreto, dos punteros o referencias hacia el mismo objeto.
+\newline
+\newline
+Veamos el siguiente ejemplo:
+\newline
+\newline
+Una operación que dado un arbol binario (no vacio) nos devolviera dos árboles y un elemento (subarbol izquierdo, derecho y raiz).
+\newline
+\newline
+\TipoVariable{Podar(in A: ab(elem), out I: ab(elem), out r: elem, out D: ab(elem))}
+\newline
+\newline
+Implementación 1: armar copias de los subarboles izquierdo y derecho de A, devolverlas como I y D.
+\newline
+\newline
+Implementación 2 (más rápida): devolver en I y D referencias a los subárboles de A.
+\newline
+\newline
+En este último caso, estariamos provocando \textit{aliasing} entre los árboles, porque cualquier modificación que se realice sobre I o D, luego de ejecutar la operación Podar, repercutirá en A.
+\newpage
+\subsection{Ejemplo con Conj(NAT)}
+
+Nos solicitan el siguiente contexto de uso:
+\newline
+\newline
+\textbf{.} La obtención del minimo debe tener complejidad $O(1)$.
+\newline
+\newline
+\textbf{.} Quitar un elemento debe tener complejidad $O(n)$, siendo $n$ la cantidad de elementos agregados.
+\newline
+\newline
+\textbf{.} Agregar un elemento debe tener complejidad $O(1)$.
+\newline
+\newline
+\textbf{Servicios exportados:}
+\newline
+\newline
+\textbf{.} pertenece: No produce aliasing ni efectos colaterales sobre los argumentos, posee orden de complejidad temporal $O(n)$ con $n$ la cantidad de elementos agregados al conjuntos.
+\newline
+\newline
+\textbf{.} vacio: No produce aliasing ni efectos colaterales, posee orden de complejidad temporal $O(1)$. 
+\newline
+\newline
+\textbf{.} agregar: No produce aliasing, modifica colateralmente el conjunto argumento, posee orden de complejidad temporal $O(1)$. 
+\newline
+\newline
+\textbf{.} quitar: No produce aliasing sobre los argumentos, modifica colateralmente el conjunto argumento, posee orden de complejidad temporal $O(n)$ con $n$ la cantidad de elementoss agregados al conjunto.
+\newline
+\newline
+\textbf{.} vacio?: No produce aliasing ni efectos colaterales, posee orden de complejidad temporal $O(1)$.  
+\newline
+\newline
+\textbf{.} mínimo: No produce aliasing ni efectos colaterales, posee orden de complejidad temporal $O(1)$.
+\newline
+\newline
+\textbf{FALTARIA COMPLETAR LA INTERFAZ!!!}
+\newpage
+
+\subsection{La Representación}
+
+La definición de la \textbf{representación} de un módulo de diseño implica tomar cuenta todo aspecto referido a cómo se satisfacen los requerimientos declarados en la interfaz.
+\newline
+\newline
+\textbf{. Estructura}: Describe la estructura interna sobre la cual las operaciones aplican.
+\newline
+\newline
+\textbf{. Relación entre la representación y la abstracción}: Por un lado, expone toda restricción sobre la estructura de representación a fin de que efectivamente pueda ser considerada una implementación de un valor del tipo al que implementa; y por otro lado, vincula los valores con su contraparte abstracta, es decir, con algún término de la especificación a quien este represente.
+\newline
+\newline
+\textbf{. Algoritmos}: Mostrar como se realizan los algoritmos para implementar las funciones correspondientes al TAD incluyendo tanto las operaciones exportadas como las auxiliares junto con su cálculo detallado que justifica su complejidad. 
+\newline
+\newline
+\textbf{. Servicios usados:} Declara toda demanda de complejidad, aliasing o efecto colateral que los servicios usados de otros tipos en la programación de los algoritmos deban satisfacer. 
+
+\subsubsection{Estructura de representación}
+
+La estructura de representación describe los valores sobre los cuales se representará el género que se está implementando.
+\newline
+\newline
+Veamos esto con un ejemplo.
+\newline
+\newline
+Queremos implementar un conjunto de naturales con el siguiente contexto: los números del 1 al 100 deben manejarse en $O(1)$ porque se usan mucho. El resto, en $O(n)$. Rápidamente debo conocer la cardinalidad.
+\newline
+\newline
+Proponemos la siguiente estructura:
+\newline
+\newline
+\textbf{.} Un arreglo de 100 posiciones booleanas donde haya 1 en la posición $i$ si el elemento $i$ pertenece al conjunto. De esta forma, con acceder a la posición correspondiente al número, se verifica si pertenece o no al conjunto. 
+\newline
+\newline
+\textbf{.} Una secuencia que incluye todos los elementos mayores a 100.
+\newline
+\newline
+\textbf{.} Un nat para la cardinalidad.
+\newline
+\newline
+Luego, escribimos esta estructura de representación como:
+\begin{Estructura}{conj\_semi\_rapido}[estr]
+	\begin{Tupla}[estr]%
+		\tupItem{rapido}{arreglo [1,...,100] de nat}%
+		\tupItem{resto}{secu(nat)}%
+		\tupItem{cardinal}{nat}%
+	\end{Tupla}
+\end{Estructura}
+\medskip
+\medskip
+\subsubsection{El invariante de representación}
+
+¿Cualquier instancia es válida?
+\newline
+\newline
+¿$\langle$[0,...,0], $\secuvacia$, 8254$\rangle$ es un \TipoVariable{conj\_semi\_rapido} válido? No, porque 8254 representa la cardinal del conjunto y como el arreglo correspondiente a los numeros del 1 al 100 se encuentra completo de 0s, su cardinalidad es 0 y los números mayores a 100 están representados por una secuencia vacia, no hay ningún número mayor a 100 que pertenezca al conjunto. Por lo tanto, la cardinalidad del conjunto es 0 + 0 = 0 != 8254.
+\newline
+\newline
+¿$\langle$[0,...,0], $\langle$37,107,28$\rangle$, 3$\rangle$ es un \TipoVariable{conj\_semi\_rapido} válido? No, porque a pesar de que el arreglo de número del 1 a 100 tiene cardinalidad 0 porque está lleno de 0s y la secuencia de números mayores a 100 tiene 3 elementos tanto el 37 como el 28 no son mayores a 100.
+\newpage
+¿Para que nos sirve separar con facilidad instancias válidas de invalidas?
+\newline
+\newline
+\textbf{.} Como una forma de documentar la estructura.
+\newline
+\newline
+\textbf{.} Como condición necesaria para establecer una relación con la abstracción.
+\newline
+\newline
+\textbf{.} Para agregar a las postcondiciones, como una forma de garantizar que nuestros algoritmo no rompen la estructura.
+\newline
+\newline
+\textbf{.} Para agregar a las precondiciones, como una garantia con la que cuentan nuestros algoritmos.
+\newline
+\newline
+\textbf{.} Como una guia a la hora de escribir los algoritmos porque deben valer tanto en la precondición como en la postcondición
+\newline
+\newline
+\textbf{.} Si pudiésemos programar el chequeo, como una forma adicional de detectar instancias corruptas.
+\newline
+\newline
+El \textbf{invariante de representación} es una función booleana con dominio en el género de representación que da $true$ cuando recibe una instancia válida.
+\newline
+\newline
+Si representamos $T_{1}$ sobre $T_{2}$:
+\newline
+\Rep[$T_{2}$][t]{... condiciones que garanticen que $t$ representa una instancia válida de $T_{1}$...}
+\medskip
+\medskip
+Volviendo al ejemplo, las condiciones del invariante de representación, descriptas de manera informal, deberían ser las siguientes:
+\newline
+\newline
+1) Que $resto$ solo tenga números mayores que 100.
+\newline
+\newline
+2) Que $resto$ no tenga números repetidos.
+\newline
+\newline
+3) Que $cardinal$ tenga la longitud de resto más la cantidad de celdas de \textit{rápido} que esten en 1 ($true$).
+\newline
+\newline
+Veamos la descripcion formal del invariante de representación: 
+\newline
+\Rep[estr][e]{(1) ($\forall n$:nat) (está?($n,e.resto$) $\impluego$ $n > 100$) $\yluego$ (2) ($\forall n$:nat) (cant\_apariciones($n,e.resto$) $\leq$ $1$) $\yluego$ \newline (3) $e.cant$ $=$ $long(e.resto)$ $+$ cant\_trues($e.rapido$)}
+\medskip
+\medskip
+\medskip
+donde \textit{está}, $cant\_de\_apariciones$ y $long$ son funciones de secuencias, y $contar\_trues$ es una función sobre arreglos. En los problemas más complicados se vuelve muy importante analizar metódicamente la estructura de representación a la hora de elegir los predicados del invariante. Una forma de organizarse es empezar mirando cada campo de la estructura de forma individual, para ver bien que condiciones tienen que cumplir. Una vez analizado esto, podemos ver la relación que deben tener los distintos campos entre si para que su información sea consistente.
+\newline
+\newline
+\textbf{Función de abstracción}
+\newline
+\newline
+La función de abstracción es una herramienta que permite vincular una estructura con \textbf{algún} valor abstracto al que representa ¿Cómo les parece que esto puede hacerse? Es decir, ¿Qué debemos usar para caracterizar algún término abstracto que representa una estructura particular?
+\newline
+\newline
+$Abs$: $T_{2}$ $e$ $\rightarrow$ $T_{1}$ (Rep($e$))
+\newline
+\newline
+Por lo tanto, la función de abstracción tiene como dominio al conjunto de instancias que son la imagen abstracta del tipo al que representa (y verifican el invariante de representación) y devuelve una imagen abstracta de la instancia del tipo representado, es decir, aquella instancia que queremos representar.
+\newline
+\newline
+La manera en la que se caracteriza un término es o bien a través de los generadores o de los observadores. Normalmente el uso de los observadores resulta más sencillo.
+\newpage
+Anteriormente, habiamos afirmado que \TipoVariable{conjuntoDeNat} \textbf{se representa con} \TipoVariable{$\langle$secuenciaDeNat, nat$\rangle$} 
+\newline
+\newline
+Ahora, la función de abstracción viene a cumplir la vuelta de esto, es decir, si tengo \TipoVariable{$\langle$secu[nat], nat$\rangle$} y le aplico la función de abstracción, vuelvo al \TipoVariable{conj[nat]}, es decir, \TipoVariable{$\langle$secu[nat], nat$\rangle$} \textbf{representa a (abs)} al  \TipoVariable{conj[nat]}.
+\newline
+\newline
+Volviendo al ejemplo del \TipoVariable{conjunto\_semi\_rapido}, esccribimos su función de abstracción:
+\newline
+\AbsFc[estr]{conjunto\_semi\_rapido $C$}[e]{ $C$ / ($\forall n$:nat) ($n$ $\in$ $C$ $\impluego$ ($n \geq 100$ $\yluego$ $r.rapido[n]$) $\lor$ ($n > 100$ $\yluego$ esta?($n,e.resto$)))}
+\medskip
+\medskip
+\textbf{Propiedades}
+\newline
+\newline
+\textbf{.} Una vez restringida a ($Rep(e)$), la función de abstracción debe ser total.
+\newline
+\newline
+\textbf{.} No tiene por qué ser inyectiva. Dos estructuras diferentes pueden representar al mismo término de un TAD. Veamos el siguiente ejemplo:
+\newline
+\newline
+\TipoVariable{Abs: secu(nat) $s$ $\rightarrow$ conj(nat)}
+\newline
+\newline
+\TipoVariable{Abs(1 $\puntito$ 2 $\puntito$ 3 $\puntito$ $\secuvacia$)} $\igobs$ \{1,2,3\} $\igobs$ \TipoVariable{Abs(3 $\puntito$ 1 $\puntito$ 2 $\puntito$ $\secuvacia$)}
+\newline
+\newline
+\textbf{.} Debe ser suryectiva sobre las clases de equivalencia determinadas por la igualdad observacional, restringidas a lo especificado por el contexto de uso.
+\newline
+\newline
+\textbf{.} No tiene por qué ser suryectiva sobre todos los términos del género representado. Es decir, no podemos asegurar que todo término del TAD va a ser imagen de la función de abstracción para la estructura de representación que estemos utilizando.  
+
+\subsubsection{Los algoritmos}
+
+Recordemos la interfaz de \tadNombre{Agregar(...)}:
+\newline
+\newline
+\InterfazFuncion{Agregar}{\Inout{C}{conjunto\_semi\_rapido}, \In{e}{nat}}{}%
+[$C$ $\igobs$ $C_{0}$ $\land$ $e \notin C$]
+{$C$ $\igobs$ $Ag(C_{0},e)$}%
+\newline
+\newline
+Luego, una posible implementacion del algoritmo podria ser la siguiente:
+
+\begin{algorithm}[H]{i\tadNombre{Agregar}(\Inout{C}{estr}, \In{e}{nat})}
+	\begin{algorithmic}[1]
+		\State $C.cant++$                      
+		\If{$e < 100$}
+		\State $C.rapido[e]$ $=$ $true$                      
+		\Else
+		\State AgregarAtras($C.resto,e$)                     
+		\EndIf
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+\newpage
+\textbf{Probando corrección}
+\newline
+\newline
+Veamos una funcionalidad adicional que tiene la función de abstracción.
+\newline
+\newline
+Veamoslo con un ejemplo para Conjunto implementado sobre secuencia.
+\newline
+\newline
+Dada una secuencia $s$, el resultado de la operación agregar un natural $n$ sobre la abstracción de la secuencia $Ag(Abs(s),n)$ debe ser observacionalmente equivalente a agregar el natural a la abstracción de esa agregación, es decir, $Ag(Abs(s),n)$ $\igobs$ $Abs(s \circulito n)$
+\newline
+\newline
+De forma más general, queremos decir que la función de abstracción debe ser un homomorfismo respecto de la signatura del TAD, o sea, que para toda operación $\puntito$, $Abs(i \puntito (p_{1},...,p_{n}))$ $\igobs$ $\puntito$($Abs(p_{1})$,...,$Abs(p_{n})$) 
+\newline
+\newline
+Es decir, que la abstracción de la implementación de una operación $\puntito$ tiene que ser observacionalmente equivalente a la implementación de la abstracción de esa operación.  
+\newpage
