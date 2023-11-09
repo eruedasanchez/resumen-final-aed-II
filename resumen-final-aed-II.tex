@@ -425,3 +425,534 @@ Desde el punto de vista de modelado, o bien desaparece \TipoVariable{ventas()} o
 \newline
 Si no hacemos eso, se genera una \textbf{inconsistencia}: hay dos instancias del TAD \tadNombre{Negocio} que son equivalentes según los observadores básicos, pero que son diferenciables de acuerdo a los axiomas efectivamente escritos. 
 \newpage
+
+\section{Clase Teórica 03. Complejidad Algorítmica}
+
+Para resolver problemas, tenemos que diseñar algoritmos y estructuras de datos que sean \textbf{eficientes}  en términos del consumo de recursos.
+\newline
+\newline
+Esa medida de eficiencia nos permitirá elegir entre distintos algoritmos para resolver el mismo problema y distintas formas de implementar un TAD. 
+\newline
+\newline
+¿Cuáles son esos recursos que se consumen?
+\newline
+\newline
+\textbf{.} Tiempo de ejecución
+\newline
+\newline
+\textbf{.} Espacio (memoria)
+\newline
+\newline
+\textbf{.} Cantidad de procesadores (en el caso de algoritmos paralelos)
+\newline
+\newline
+\textbf{.} Utilización de la red de comunicaciones (para algoritmos paralelos).
+\newline
+\newline
+Nos vamos a ocupar de los primeros dos criterios: tiempo de ejecución y espacio (memoria).
+
+\subsection{Complejidad Algorítmica}
+
+¿Cómo medimos la complejidad algorítmica? El análisis de la complejidad de un algoritmo se puede hacer a traves de dos enfoques:
+\newline
+\newline
+\textbf{.} Empírica o experimental
+\newline
+\newline
+Medir el tiempo de ejecución para una determinada entrada y en una computadora concreta
+\newline
+\newline
+Usando un cronómetro, o analizando el consumo de recursos de la computadora (tiempo de CPU)
+\newline
+\newline
+Medidas del tipo: 3GB, 1.5 segundos.
+\newline
+\newline
+\textbf{.} Teórica
+\newline
+\newline
+Medida teórica del comportamiento de un algoritmo. Es decir, la idea es poder calcular la complejidad a priori, intuir, poder estimar lo que va a tardar la complejidad de un algoritmo antes de ejecutarlo.
+\newline
+\newline
+Uno de los problemas que tiene el análisis empírico sobre el teórico es que medir el tiempo de ejecución me puede insumir mucho tiempo en realizarlo. Además, el análisis empírico cambia de computadora en computadora y otro problema es que el contexto de uso puede cambiar mucho el tiempo real de ejecución. Si estoy ejecutando el algoritmo en un sistema multitasking y demoró una cierta cantidad de tiempo, no implica que va a tardar lo mismo en un entorno con muchos más usuarios logeados, problemas en la conexión de la red o cualquier factor externo pero que influye en la performance de mi equipo.
+
+\subsection{Ventajas del enfoque teórico}
+
+Las ventajas del enfoque teórico son:
+\newline
+\newline
+\textbf{.} El análisis se puede hacer a priori, aún antes de escribir una linea de código.
+\newline
+\newline
+\textbf{.} Vale para todas las instancias del problema
+\newline
+\newline
+\textbf{.} Es independiente de la máquina en la que se ejecuta
+\newline
+\newline
+\textbf{.} Es independiente de la pericia del programador
+\newpage
+
+\subsection{Análisis teórico}
+
+La medida de complejidad está asociada a un $"$módelo de máquina$"$ o $"$módelo de cómputo$"$ consensuado.
+\newline
+\newline
+Para medir todas las instancias posibles, no vamos a hablar de instancias particulares sino de tamaño de las instancias. Vamos a dar una medida de complejidad en función del \textit{input} de las instancias. 
+\newline
+\newline
+Puede suceder que no todas las instancias del mismo tamaño consuman la memoria de la misma manera. Entonces, para esos casos, vamos a ver complejidad para distintos tipos de inputs. 
+\newline
+\newline
+Vamos a realizar \textit{análisis asintòtico}. Nos vamos a enfocar en el tiempo de ejecución de instancias grandes.
+
+\subsubsection{Modelo cómputo}
+
+Queremos una medida \textit{universal} válida para distintas implementaciones del algoritmo.
+\newline
+\newline
+Por lo tanto, vamos a inventar una máquina teórica que vamos a utilizar como banco de pruebas para la ejecución del algoritmo. 
+\newline
+\newline
+En esta definición de máquina, vamos a poder tomar una \textbf{medida del tiempo}: número de pasos o instrucciones que se ejecutan en esa máquina \textit{ideal} para determinado \textit{input}.
+\newline
+\newline
+En esta definición de máquina, vamos a poder tomar una \textbf{medida del espacio}: número de posiciones de memoria en esa máquina \textit{ideal} que se utilizan para determiando \textit{input}.
+\newline
+\newline
+\textbf{Operaciones elementales}
+\newline
+\newline
+Las operaciones elementales son aquellas operaciones que tardan una unidad de tiempo en el modelo de máquina que estoy definiendo.
+\newline
+\newline
+Vamos a utilizar una función de complejidad \textit{t(I)} que mide el número de operaciones elementales requeridas para la instancia \textit{I}.
+\newline
+\newline
+Las operaciones elementales (OE) serán aquellas que el procesador realiza en tiempo acotado por una constante (que no depende del tamaño de la entrada).
+\newline
+\newline
+Consideramos OE las operaciones aritméticas básicas, comparaciones lógicas, transferencias de control, asignaciones a variables de tipos básicos, etc (tener cuidado; para ello es importante definir bien el modelo de cómputo y cuáles son las operaciones elementales).
+\newline
+\newline
+\textbf{Cálculo de Operaciones Elementales}
+\newline
+\newline
+\textbf{.} Vamos a considerar que el tiempo de una OE es, por definición, 1.
+\newline
+\newline
+\textbf{.} El tiempo de ejecución de una secuencia consecutiva de instrucciones se calcula sumando los tiempos de ejecución de cada una de las instrucciones.
+\newline
+\newline
+\textbf{Ejemplo}.
+
+\begin{algorithm}[H]{i\tadNombre{busquedaSecuencial}(\In{A}{array(T)}, \In{x}{T})}
+	\begin{algorithmic}[1]
+		\State $i$ $\gets$ 1
+            \State $encontre$ $\gets$ $false$
+            \While{$!encontre$}
+		\If{$A[i] = x$}
+		\State $encontre$ $\gets$ $true$                 
+		\State $i$ $\gets$ $i+1$         \EndIf
+            \EndWhile
+            \State $print(i-1)$ 
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+\newpage
+
+¿Cuánto tarda la ejecución de $Buscar(5, [2,6,3,5,8])$?
+\newline
+\newline
+Para resolver esto, tenemos que contar cuantas operaciones elementales se ejecutan entre que empieza el algoritmo y termina con una respuesta. 
+\newline
+\newline
+Comienza el algoritmo y se realiza la asignación $i$ $\gets$ 1 (1OE). Luego, se realiza la asignación $encontre$ $\gets$ $false$ (1OE).
+\newline
+\newline
+En la instrucción \textbf{while} $!encontre$, tenemos una negación y una comparación (2OE). 
+\newline
+\newline
+Luego, en la instrucción \textbf{if} $A[i] = x$ tenemos 1OE para acceeder a la variable $x$, otra OE para compararlo con $A[i]$. Ahora, como 5 != 2, no accedo a la linea de $encontre$ $\gets$ $true$ pero si a la de $i$ $\gets$ $i+1$ que hay 3OE, 1 para el acceso de la variable $i$, otra para la suma de esta y una última para el salto al ciclo \textbf{while} nuevamente. 
+\newline
+\newline
+Analogamente al caso anterior porque 6 != 5, tenemos 2OE con respecto a la instrucción \textbf{while} $!encontre$, 2OE con respecto a la instrucción \textbf{if} $A[i] = x$ y 3OE con respecto a la instrucción $i$ $\gets$ $i+1$. 
+\newline
+\newline
+Del mismo modo como 3 != 5, , tenemos 2OE con respecto a la instrucción \textbf{while} $!encontre$, 2OE con respecto a la instrucción \textbf{if} $A[i] = x$ y 3OE con respecto a la instrucción $i$ $\gets$ $i+1$.
+\newline
+\newline
+Ahora, como 5 = 5, tenemos 2OE con respecto a la instrucción \textbf{while} $!encontre$, 4OE con respecto a la instrucción \textbf{if} $A[i] = x$ (las dos que teniamos en los casos anteriores pero ahora sumamos 1OE de la asignación $encontre$ $\gets$ $true$ y 1OE del salto del ciclo a la instrucción $print(i-1)$) y 1OE con respecto a la ejecución de $print(i-1)$.
+\newline
+\newline
+Por lo tanto, podemos concluir que la ejecución de  $Buscar(5, [2,6,3,5,8])$ tarda 30 Operaciones Elementales. 
+\newline
+\newline
+\textbf{Reglas generales (pensando en análisis del caso peor)}
+\newline
+\newline
+\textbf{.} El tiempo de ejecución de la sentencia \TipoVariable{CASE C OF $v_{1}$:$S_{1}$|$v_{2}$:$S_{2}$|...|$v_{n}$:$S_{n}$ END} es \TipoVariable{T = T(C) + max\{T($S_{1}$),T($S_{2}$),...,T($S_{n}$)\}}. Observemos que T(C) incluye el tiempo de comparación con $v_{1}$,$v_{2}$,...,$v_{n}$.
+\newline
+\newline
+\textbf{.} El tiempo de ejecución de la sentencia \TipoVariable{IF C THEN $S_{1}$ ELSE $S_{2}$ END} es \TipoVariable{T = T(C) + max\{T($S_{1}$),T($S_{2}$)\}}
+\newline
+\newline
+\textbf{.} El tiempo de ejecución de un bucle de sentencias \TipoVariable{WHILE C DO S END} es \TipoVariable{T = T(C) + (nº iteraciones) * (T(S) + T(C))}. Observemos que tanto T(C) como T(S) pueden variar en cada iteración, y por lo tanto, habrá que tenerlo en cuenta para su cálculo.   
+\newline
+\newline
+\textbf{.} Para calcular el tiempo de ejecución del resto de las sentencias iterativas (\TipoVariable{FOR}, \TipoVariable{REPEAT}, \TipoVariable{LOOP}) basta expresarlas como un bucle \TipoVariable{WHILE}.
+\newline
+\newline
+\textbf{.} El tiempo de ejecución de una llamada a un procedimiento o función \TipoVariable{F($P_{1}$,$P_{2}$,...,$P_{n}$)} es 1 por llamada más el tiempo de evaluación de los parámetros $P_{1}$,$P_{2}$,...,$P_{n}$ más el tiempo que tarde en ejecutarse \TipoVariable{F}, esto es \TipoVariable{T = 1 + T($P_{1}$) + T($P_{2}$) + ... + T($P_{n}$) + T(F)}. No contabilizamos la copia de los argumentos a la pila de ejecución, salvo que se trate de estructuras complejas (registros o vectores) que se pasan por valor. En este caso, contabilizaremos tantas OE como valores simples contenga la estructura. El paso de parámetros por referencia, por tratarse simplemente de punteros, no contabiliza tampoco. 
+
+\subsubsection{Tamaño de la entrada}
+
+Queremos una complejidad relativa, no absoluta. El tamaño de la entrada es una medida general de lo que podemos encontrarnos al ejecutar (queremos predecir, no nos interesa cuanto tarda para una instancia particular sino para clases de instancias).
+\newline
+\newline
+Entonces, presentamos la notación que vamos a utilizar:
+\newline
+\newline
+\textbf{.} \textbf{\textit{T(n)}}: complejidad temporal (o en tiempo) para una entrada de tamaño \textit{n}.
+\newline
+\newline
+\textbf{.} \textbf{\textit{S(n)}}: complejidad espacial para una entrada de tamaño \textit{n}.
+\newline
+\newline
+Entonces, como vamos a medir en función del tamaño del input, tenemos que considerar distintas instancias porque, aunque tengan el mismo tamaño, puede hacer que el algoritmo se comporte de maneras muy diferentes, y por lo tanto, tomar distinto tiempo, y/o requerir distinta cantidad de memoria.
+\newline
+\newline
+Así suelen estudiarse tres casos para un mismo algoritmo: \textbf{caso peor}, \textbf{caso mejor} y \textbf{caso medio}.
+\newline
+\newline
+\textbf{Análisis del caso peor}
+\newline
+\newline
+Sea $t(i)$ el tiempo de ejecución de un algoritmo sobre una instancia $i$.
+\newline
+\newline
+$T_{peor}(n)$ = $max_{instancias~i,~|i|=n}$$\{t(i)\}$
+\newline
+\newline
+Intuitivamente, $T_{peor}(n)$ es el tiempo de ejecución del algoritmo sobre la instancia que implica mayor tiempo de ejecución (entre los inputs de tamaño $n$).
+\newline
+\newline
+Este análisis da \textbf{garantías} sobre las prestaciones del algoritmo.
+\newline
+\newline
+\textbf{Análisis del caso mejor}
+\newline
+\newline
+$T_{mejor}(n)$ = $min_{instancias~i,~|i|=n}$$\{t(i)\}$
+\newline
+\newline
+Intuitivamente, $T_{mejor}(n)$ es el tiempo de ejecución del algoritmo sobre la instancia que implica menor tiempo de ejecución (entre los inputs de tamaño $n$).
+\newline
+\newline
+No da mucha información.
+\newline
+\newline
+\textbf{Análisis del caso medio o promedio}
+\newline
+\newline
+Intuitivamente, $T_{prom}(n)$ corresponde al tiempo \textit{promedio} de ejecución, al tiempo \textit{esperado} sobre instancias \textit{típicas}.
+\newline
+\newline
+Se define como la esperanza matemática de la variable aleatoria definida por todas las posibles ejecuciones del algoritmo para un tamaño de la entrada dado, con las probabilidades de que éstas ocurran para esa entrada.
+\newline
+\newline
+Sea $P(i)$ la probabilidad de que el input sea la instancia $i$.
+\newline
+\newline
+Por lo tanto, $T_{prom}(n)$ = $\displaystyle \sum_{instancias~i,~|i|=n}^{}$$\{P(i)~t(i)\}$
+\newline
+\newline
+Volvamos al ejemplo de búsqueda secuencial.
+\newline
+\begin{algorithm}[H]{i\tadNombre{busquedaSecuencial}(\In{A}{array(T)}, \In{x}{T})}
+	\begin{algorithmic}[1]
+		\State $i$ $\gets$ 1
+            \State $encontre$ $\gets$ $false$
+            \While{$!encontre$}
+		\If{$A[i] = x$}
+		\State $encontre$ $\gets$ $true$                 
+		\State $i$ $\gets$ $i+1$         \EndIf
+            \EndWhile
+            \State $print(i-1)$ 
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+\medskip
+Entonces, ahora queremos calcular $T_{peor}(n)$, $T_{mejor}(n)$ y $T_{prom}(n)$.
+\newline
+\newline
+En el peor caso, podemos decir que el elemento se va a encontrar al final del arreglo. Por lo tanto, para las $n-1$ iteraciones anteriores tenemos 5 instruccciones en cada iteración y en el caso de la iteracion $n$ donde se encuentra el elemento buscado, tenemos 6 instrucciones. Ademas, de las 2 instrucciones correspondientes a las primeras dos lineas del algoritmo. Por lo tanto, tenemos que $T_{peor}(n)$ = $2 + 5(n-1) + 6$ = $8 + 5(n-1)$
+\newline
+\newline
+\newline
+En el mejor caso, podemos decir que el elemento se va a encontrar en la primera posición del arreglo. Por lo tanto, tenemos que $T_{mejor}(n)$ = $9$
+\newline
+\newline
+En el caso promedio, tendriamos que suponer que alguna hipotesis sobre como está distribuido el input. Es decir, que probabilidad hay de que el elemento buscado esté en la primer posición, que probabilidad hay de que el elemento buscado esté en la segunda posición, que probabilidad hay de que el elemento buscado esté en la tercer posición, etc. Si suponemos que es equiprobable que esté en cualquier posición, vamos a tener un costo para las primeras operaciones y un valor esperado que se encuentre en la posición $\displaystyle \frac{n}{2}$ porque todas las posiciones son equiprobables. Por lo tanto, tenemos aproximadamente que $T_{prom}(n)$ = $8 + 5$ $\displaystyle \frac{n}{2}$
+\newline
+\newline
+¿Cuánto tarda la búsqueda secuencial si el arreglo está ordenado?
+\newline
+\newline
+El algoritmo de búsqueda secuencial tarda lo mismo si el arreglo está ordenado en los tres análisis.
+\newline
+\newline
+¿Cuánto tarda la búsqueda binaria?
+\newline
+\newline
+En este caso, si se producen diferencias porque el ciclo de la búsqueda binaria se ejecuta una cantidad de veces que es logaritmica en $n$ y no una cantidad de veces que es lineal en $n$ como en la búsqueda secuencial.
+\newline
+\newline
+Ahora, para calcular el costo espacial, necesitamos 3 espacios de memorias para almacenar las variables $i$, $encontre$ y la variable $x$ correspondiente al elemento que estamos buscando. Además, necesitamos tambien $n$ espacios en memoria correspondiente al tamaño del arreglo ($n$). Por lo tanto, $S(n)$ = $n+3$. 
+
+\subsubsection{Principio de invarianza}
+
+Dado un algoritmo y dos máquinas (o dos implementaciones) $M_{1}$ y $M_{2}$ que tardan $T_{1}(n)$ y $T_{2}(n)$ respectivamente sobre inputs de tamaño $n$, existe una constante real $c > 0$ y un $n_{0} \in \mathbb{N}$ tales que $\forall$ $n \geq n_{0}$ se verifica que $T_{1}(n)$ $\leq$ $c$ . $T_{2}(n)$  
+\newline
+\newline
+Es decir, que dos ejecuciones distintas del mismo algoritmo sólo difieren en cuanto a eficiencia en un factor constante para grandes valores de la entradas suficientemente grandes.
+\newline
+\newline
+Como \textbf{consecuencia} de esto, no necesitamos usar ninguna unidad para medir el tiempo.
+
+\subsubsection{Análisis asintótico}
+
+Ahora, nos va a interesar calcular, de forma aproximada, el \textbf{orden de magnitud} que tiene el \textbf{tiempo de ejecución} de cada algoritmo.
+\newline
+\newline
+Cuando el tamaño de los datos es pequeño no habrá diferencias significativas en el uso de los distintos algoritmos. 
+\newline
+\newline
+Cuando el tamaño de los datos es \textbf{grande}, los \textbf{costos} de los diferentes algoritmos si pueden variar de manera significativa. 
+\newline
+\newline
+El \textbf{orden} (logarítmico, lineal, cuadrático, exponencial, etc) de la función \textbf{\textit{T(n)}} que mide la complejidad temporal de un algoritmo, es el que \textit{expresa el comportamiento dominante cuando el tamaño de la entrada es grande}. 
+\newline
+\newline
+Es decir, el \textbf{comportamiento asintótico}.
+\newline
+\newline
+El objetivo del estudio de la complejidad algorítmica es determinar el comportamiento asintótico de un algoritmo.
+\newline
+\newline
+Para ello, tenemos distintas medidas del comportamiento asintótico de la complejidad:
+\newline
+\newline
+\textbf{.} $O$ ($O$ grande) cota superior. 
+\newline
+\newline
+\textbf{.} $\Omega$ (omega) cota inferior. 
+\newline
+\newline
+\textbf{.} $\Theta$ (theta) orden exacto de la función. 
+\newpage
+\subsection{Cota superior. Notación \textit{O}}
+
+La notación \textit{O} sirve para representar el límite o cota superior del tiempo de ejecución de un algoritmo.
+\newline
+\newline
+Más precisamente, la notación \textit{f $\in$ O(g)} expresa que la función \textbf{\textit{f} no crece más rapido que alguna función proporcional a \textit{g}}.
+\newline
+\newline
+En este caso, a \textit{g} se la llama cota superior de \textit{f}.
+\newline
+\newline
+Si para un algoritmo sabemos que $T_{peor} \in O(g)$ se puede asegurar que para inputs de tamaño creciente, \textbf{en todos los casos} el tiempo será a lo sumo proporcional a la cota.
+\newline
+\newline
+Si para un algoritmo sabemos que $T_{prom} \in O(g)$ se puede asegurar que para inputs de tamaño creciente, \textbf{en promedio} el tiempo será a lo sumo proporcional a la cota.
+\newline
+\newline
+Veamos más formalmente la notación \textit{O}.
+\newline
+\newline
+Asumiendo funciones reales no negativas con dominio en los naturales:
+\newline
+\newline
+$f \in O(g)$ significa que \textit{f} no crece más que \textit{g}.  
+\newline
+\newline
+$O(g)$ = \{$f$ $|$ $\exists$ $n_{0}$, $k > 0$ tal que $n \geq n_{0}$ $\Rightarrow$ $f(n)$ $\leq$ $k$ · $g(n)$\} 
+
+\subsubsection{Propiedades de \textit{O}}
+
+A continuación, mencionamos algunas propiedades de la notación \textit{O}:
+\newline
+\newline
+1. Para cualquier función $f$ se tiene que $f \in O(f)$.
+\newline
+\newline
+2. $f \in O(f)$ $\Rightarrow$ $O(f)$ $\subset$ $O(g)$. 
+\newline
+\newline
+3. $O(f)$ $=$ $O(g)$ $\Leftrightarrow$ $f \in O(g)$ y $g \in O(f)$
+\newline
+\newline
+4. Si $f \in O(g)$ y $g \in O(h)$ $\Rightarrow$ $f \in O(h)$.
+\newline
+\newline
+5. Si $f \in O(g)$ y $f \in O(h)$ $\Rightarrow$ $f \in O(min(g,h))$. 
+\newline
+\newline
+6. Regla de la suma: Si $f_{1} \in O(g)$ y $f_{2} \in O(h)$ $\Rightarrow$ $f_{1} + f_{2} \in O(max(g,h))$   
+\newline
+\newline
+7. Regla del producto: Si $f_{1} \in O(g)$ y $f_{2} \in O(h)$ $\Rightarrow$ $f_{1} * f_{2} \in O(g * h)$ 
+\newline
+\newline
+8. Si existe $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $k$, según los valores que tome $k$:
+\newline
+\newline
+a) Si $k \neq 0$ y $k < \infty$, entonces $O(f) = O(g)$  
+\newline
+\newline
+b) Si $k = 0$, entonces $f \in O(g)$, es decir, $O(f) \subset O(g)$ pero sin embargo se verifica que $g \notin O(f)$. 
+\newpage 
+
+\subsubsection{Funciones de complejidad temporal}
+
+Veamos algunas funciones de complejidad temporal. 
+\newline
+\newline
+\textit{O(1)} \textbf{Complejidad constante}: Es independiente de los datos de entrada.
+\newline
+\newline
+\textit{O(lg(n))} \textbf{Complejidad logarítmica}: Suele aparecer en determinados algoritmos con iteración o recursión (por ejemplo, búsqueda binaria). Todos los logaritmos, sea cual sea su base, son del mismo orden, por lo que se representan en cualquier base.
+\newline
+\newline
+\textit{O(n)} \textbf{Complejidad lineal}: Suele aparecer en bucles simples cuando la complejidad de las operaciones internas es constante o en algunos algoritmos con recursión.
+\newline
+\newline
+\textit{O(n lg(n))} En algunos algoritmos Divide \& Conquer (por ejemplo, Mergesort).
+\newline
+\newline
+\textit{O($n^{2}$)} \textbf{Complejidad cuadrática}: Aparece en bucles o recursiones doblemente anidados.
+\newline
+\newline
+\textit{O($n^{3}$)} \textbf{Complejidad cúbica}: En bucles o recursiones triples.
+\newline
+\newline
+\textit{O($n^{k}$)} \textbf{Complejidad polinómica} ($k \geq 1$)
+\newline
+\newline
+\textit{O($2^{n}$)} \textbf{Complejidad exponencial}: Suele aparecer en subprogramas recursivos que contengan dos o más llamadas internas.
+
+\subsection{Cota inferior. Notación $\Omega$}
+
+La notación $\Omega$ sirve para representar el límite o cota inferior del tiempo de ejecución de un algoritmo.
+\newline
+\newline
+Más precisamente, la notación \textit{f $\in$ $\Omega(g)$} expresa que la función \textbf{\textit{f} está acotada inferiormente por alguna función proporcional a \textit{g}}.
+\newline
+\newline
+En este caso, a \textit{g} se la llama cota inferior de \textit{f}.
+\newline
+\newline
+Si para un algoritmo sabemos que $T_{peor} \in \Omega(g)$ se puede asegurar que para inputs de tamaño creciente, el tiempo será, en el peor caso, al menos proporcional a la cota.
+\newline
+\newline
+La notación se usa tambien para dar cotas inferiores para problemas. A veces se puede decir para un problema que \textbf{para cualquier algoritmo que lo resuelva}, $T_{peor} \in \Omega(g)$, lo que significa que cualquier algoritmo que lo resuelva tiene una complejidad, en el peor caso, proporcional a la cota.
+\newline
+\newline
+Veamos más formalmente la notación $\Omega$.
+\newline
+\newline
+$f \in \Omega(g)$ significa que \textit{f} crece al menos como \textit{g}.  
+\newline
+\newline
+$\Omega(g)$ = \{$f$ $|$ $\exists$ $n_{0}$, $k > 0$ tal que $n \geq n_{0}$ $\Rightarrow$ $f(n)$ $\geq$ $k$ · $g(n)$\} 
+
+\subsubsection{Propiedades de $\Omega$}
+
+A continuación, mencionamos algunas propiedades de la notación $\Omega$:
+\newline
+\newline
+1. Para cualquier función $f$ se tiene que $f \in \Omega(f)$.
+\newline
+\newline
+2. $f \in \Omega(f)$ $\Rightarrow$ $\Omega(f)$ $\subset$ $\Omega(g)$. 
+\newline
+\newline
+3. $\Omega(f)$ $=$ $\Omega(g)$ $\Leftrightarrow$ $f \in \Omega(g)$ y $g \in \Omega(f)$
+\newline
+\newline
+4. Si $f \in \Omega(g)$ y $g \in \Omega(h)$ $\Rightarrow$ $f \in \Omega(h)$.
+\newline
+\newline
+5. Si $f \in \Omega(g)$ y $f \in \Omega(h)$ $\Rightarrow$ $f \in \Omega(max(g,h))$. 
+\newline
+\newline
+6. Regla de la suma: Si $f_{1} \in \Omega(g)$ y $f_{2} \in \Omega(h)$ $\Rightarrow$ $f_{1} + f_{2} \in \Omega(g + h)$   
+\newline
+\newline
+7. Regla del producto: Si $f_{1} \in \Omega(g)$ y $f_{2} \in \Omega(h)$ $\Rightarrow$ $f_{1} * f_{2} \in \Omega(g * h)$ 
+\newline
+\newline
+8. Si existe $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $k$, según los valores que tome $k$:
+\newline
+\newline
+a) Si $k \neq 0$ y $k < \infty$, entonces $\Omega(f) = \Omega(g)$  
+\newline
+\newline
+b) Si $k = 0$, entonces $g \in \Omega(f)$, es decir, $\Omega(g) \subset \Omega(f)$ pero sin embargo se verifica que $g \notin O(f)$. 
+
+\subsection{Orden exacto. Notación $\Theta$}
+
+Como última cota asintótica, definiremos los conjuntos de funciones que crecen asintóticamente de la misma forma
+\newline
+\newline
+$\Theta(f)$ = $O(f)$ $\cap$ $\Omega(f)$
+\newline
+\newline
+Intuitivamente, $t \in \Theta(f)$ indica que $t$ está acotada por $f$ tanto superior como inferiormente. 
+\newline
+\newline
+Más precisamente, la notación \textit{f $\in$ $\Theta(g)$} expresa que la función \textit{f} crece (a partir de cierto momento) igual que \textit{g}.
+\newline
+\newline
+Veamos más formalmente la notación $\Theta$.
+\newline
+\newline
+$\Theta(g)$ = \{$f$ $|$ $\exists$ $n_{0}$, $k_{1},k_{2} > 0$ tal que $n \geq n_{0}$ $\Rightarrow$ $k_{1}$ · $g(n)$ $\leq$ $f(n)$ $\leq$ $k_{2}$ · $g(n)$\} 
+
+\subsubsection{Propiedades de $\Theta$}
+
+A continuación, mencionamos algunas propiedades de la notación $\Theta$:
+\newline
+\newline
+1. Para cualquier función $f$ se tiene que $f \in \Theta(f)$.
+\newline
+\newline
+2. $f \in \Theta(g)$ $\Rightarrow$ $\Theta(f)$ $=$ $\Theta(g)$. 
+\newline
+\newline
+3. $\Theta(f)$ $=$ $\Theta(g)$ $\Leftrightarrow$ $f \in \Theta(g)$ y $g \in \Theta(f)$
+\newline
+\newline
+4. Si $f \in \Theta(g)$ y $g \in \Theta(h)$ $\Rightarrow$ $f \in \Theta(h)$.
+\newline
+\newline
+5. Si $f \in \Theta(g)$ y $f \in \Theta(h)$ $\Rightarrow$ $f \in \Theta(max(g,h))$. 
+\newline
+\newline
+6. Regla de la suma: Si $f_{1} \in \Theta(g)$ y $f_{2} \in \Theta(h)$ $\Rightarrow$ $f_{1} + f_{2} \in \Theta(max(g + h))$   
+\newline
+\newline
+7. Regla del producto: Si $f_{1} \in g + \Theta(g)$ y $f_{2} \in \Theta(h)$ $\Rightarrow$ $f_{1} * f_{2} \in \Theta(g * h)$ 
+\newline
+\newline
+8. Si existe $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $k$, según los valores que tome $k$:
+\newline
+\newline
+a) Si $k \neq 0$ y $k < \infty$, entonces $\Theta(f) = \Theta(g)$  
+\newline
+\newline
+b) Si $k = 0$, entonces $\Theta(g) \neq \Theta(f)$ porque ambas funciones no están creciendo al mismo ritmo o tasa.
+\newpage
