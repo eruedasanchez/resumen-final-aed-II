@@ -10,6 +10,10 @@
 \usepackage{aed2-tad,aed2-symb,aed2-itef}
 \usepackage{algorithmicx, algpseudocode, algorithm}
 \usepackage{graphicx}
+\usepackage{graphicx} 
+\graphicspath{ {./images/} }
+\usepackage[rightcaption]{sidecap}
+\usepackage{wrapfig}
 
 \materia{Algoritmos y Estructuras de Datos II}
 \titulo{Apunte examen final}
@@ -234,1587 +238,190 @@ Las secciones de un TAD son:
 \newline
 \newline
 \textbf{.} Axiomas: Son las reglas que nos explican el comportamiento de las funciones o describen el comportamiento desde el punto de vista semántico de un objeto del TAD. 
-
-
-
 \newpage
 
+\section{Clase Teórica 02. Especificación II}
 
+\subsection{Introducción}
 
+La especificación con TADs no es la única forma de hacerlo.
+\newline
+\newline
+Siempre es posible la utilización de \textit{métodos informales}
+\newline
+\newline
+Los métodos informales tienen un menor costo inicial (son mas fáciles de construir y utilizar) pero justamente por ello, no permiten encontrar errores e inconsistencias en la especificación, ni la aplicación de técnicas automáticas para la validación (en contraposición a los métodos formales con la inducción estructural por ejemplo), etc.
+\newline
+\newline
+El costo de reparar un defecto aumenta con el tiempo entre la introducción y el descubrimiento.
+\newline
+\newline
+En cambio, los \textit{métodos formales} no cuentan con esos problemas pero existen de variado tipo y color con ventajas y desventajas para cada caso. Veamos alguno de ellos:
+\newline
+\newline
+\textbf{.} Algebraicos: el sistema se especifica mediante la definición de un álgebra con sus términos, operaciones, axiomas, etc. Los TADs entran en esta categoría.
+\newline
+\newline
+\textbf{.} Operacionales: la especificación se realiza en un lenguaje imperativo de alto nivel.
+\newline
+\newline
+\textbf{.} Basados en estados: el sistema se modela como un conjunto de estados posibles y las relaciones entre ellos. 
 
+\subsection{Resolución de problemas}
 
+Retomando el ejercicio del \textit{restaurant}, comenzamos con una descripción del problema y terminamos con el modelao del mismo. 
+\newline
+\newline
+Pero, ¿Qué ocurrió en el medio?
+\newline
+\newline
+¿Qué pasó con, por ejemplo, el dueño del restaurant? 
+\newline
+\newline
+El dueño no está porque no es necesario que esté. Utilizamos un proceso llamado \textbf{abstracción}. La abstracción consiste en identificar los aspectos importantes de un fenomeno e ignorar el resto de los detalles.
+\newline
+\newline
+También utilizamos otro concepto: el de \textbf{modularidad}. Los TADs se incluyen de manera tal que no sea necesario (ni conveniente) escribir una gran especificación que mezcle todo y dificulte la comprensión. 
+\newline
+\newline
+El restaurant que especificamos, ¿es eficiente?
+\newline
+\newline
+La pregunta no tiene sentido en una etapa de especificación porque justamente la especificación define que es lo que tenemos que computar, que es lo que tenemos que calcular para resolver nuestro problema y no como lo vamos a hacer. 
+\newline
+\newline
+Nos interesa describir el \textbf{el qué} y no \textbf{el cómo}.
 
+\subsection{Axiomatización}
 
-\section{Capitulo 1. Especificación}
+Las operaciones son funciones, asi que debemos evitar inconsistencias. Para lograr esto, evitaremos la \textbf{sobre especificación}. Es decir, cuando tenemos varias formas de decir lo mismo.
+\newline
+\newline
+Veamos la \textit{sobre especificación} con un ejemplo.
+\newline
+\newline
+\textbf{.} \TipoVariable{prim\_excepto\_3(3 $\puntito$ S)} $\equiv$ 21
+\newline
+\newline
+\textbf{.} \TipoVariable{prim\_excepto\_3(a $\puntito$ S)} $\equiv$ a
+\newline
+\newline
+En este ejemplo, quiero devolver el primer elemento de la secuencia \TipoVariable{S} excepto que cuando el primer elemento es un 3, devuelvo cualquier número arbitrario, por ejemplo, el 21. 
+\newline
+\newline
+Observemos que estamos haciendo una especie de \textit{pattern matching} porque si la secuencia comienza con 3, elijo la primer opción y en cualquier otro caso, la segunda. Pero tenemos valores contradictorios en el caso que el primer elemento de la secuencia sea el 3 porque nada nos asegura que vaya por la primer o segunda opción.
+\newline
+\newline
+Tampoco podemos especificar sobre los casos restringidos ya que están fuera del dominio.
+\newline
+\newline
+No debemos \textbf{subespecificar}. Es decir, dejar de lado y no dar definiciones precisas de ciertos aspectos particulares de un determinado axioma. Veamos el siguiente ejemplo.
+\newline
+\tadOperacion{premiar}{torneo/t, jugador/j}{premio}{}
+\medskip
+\tadAlinearAxiomas{premiar(t,j)}
+\medskip
+\tadAxioma{premiar(t,j)}{seleccionarMejorPremio(premiosDisponibles(t))}
+\medskip
+\tadAxioma{premiar(t,j)}{dameUno(premiosDisponibles(t))}
+\medskip
+\medskip
+Observemos que la segunda axiomatización es mucho más debil (está \textit{subespecificada}) que la primera dado que ésta es mucho mas precisa porque pide el mejor premio mientras que la segunda simplemente devuelve un premio. 
+\newline
+\newline
+Entonces, ¿Hasta cuánto debemos axiomatizar?
+\newline
+\newline
+Una regla práctica consiste en axiomatizar todos los observadores básicos sobre todos los generadores no restringidos, para asegurar que cubrimos todo el dominio.
+\newline
+\newline
+En general, aunque podría haber excepciones, el resto de las operaciones deberían poder escribirse en base a los observadores básicos.
 
-\subsection{Introduccion}
+\subsection{Algunas libertades}
 
-Tipicamente, nos enfrentamos a la siguiente situacion. Tenemos un $problema$ que no es presentado en una manera difusa, vaga y se pretende que lo podamos resolver a traves de una computadora de forma eficiente. Lo problematico es transitar este recorrido que va desde la definicion informal del problema a su resolucion computacional. Este camino tiene una serie de pasos que, tipicamente, los llamamos $especificacion$, $disenio$ e $implementacion$. 
+Si usamos todo lo que aparece mencionado, no es necesario escribir la clausula \textbf{usa}.
+\newline
+\newline
+El \textbf{exporta} tiene un valor por omisión: los géneros, los observadores básicos y los generadores. Además, cuando se exporta algo más, alcanza con aclarar qué es lo extra que se exporta.
+\newline
+\newline
+En la \textbf{axiomatización}:
+\newline
+\newline
+\textbf{.} Todas las variables libres se suponen universalmente cuantificadas.
+\newline
+\newline
+\textbf{.} Sólo cuantificamos explícitamente cuando podría generarse confusión.
 
-%\begin{figure}[h]
-%	\centering
-%	\includegraphics[width=0.7\textwidth]{etapas-res-problem}
-%	\caption{Etapas en la resolucion de un problema}
-%	\label{drivers1}
-%\end{figure}
+\subsection{Elección de generadores y observadores}
 
-En esta materia vamos a estudiar algoritmos y estructuras de datos. Recordemos que es un \textbf{algoritmo}.
+Conviene que el conjunto de observadores y generadores sean \textit{minimales}. 
 \newline
 \newline
-Un \textbf{algoritmo} es un procedimiento para resolver un problema, descripto por una secuencia ordenada y finita de pasos bien determinados que nos llevan de un estado inicial a uno final \newline
-\newline
-Un \textbf{algoritmo} siempre debe brindar una respuesta, siendo posible que la respuesta sea $"$no hay respuesta$"$. La descripcion debe ser clara y precisa, sin dejar lugar a la utilizacion de la intuicion o la creatividad. Por ejemplo, una receta es un algoritmo si no dice $"$sal a gusto$"$.  
+Si los generadores no lo fuesen, se corre el riesgo de producir inconsistencias.
 \newline
 \newline
-Los lenguajes naturales tienen una semantica \textbf{difusa}. Esto quiere decir que una misma oracion puede interpretarse de dos o mas formas (ambiguedad), e incluso hay palabras que tienen varias aceptaciones (polisemia). Por lo tanto, para poder resolver un problema formalmente, primero debemos tener una descripcion del mismo en un lenguaje formal de $especificacion$ que sea preciso, es decir, que pueda interpretarse sin lugar a dudas. Este salto entre un lenguaje formal y uno natural se conoce como \textbf{brecha semantica}.
+Idem con los observadores. Además, la redundancia atenta contra la claridad.
 \newline
 \newline
-Es importante que al momento de describir los problemas no caigamos en la \textbf{sobreespecificacion}, ya que si bien podemos dar una descripcion precisa y libre de ambiguedades dando todos los detalles acerca de su representacion, estariamos limitando nuestras opciones de diseño. Notemos que cuando estamos especificando un problema nos interesa describir $"$el que$"$ y no $"$el como$"$, por lo que no tiene sentido preguntarnos en esta etapa si la especificacion es o no $eficiente$.
+Los lenguajes naturales tienen una \textit{semántica difusa} mientras que los \textit{lenguajes formales} de especificación son rigurosos, o dicho de otra manera, tienen una \textit{semántica precisa}. A esta diferencia se la conoce como \textbf{semantic gap} o \textbf{brecha semántica}.
 \newline
 \newline
-La herramienta principal que utilizaremos para especificar problemas se conoce como \textbf{Tipos Abstractos de Datos (TADs)} que son modelos matematicos que se construyen con el fin de exponer los aspectos revelantes del problema bajo analisis. Decimos que un ente matematico es un modelo de nuestra teoria (extension de las teorias de primer orden que incorpora el concepto de genero) si hace corresponder a cada genero del TAD un conjunto de valores y a cada operacion una funcion total. Este lenguaje axiomatico permite estudiar otras formas de demostracion muy utiles como la $induccion$ $estructural$ y cuenta con la ventaja que no requiere de tipos primitivos que deben definirse por fuera del mismo, ademas de ser una herramienta tanto flexible como general. Veamos un ejemplo:
+Como primer paso para vincular los mundos \textit{informales} con los \textit{formales} utilizaremos una herramienta llamada \textbf{igualdad observacional}.
+\newpage
+
+\subsection{Igualdad observacional (como herramienta)}
+
+La igualdad observacional es un predicado entre instancias del tipo que nos dice cuando son iguales (desde el punto de vista de su comportamiento).
 \newline
 \newline
-\textbf{Descripcion del problema:} El dueño de un restaurant quiere asegurarse de que los pedidos sean atendidos con prolijidad. Los mozos llevan los pedidos hasta la cocina donde los colocan. Cuando el cocinero se libera, saca el primer pedido y prepara el plato indicado. El dueño quiere saber cual es el proximo plato a preparar, cuantos pedidos atiende el cocinero cada dia y cual fue el dia con menos pedidos.
+Notemos que \TipoVariable{Ag(1, Ag(2, $\emptyset$))} es sintácticamente distinto a \TipoVariable{Ag(2, Ag(1, $\emptyset$))} aunque desde el punto de vista de comportamiento nos gustaría que sean iguales. 
 \newline
 \newline
-Hay ciertos elementos en esta descripcion que realmente no son necesarios para el modelado del problema. Por ejemplo, en la descripcion del problema se nos habla de un $due$ñ$o$ pero este no realiza ninguna operacion por lo que no nos interesa modelarlo. Ahora, nos toca realizar un proceso de \textbf{abstraccion} para identificar aquellos elementos y operaciones que terminan definiendo al problema. En particular, en este problema podemos identificar el uso de platos, dias y un restaurant ¿Que podemos decir sobre esos elementos?
+Entonces, para poder comparar las instancias del ejemplo anterior vamos a utilizar la igualdad observacional que se va a valer de una serie de funciones (los observadores básicos) los cuales van a prestar atención a detalles particulares de esas instancias para poder compararlas.
 \newline
 \newline
+Por lo tanto, la igualdad observacional nos permite:
 \newline
 \newline
-\textbf{.} Los dias pasan por lo que vamos a querer contarlos. Para modelar este comportamiento nos alcanza con renombrar el TAD \tadNombre{DIA} como \tadNombre{NAT}: TAD \tadNombre{DIA} es \tadNombre{NAT}  
+\textbf{.} Deducir cuáles son los observadores necesarios.
 \newline
 \newline
-\textbf{.} Solo nos interesa poder diferenciar los platos entre si. TAD \tadNombre{PLATO} es \tadNombre{STRING}.
+\textbf{.} Explicitar cómo se combinan en un único predicado.
+
+\subsection{Congruencia}
+
+Imaginemos el TAD \tadNombre{Negocio}.
 \newline
-\newline
-¿Por que tenemos que renombrar estos TADs y no utilizar STRING o NAT directamente? Lo que queriamos hacer era utilizar un lenguaje de especificacion que nos permita abstraer ciertos conceptos, por lo que usar STRING directamente no seria correcto. Para el restaurant no tiene sentido un STRING, pero los PLATOS si. De esta manera, nos alejamos de la manera en la que representamos los datos en una computadora y nos acercamos a la definicion del problema.
-\newline
-\newline
-Para especificar un TAD, primero debemos definir la \textbf{signatura} del mismo, es decir, las operaciones que ofrece el TAD.
-\newline
-\newline
-\begin{tad}{\tadNombre{Restaurant}}
+\begin{tad}{\tadNombre{Negocio}}
 	\medskip	
-	\textbf{generos} restaurant
-	\newline
-	
-	\textbf{operaciones}
+        \textbf{generadores}
 	\medskip
-	\tadOperacion{inaugurar}{}{restaurant}{}
+	\tadOperacion{inaugurar}{}{negocio}{}
 	\medskip
-	\tadOperacion{cantPlatosPendientes}{restaurant}{nat}{}
+	\tadOperacion{vender}{negocio, producto}{negocio}{}
 	\medskip
-	\tadOperacion{proximoPedido}{restaurant/r}{plato}{cantPlatosPendientes($r$) $>$ 0}
+        \medskip
+        \textbf{observadores basicos}
+        \medskip
+	\tadOperacion{total\_vendido}{negocio}{nat}{}
 	\medskip
-	\tadOperacion{prepararPlato}{restaurant/r}{restaurant}{cantPlatosPendientes($r$) $>$ 0}
-	\medskip
-	\tadOperacion{tomarPedido}{restaurant, plato}{restaurant}{}
-	\medskip
-	\tadOperacion{nuevoDia}{restaurant}{restaurant}{}
-	\medskip
-	\tadOperacion{diaActual}{restaurant}{dia}{}
-	\medskip
-	\tadOperacion{platosPorDia}{restaurant/r, dia/d}{nat}{$d$ $\leq$ diaActual($r$)}
-	\medskip
-	\tadOperacion{diaMenosPedidos}{restaurant}{dia}{}
+        \medskip
+        \textbf{otras operaciones}
+        \medskip
+\tadOperacion{ventas}{negocio}{secu(producto)}{}
 	\medskip
 \end{tad}
 \medskip
 \medskip
-La signatura nos define que operaciones tiene cada tipo, cuales son sus parametros y que tipos devuelven. Notemos que las operaciones de los TADs son \textbf{funciones totales}, o sea, funciones que estan definidas para todos los valores del dominio. Por eso, en casos como \TipoVariable{prepararPlato()} tuvimos que restringir el dominio. En esta etapa, no seria correcto utilizar una convencion de devolver -1 para indicar que no existe resultado (esto podria incluirse en la etapa de diseño para el manejo de errores).
+De acuerdo con esa especificación dos negocios van a ser iguales si su total vendido coincide. Sin embargo, podría haber instancias cuyo total vendido coincida pero la secuencia de productos que devuelve la operación ventas no.
 \newline
 \newline
-Con esto, definimos la \textbf{sintactica} del TAD y lo que nos falta es darle \textbf{semantica} a estas operaciones. Para ello, vamos a definir los \textbf{axiomas} del TAD. Los $axiomas$ son $formulas$ $bien$ $formadas$, es decir, predicados aplicados a terminos (variables, constantes o a lo que resulta de aplicar las operaciones del TAD sobre otros terminos). En general, los axiomas van a ser ecuaciones como la siguiente:
+Formalmente, la función \TipoVariable{ventas()} rompe la \textbf{congruencia}. Es decir, diferencia elementos que quedan en la misma clase de equivalencia de acuerdo con la igualdad observacional (o lo que es lo mismo, de acuerdo con los observadores básicos).
 \newline
 \newline
-($\forall$ $r$:restaurant) (diaActual(nuevoDia($r$))) $\equiv$ diaActual($r$) + 1
+Desde el punto de vista de modelado, o bien desaparece \TipoVariable{ventas()} o bien se vuelve un observador básico, y por ende, miembro de la igualdad observacional.
 \newline
 \newline
-De esta manera, podemos darle un significado a la operacion \TipoVariable{diaActual} cuando tenemos una entrada de la forma \TipoVariable{nuevoDia($r$)} (en este caso significa \TipoVariable{diaActual($r$) + 1}). 
+Si no hacemos eso, se genera una \textbf{inconsistencia}: hay dos instancias del TAD \tadNombre{Negocio} que son equivalentes según los observadores básicos, pero que son diferenciables de acuerdo a los axiomas efectivamente escritos. 
 \newpage
-Comenzamos con los axiomas que corresponden al TAD \tadNombre{RESTAURANT}.    
-\newline
-\begin{tad}{\tadNombre{Restaurant}}
-\medskip
-\tadAxiomas[$\forall$ $r$ : \tadNombre{Restaurant}, $p$ : \tadNombre{Plato}, $d$ : \tadNombre{Dia}]
-\medskip
-\tadAlinearAxiomas{diaActual(tomarPedido(r,p))}
-\medskip
-\tadAxioma{diaActual(inaugurar())}{0}
-\medskip
-\tadAxioma{diaActual(nuevoDia(r))}{diaActual(r)+1}
-\medskip
-\tadAxioma{diaActual(tomarPedido(r,p))}{diaActual(r)}
-\medskip
-\medskip
-
-\tadAlinearAxiomas{cantPlatosPendientes(tomarPedido(r,p))}
-\medskip
-\tadAxioma{cantPlatosPendientes(inaugurar())}{0}
-\medskip
-\tadAxioma{cantPlatosPendientes(tomarPedido(r,p))}{cantPlatosPendientes(r)+1}
-\medskip
-\tadAxioma{cantPlatosPendientes(prepararPlato(r))}{cantPlatosPendientes(r)-1}
-\medskip
-\medskip
-
-\tadAlinearAxiomas{cantPlatosPendientes(tomarPedido(r,p))}
-\medskip
-\tadAxioma{proximoPedido(r)}{ult(secuenciaDePedidos(r))}
-\medskip
-\medskip
-
-\tadAlinearAxiomas{secuenciaDePedidos(tomarPedido(r,p))}
-\medskip
-\tadAxioma{secuenciaDePedidos(inaugurar())}{$\secuvacia$}
-\medskip
-\tadAxioma{secuenciaDePedidos(tomarPedido(r,p))}{p $\puntito$ secuenciaDePedidos(r)}
-\medskip
-\tadAxioma{secuenciaDePedidos(prepararPlato(r))}{com(secuenciaDePedidos(r))}
-\medskip
-\medskip
-
-\tadAlinearAxiomas{platosPorDia(d, tomarPedido(r,p))}
-\medskip
-\tadAxioma{platosPorDia(d, inaugurar())}{0}
-\medskip
-\tadAxioma{platosPorDia(d, tomarPedido(r,p))}{platosPorDia(d,r)}
-\medskip
-\tadAxioma{platosPorDia(d, prepararPlato(r))}{\IF diaActual(r) = d THEN platosPorDia(d,r)+1 ELSE platosPorDia(d,r) FI}
-\medskip
-\tadAxioma{platosPorDia(d, nuevoDia(r))}{\IF diaActual(r)+1 = d THEN 0 ELSE platosPorDia(d,r) FI}
-\medskip
-\medskip
-
-Por ultimo, vamos a axiomatizar la funcion diaMenosPedidos(r) de la siguiente forma:
-\newline
-\newline
-($\forall$ $d'$:dia) (0 $\leq$ $d'$ $\leq$ diaActual($r$) $\impluego$ platosPorDia($r$, diaMenosPedidos($r$)) $\leq$ platosPorDia($r,d'$))
-\medskip
-\end{tad}
-
-Notemos que este ultimo axioma no es un axioma ecuacional. El motivo es que en la descripcion del problema no se nos dice que hacer en caso de empate, por lo que si en la etapa de especificacion definimos cual debe ser el criterio de desempate, estariamos sobre-especificando. Otra operacion que esta axiomatizada de esta forma es \TipoVariable{dameUno} del TAD \tadNombre{Conjunto($\alpha$)}. En la materia, se considera incorrecta cualquier especificacion no ecuacional, y debe utilizarse la funcion \TipoVariable{dameUno} para especificar este tipo de casos.
-\newline
-\newline
-Al momento de axiomatizar, una de las primeras cosas que tenemos que tener en cuenta es que las operaciones que estamos especificando son funciones, asi que deberiamos evitar cualquier tipo de inconsistencias. En particular, tenemos que tener en cuenta que no se cuenta con pattern matching, dicho de otro modo, todos los axiomas valen a la vez. Tampoco debemos especificar sobre los casos restringidos, ya que estan fuera del dominio. Es importante que no caigamos en la sobre-especificion ni en la sub-especificacion (no decir que valores toma la funcion para ciertos valores). 
-\newline
-\newline
-Ademas, se espera mantener el encapsulamiento entre los distintos TADs, por lo que si trabajamos con instancias de un TAD en las operaciones de otro, manipularemos esas instancias a traves de sus observadores (y no sus generadores). Por ejemplo: 
-\newpage
-\begin{tad}{\tadNombre{Restaurant}}
-	\medskip
-	\medskip
-	
-	\tadAlinearAxiomas{platosDeCiertoPrecio(r,c,x)}
-	\medskip
-	\tadAxioma{platosDeCiertoPrecio(r,c,x)}{\IF $\emptyset?$(c) THEN $\emptyset$ ELSE {\IF precio(dameUno(c),r) = x THEN Ag(dameUno(c),platosDeCiertoPrecio(r,sinUno(c),x)) ELSE platosDeCiertoPrecio(r,sinUno(c),x) FI}FI}
-	\medskip
-	\medskip
-	Es preferible a
-	\medskip
-	\medskip
-	\tadAlinearAxiomas{platosDeCiertoPrecio(r,Ag(p,c),x)}
-	\medskip
-	\tadAxioma{platosDeCiertoPrecio(r, $\emptyset$, x)}{$\emptyset$}
-	\medskip
-	\tadAxioma{platosDeCiertoPrecio(r,Ag(p,c),x)}{\IF precio(p,r) = x THEN Ag(platosDeCiertoPrecio(r,c,x)) ELSE platosDeCiertoPrecio(r,c,x) FI}
-	\medskip
-\end{tad}
-\medskip
-\medskip
-Ahora, veamos mas en detalle las distintas secciones que tiene un TAD: 
-\newline
-\newline
-\textbf{.} \textbf{Parametros formales:} En \tadNombre{Conjunto($\alpha$)}, $\alpha$ denota un tipo arbitrario, no especificado. $\alpha$ se dice parametro formal del TAD \tadNombre{Conjunto($\alpha$)}. 
-\newline
-\newline
-\textbf{.} \textbf{Generos:} un genero es el nombre que recibe el conjunto de valores del tipo. Hay una sutil diferencia entre el nombre del TAD y del genero. Si se quiere, pensar en el monoide conmutativo ($\mathbb{N}$, +) (TAD) y en el conjunto de los numeros naturales (genero). 
-\newline
-\newline
-\textbf{.} \textbf{Usa:} hace referencia a las operaciones y generos de otros TADs que utiliza el TAD que queremos definir. Estas operaciones y generos tienen que estar exportados en el otro TAD. Si se usa todo lo que aparece mencionado, podemos obviar esta clausula.
-\newline
-\newline
-\textbf{.} \textbf{Exporta:} indica las operaciones y generos que se deja a disposicion de los usuarios del tipo. Esta clausula tiene un valor por omision: los generos, los observadores basicos y los generadores. 
-\newline
-\newline
-\textbf{.} \textbf{Igualdad Observacional:} La igualdad observacional es un predicado entre instancias del tipo que nos dice cuando son iguales desde el punto de vista de su comportamiento (semantica) y no desde el punto de vista de la sintactica. Por ejemplo, la instancia \TipoVariable{Ag(1, Ag(2,$\emptyset$))} es observacionalmente igual a \TipoVariable{Ag(2, Ag(1,$\emptyset$))} a pesar de ser sintacticamente distintas. Para definir la igualdad observacional se utilizan a los observadores basicos. La $\igobs$ es un predicado del metalenguaje, y permite agrupar a las distintas instancias en una misma clase de equivalencia. Vamos a exigir que todas las instancias que sean equivalentes de acuerdo con la igualdad observacional mantengan la congruencia al aplicar cualquier funcion. Recordemos que una funcion $f$ es congruente con respecto a una relacion de equivalencia $"$$\backsim$$"$ si y solo si: ($\forall$ $x,y$)($x \backsim y$ $\leftrightarrow$ $f(x) \backsim f(y)$). 
-\newline
-\newline
-\textbf{.} \textbf{Generadores:} son aquellas operaciones que permiten construir instancias del TAD. Es necesario que el conjunto de generadores este bien definido, es decir, que entre todos los generadores podamos construir cualquier instancia posible del TAD. Un problema menor, no tan grave, es que una instancia del TAD pueda ser construida de mas de una manera. Es importante notar que al aplicar un generador sobre una instancia de un TAD \textbf{no se esta modificando} la instancia que se recibe como parametro, sino que se genera una nueva instancia basada en la anterior. Recordemos que estamos trabajando con $funciones$, por lo que no existe la nocion de $estado$, y que el paradigma funcional trabaja bajo el concepto de \textbf{transparencia referencial}, es decir, que los resultados de las funciones solo dependen de sus argumentos. 
-\newline
-\newline
-\textbf{.} \textbf{Observadores basicos:} son aquellas operaciones que nos permiten diferenciar instancias del TAD en clases de equivalencia. En general, se axiomatizan en base a todos los generadores.
-\newline
-\newline
-\textbf{.} \textbf{Extiende}
-\newline
-\newline
-\textbf{.} \textbf{Otras operaciones:} son el resto de las operaciones que se necesiten declarar en un TAD. No deberia ocurrir que una funcion que aparezca en esta seccion devuelva valores que rompan con la congruencia del TAD (si esto ocurre, habria que repensar los observadores). En general, se axiomatizan en base a los observadores, aunque es posible que en algunos casos sea conveniente axiomatizarlos en base a los generadores. 
-\newline
-\newline
-\textbf{.} \textbf{Axiomas:} son las reglas que describen el comportamiento desde el punto de vista semantico de los elementos del TAD. 
-\newline
-\newline
-Es preferible que el conjunto de generadores y el de los observadores sean \textbf{minimales}, aunque se permite que los generadores no sean minimales si eso facilita la axiomatizacion. Si estos no lo fuesen, se corre el riesgo de producir inconsistencias y, ademas, la redundancia atenta contra la claridad.
-
-\subsection{Comportamiento automatico}
-
-La idea del comportamiento automatico es no modelar operaciones para casos que se dan de forma implicita o automatica. Por ejemplo, si cada vez que se da cierta condicion $A$ se produce el efecto $B$ a traves de una accioon $C$ que se da de $forma$ $automatica$,seguramente no haga falta haceralusion a la accion $C$ de ninguna forma para modelar correctamente el objeto de estudio. Veamos un ejemplo.
-\newline
-\newline \textbf{Descripcion del Problema:} Se quiere especificar el comportamiento de una fabrica de empanadas que esta totalmente automatizada. A medida que se encuentran listas, las empanadas van saliendo de una maquina una a una y son depositadas en una caja para empanadas. En la caja caben 12 empanadas y cuando esta se llena, es \textbf{automaticamente} despachada y reemplazada por una caja vacia. Se quiere saber cuantas cajas de empanadas se despacharon en total y cuantas empanadas hay en la caja que esta actualmente abierta. El enunciado nos dice que cuando la caja actual se llena es $automaticamente$ despachada y reemplazada por una caja vacia. Por lo tanto, no debemos definir una operacion de \TipoVariable{despacharCaja}, ya que estariamos permitiendo la existencia de instancias en las que esto no ocurra. El mayor impacto que tiene el comportamiento automatico sobre la especificacion de un problema es en los axiomas, porque este comportamiento debe quedar plenamente descripto en los mismos. En resumen, cuando alguna parte del comportamiento del TAD debe ser automatica, no deberiamos:
-\newline
-\newline
-\textbf{.} Especificar una accion manual para este comportamiento.
-\newline
-\newline
-\textbf{.} Permitir que existan instancias del TAD en las que el comportamiento deberia haberse aplicado y no se hizo,
-\newline
-\newline
-\textbf{.} restringir acciones que requieran que suceda el comportamiento, ya que este es automatico(no existe ninguna instancia para la cual el comportamiento no se haya dado).
-\newpage
-
-\section{Capitulo 2. Diseño}
-
-\subsection{Analisis de complejidad}
-
-Hasta ahora, estuvimos enfocandonos en modelar correctamente un problema describiendo, mediante un lenguaje formal, $que$ es lo que necesitamos resolver. En esta seccion, vamos a orientarnos hacia el $como$ resolver el problema, es decir al $dise$ñ$o$ de la solucion. Para poder elegir una forma adecuada de resolverel problema, debemos tener alguna medida de $eficiencia$, es decir, cuantos recursos requiere el algoritmopara ejecutar. Algunos recursos que se utilizan habitualmente como medida de eficiencia son el \textbf{tiempo de ejecucion}, el uso de \textbf{memoria}, cantidad de procesadores, utilizacion de la red de comunicaciones, etc. Nos podriamos preguntar si es posible optimizar todos estos criterios al mismo tiempo. En general, esto no va a ser posible, ya que el uso de estos recursos suele entrar en conflicto (tenemos un $trade-off$ entre la utilizacion de los distintos recursos). Por lo tanto, vamos a tener muchas soluciones distintas de un mismo problema, que optimicen distintos recursos, y que nos seran de utilidad bajo distintos $contextos$ $de$ $uso$. El recurso que mas nos va a interesar es el tiempo de ejecucion y, en segundo lugar, el espacio utilizado. Esto se debe a que el tiempo no puede ser recuperarse, mientras que el espacio en la memoria si.  
-\newline
-\newline
-Necesitamos alguna estrategia para poder medir la eficiencia de los distintos algoritmos. Una primer estrategia es la \textbf{empirica} ($a$ $posteriori$), que consiste en programar las distintas soluciones y probarlas con la ayuda de una computadora, para un conjunto arbitrario de instancias. El problema de este enfoque es que para poder comparar cualquier algoritmo con otro, primero debemos implementarlo (lo cual lleva tiempo) y encima los resultados que obtenemos no son generales, ya que dependen del lenguaje de programacion, la maquina sobra la que se ejecuta, las posibles optimizaciones utilizadas y las instancias
-particulares que se utilizaron. Nos gustaria tener una medida mas general, que sea independiente de todas estas variables.
-\newline
-\newline
-Para ello, vamos a medir la complejidad algoritmica de forma \textbf{teorica} ($a$ $priori$), que nos permita estimar lo que tardaria la ejecucion de un algoritmo, sin tener que ejecutarlo ni implementarlo. Esta medida vale para instancias de cualquier tamaño, es independiente del lenguaje de programacion y de la maquina en la que se ejecuta. Lo primero que necesitamos para independizarnos de una computadora en particular es tener un \textbf{modelo de computo}. Vamos a inventar una maquina teorica, ideal, cuyas
-caracteristicas sean consensuadas, y vamos a asociar la complejidad algoritmica a esta maquina teorica.
-\newline
-Para que el analisis valga para instancias de cualquier tamaño, vamos a definir la medida de complejidad en funcion del \textbf{tamaño} de las instancias y no en funcion del valor de instancias particulares, enfocandonos en un analisis \textbf{asintotico} de la complejidad.
-
-\subsubsection{Modelo de computo}
-
-Estamos buscando una medida que sea general, valida para distintas implementaciones del algoritmo e independiente de la maquina en la que se ejecuta. Con este objetivo en mente, vamos a inventar una maquina teorica que vamos a usar como $"$banco de pruebas$"$ para la ejecucion (teorica) del algoritmo. Esta maquina ideal nos va a permitir definir los conceptos de tiempo de ejecucion y espacio de memoria utilizado. Vamos a entender al tiempo de ejecucion como la cantidad de pasos o instrucciones que se ejecutan en la maquina teorica para resolver una instancia del problema. De forma similar, podemos medir el consumo de memoria de un algoritmo en funcion de la cantidad de posiciones de memoria
-utilizados en una ejecucion sobre la maquina teorica.
-\newline
-\newline
-Para definir una unidad de tiempo en la maquina teorica, vamos a utilizar el concepto de \textbf{operaciones elementales} (OE). Las operaciones elementales son aquellas que $"$tardan$"$ una cantidad constante de unidades de tiempo en ejecutarse en el modelo de maquina que estamos definiendo. En general, vamos a tener un conjunto reducido de operaciones elementales y un conjunto de reglas para calcular cuanto tardan aquellas operaciones que no son elementales.
-\newline
-\newline
-En principio, no existen operaciones cuyo tiempo de ejecucion sea independiente de la longitud de sus operandos. Sin embargo, bajo el \textbf{modelo uniforme}, podemos asumir que los operandos envueltos en las instancias son de un tamaño $razonable$, y podemos tomar al tiempo de ejecucion de una operacion elemental sobre cualquier operando como constante. Por otro lado, cuando trabajamos con operandos que pueden crecer de forma arbitraria, nos conviene pensar bajo el \textbf{modelo logaritmico}. La idea es que si bien no es razonable asumir constante el tiempo de una operacion para operandos de cualquier longitud (incluso si es elemental), si podemos asumir que el tiempo de una operacion elemental es constante para operandos de 1 bit. Luego, podemos medir el tiempo de ejecucion de cada operacion en funcion del tamaño de los operandos, medido en \textbf{bits}. Vamos a trabajar bajo el modelo uniforme y consideraremos como operaciones elementales a las operaciones aritmetico-logica basicas (suma, division, multiplicacion, AND, OR), las comparaciones logicas, las transferencias de control y las asignaciones a variables de tipos basico.
-\newline
-\newline
-Vamos a utilizar como medida del tiempo de ejecucion una funcion $t(I)$ que mida la cantidad de operaciones elementales que se ejecutan para una instancia particular $I$, considerando que el tiempo de una OE es de una \textbf{unidad}. Para el analisis del tiempo de ejecucion de un algoritmo, vamos a ver cuanto cuestan las operaciones individuales, para luego combinar estos costos segun la estructura de control involucrada, llamadas a procedimientos y llamados recursivos. Vamos a definir que si $P_{1}$ y $P_{2}$ son dos
-fragmentos sucesivos de un algoritmo, el costo total del algoritmo nos queda $t(A)$ = $t(P_{1})$ $+$ $t(P_{2})$, sin importar si se tratan de instrucciones simples o complicados sub-algoritmos. Notemos que el tiempo de ejecucion de las llamadas a procedimientos recursivos va a dar lugar a ecuaciones de recurrencia, por ejemplo, $T(n)$ = $n$ $+$ $T(n - 1)$, que veremos como se resuelven mas adelante (ver Divide and Conquer).
-
-\subsubsection{Tamaño de la entrada}  
-
-Formalmente, el tamaño de entrada se corresponde con el numero de bits necesarios para representar a esa instancia en una computadora, usando algun esquema de codificacion. Sin embargo, normalmente vamos a ser menos formales que esto, y vamos a entender como $tama$ñ$o$ a cualquier entero que de alguna manera mida el numero de componentes de una instancia. A veces, cuando hablamos de problemas que involucran enteros, es mas natural dar la eficiencia del algoritmo en terminos del $valor$ de la instancia, en lugar de su tamaño. Notemos que la cantidad de bits que ocupa un entero de valor $n$ es $log(n)$, por
-lo que si conocemos el costo en funcion del valor, facilmente podemos traducirlo al costo en funcion del tamaño. El problema que tenemos es que no todas las entradas del mismo  tamaño consumen el mismo tiempo (o espacio). Esto da a lugar a tres medidas particulares para un mismo algoritmo: el analisis del caso \textbf{peor}, del caso \textbf{mejor} y del caso \textbf{promedio}.
-\newline
-\newline
-\textbf{Definicion}
-\newline
-\newline
-Sea $t(I)$ el tiempo de ejecucion de un algoritmo sobre una instancia $I$. Definimos el tiempo de ejecucion del peor caso, del mejor caso y del caso promedio para instancias de un tamaño $n$ como: 
-\newline
-\newline
-$T_{peor}(n)$ $=$ max$_{|I| = n}(t(I))$
-\newline
-\newline
-$T_{mejor}(n)$ $=$ min$_{|I| = n}(t(I))$
-\newline
-\newline
-$T_{promedio}(n)$ $=$ $\displaystyle \sum_{|I| = n}^{} P(I) ~.~ t(I)$
-\newline
-\newline
-donde $|I|$ refiere al tamaño de la instancia $I$.
-\newline
-\newline
-Intuitivamente, $T_{peor}(n)$ es el tiempo de ejecucion del algoritmo sobre la instancia que implica mayor tiempo de ejecucion entre las entradas de tamaño $n$, mientras que $T_{mejor}(n)$ nos habla del tiempo de ejecucion del algoritmo sobre la instancia que implica menor tiempo de ejecucion. Por ultimo, el analisis del caso promedio es una medida muy utilizada, y nos habla del tiempo de ejecucion esperable sobre instancias $"$tipicas$"$.
-\newline
-\newline
-\textbf{Comportamiento Asintotico}
-\newline
-\newline
-En general, cuando hacemos un analisis de la complejidad de un algoritmo, nos va a interesar poder determinar su \textbf{comportamiento asintotico}. Esta idea se basa en el \textbf{principio de invarianza}, que nos dice que, dado un algoritmo y dos implementaciones $M_{1}$ y $M_{2}$ que tienen un tiempo de ejecucion $T_{1}(n)$ y $T_{2}(n)$, siendo $n$ el tamaño de la entrada, existen $c \in \mathbb{R}^{+}$  y $n_{0} \in \mathbb{N}$ tales que:
-\newline
-\newline
-$T_{1}(n)$ $\leq$ $c$ · $T_{2}(n)$ $\forall$ $n \geq n_{0}$
-\newline
-\newline
-Por lo tanto, no nos va a interesar tanto conocer exactamente la cantidad de operaciones de un algoritmo, sino que nos va a interesar su \textbf{orden de magnitud}. La idea, entonces, va a ser buscar aquella funcion (logaritmica, lineal, cuadratica, exponencial, etc.) que exprese el comportamiento del algoritmo, para entradas suficientemente grandes. Para ello, se han propuesto distintas medidas del comportamiento asintotico: $O$ (cota superior), $\Omega$ (cota inferior) y $\Theta$ (orden exacto de la funcion).
-\newline
-\newline
-Esta notacion se dice $asintotica$ porque trabaja sobre el comportamiento de funciones en el limite, es decir, para valores suficientemente grandes de sus parametros. En consecuencia, los argumentos basados en la notacion asintotica podrian fallar en cuanto a su valor practico cuando trabajamos con entradas con valores del $"$mundo real$"$. En cualquier caso, suele ser de utilidad al momento de comparar algoritmos, y nos facilita algunas cuentas. Notemos que la utilizacion de las cotas asintoticas para comparar funciones
-de tiempo de ejecucion se basa en la hipotesis de que son suficientes para decidir el mejor algoritmo, prescindiendo de las constantes de proporcionalidad. Sin embargo, esta hipotesis puede no ser cierta cuando el tamaño de la entrada es pequeño, o cuando las constantes involucradas son demasiado grandes, en cuyo caso mantendremos el coeficiente del termino de mayor peso (pensar en si conviene usar un algoritmo cubico en segundos o un algoritmo cuadratico en dias).
-\newline
-\newline
-La notacion $O$ sirve para representar el limite o cota superior del tiempo de ejecucion de un algoritmo. Es decir, la notacion $f \in O(g)$ expresa que la funcion $f$ no crece mas rapido que alguna funcion proporcional a $g$, y decimos que $g$ es cota superior de $f$. Luego, si sabemos que un algoritmo tiene un tiempo de ejecucion $T_{peor} \in O(g)$, podemos asegurar que para todas las entradas de tamaño suficientemente grande, el tiempo $T_{peor}$ va a ser como mucho proporcional a $g$. Formalmente, dada una funcion $f$: $\mathbb{N} \to \mathbb{R}^{+}$ arbitraria que va desde los numeros naturales a los reales no negativos, siendo $n$ un representante del tamaño de la instancia del algoritmo y $f(n)$ la cantidad de recursos utilizados por el algoritmo para procesar esa instancia, decimos que $f \in O(g)$ si y solo si $\exists$ $n_{0}$, $c > 0$ tal que $n \geq n_{0}$ $\Rightarrow$ $f(n)$ $\leq$ $c$ · $g(n)$
-\newline
-\newline
-Por conveniencia, permitimos el uso incorrecto de notacion para decir que $f(n)$ esta en el orden de $g(n)$ incluso si $f(n)$ es negativo o indefinido para una cantidad finita de valores de $n$, y solo vamos a exigir que este bien definida cuando $n \geq n_{0}$. La herramienta mas poderosa y versatil para probar que cierta funcion esta en el orden de otra se conoce como la \textbf{regla del limite}, que nos dice que, dadas dos funciones arbitrarias $f$, $g$ ambas $\mathbb{N} \to \mathbb{R}_{\geq 0}$:
-\newline
-\newline
-1) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $\in$ $\mathbb{R}^{+}$, entonces $f(n) \in O(g(n))$ y $g(n) \in O(f(n))$. La vuelta no vale, ya que es posible que el limite no exista.
-\newline
-\newline
-2) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $0$, entonces $f(n) \in O(g(n))$ pero $g(n) \notin O(f(n))$. 
-\newline
-\newline
-3) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $+ \infty$, entonces $f(n) \notin O(g(n))$ pero $g(n) \in O(f(n))$. 
-\newline
-\newline
-Consideremos el problema de ordenamiento. Ya sabiamos que existen algoritmos como Insertion
-Sort o Selection Sort que pueden ordenar un arreglo de $n$ elementos en $O(n^{2})$. Sin embargo, existen otros algoritmos mas sofisticados como $heapsort$ que tienen costo $O(n ~ log(n))$. Esta claro que $n ~ log(n)$ $\in$ $O(n^{2})$.
-\newline
-\newline
-Por lo tanto, seria correcto decir que heapsort esta en $O(n^{2})$, o incluso $O(n^{3})$. Esto se debe a que la notacion $O$ esta diseñada solamente para dar cotas superiores acerca de la cantidad de recursos requeridos. Claramente, necesitamos una notacion dual para dar una cota inferior. La notacion $\Omega$ justamente nos permite representar el limite o cota inferior del tiempo de ejecucion del algoritmo.
-\newline
-\newline
-Consideremos nuevamente dos funciones $f$,$g$:$\mathbb{N} \to \mathbb{R}_{\geq 0}$ que vayan de los naturales a los reales no negativos. Luego, la notacion $f \in \Omega(g)$ expresa que la funcion $f$ esta acotada inferiormente por alguna funcion multiplo positivo de $g$ para valores de $n$ lo suficientemente grandes. Formalmente, decimos que $f \in \Omega(g)$ si y solo si
-\newline
-\newline
-$\exists$ $n_{0}$, $k > 0$ tal que $n \geq n_{0}$ $\Rightarrow$ $f(n)$ $\geq$ $k$ · $g(n)$
-\newline
-\newline
-A pesar de la gran similitud entre la notacion $O$ y la notacion $\Omega$, hay un aspecto en el que la dualidad falla. Recordemos que normalmente vamos a querer estudiar el tiempo de ejecucion en el $peor$ $caso$. Por lo tanto, cuando decimos que $T_{peor}(n) \in O(g)$ para el peor caso, estamos diciendo que \textbf{para toda} instancia de tamaño $n$, existe una constante real positiva $k$ tal que $t(I)$ $\leq$ $k$ · $g(n)$. En cambio,
-cuando decimos que $T_{peor}(n) \in \Omega(g)$, estamos diciendo que existe \textbf{al menos una} instancia de tamaño $n$ para la cual realmente tiene costo $t(I)$ $\geq$ $k$ · $g(n)$ ($\forall$ $n \geq n_{0}$). Por lo tanto, podrian existir infinitas instancias de tamaño $n$ que se podrian resolver en un menor tiempo.
-\newline
-\newline
-En general, vamos a utilizar la notacion $\Omega$ para dar cotas inferiores en los tiempos de ejecucion de algoritmos. Sin embargo, tambien es posible dar cotas inferiores a la dificultad propia de resolver cierto problema. Por ejemplo, vamos a ver que para \textbf{cualquier} algoritmo que sea capaz de ordenar $n$ elementos, basandose en comparaciones de a pares de elementos, se tiene que pertenece a $\Omega(n ~ log(n))$. 
-\newline
-\newline
-Luego, se dice que el $problema$ de ordenamiento por comparaciones tiene una complejidad en $\Omega(n ~ log(n))$. Este resultado es mucho mas fuerte que decir que cierto algoritmo particular tiene una cota inferior, e incluso nos dice cuando un algoritmo de ordenamiento es optimo (ver Arboles de Decision).
-\newline
-\newline
-Finalmente, nos queda la notacion $\Theta$(orden exacto), que vamos a definir como el conjunto de funciones que crecen asintoticamente de la misma forma, es decir: $\Theta(f)$ $=$ $O(f)$ $\cap$ $\Omega(f)$. Formalmente:
-\newline
-\newline
-$\Theta(f)$ $=$ \{$f$ $|$ $\exists$ $n_{0}$, $k_{1}$,$k_{2}$ $>$ $0$ tal que $n \geq n_{0}$ $\Rightarrow$ $k_{1}$ . $g(n)$ $\leq$ $f(n)$ $\leq$ $k_{2}$ . $g(n)$\}
-\newline
-\newline
-Podemos reformular las reglas de limite de la siguiente forma
-\newline
-\newline
-1) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $\in$ $\mathbb{R}^{+}$, entonces $f(n) \in \Theta(g(n))$ 
-\newline
-\newline
-2) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $0$, entonces $f(n) \in O(g(n))$ pero $f(n) \notin \Theta(g(n))$. 
-\newline
-\newline
-3) Si $\displaystyle \lim_{n \to \infty}$ $\displaystyle \frac{f(n)}{g(n)}$ $=$ $+ \infty$, entonces $f(n) \in \Omega(g(n))$ pero $f(n) \notin \Theta(g(n))$. 
-\newline
-\newline
-Es posible que cuando analicemos el costo de un algoritmo, este dependa simultaneamente de mas de un solo parametro. En estos casos, la nocion de $"$tamaño de entrada$$"$$ que estuvimos usando hasta ahora pierde un poco de sentido. Por esta razon, la notacion asintotica se generaliza para funciones de varias variables. Sea $g$ : $\mathbb{N}$ $\times$ $\mathbb{N}$ $\to$ $\mathbb{R}_{\geq 0}$ una funcion que va de los pares de numeros naturales a los reales no negativos, por ejemplo $g(m,n)$ $=$ $m$ $log(n)$. Sea $f$ : $\mathbb{N}$ $\times$ $\mathbb{N}$ $\to$ $\mathbb{R}_{\geq 0}$ otra funcion. Decimos que
-$f(m,n)$ esta en el orden de $g(m,n)$, denotado por $f(m,n) \in O(g)$, si $t(m,n)$ esta acotada superiormente por un multiplo positivo de $g(m,n)$ cuando tanto $m$ como $n$ son suficientemente grandes. Formalmente, $O(g(m,n))$ se define como
-\newline
-\newline
-$O(g)$ $=$ \{$t$: $\mathbb{N}$ $\times$ $\mathbb{N}$ $\to$ $\mathbb{R}_{\geq 0}$ $|$ ($\exists$ $c$ $\in$ $\mathbb{R}_{\geq 0}$), ($\forall^{\infty}$ $m,n$ $\in$ $\mathbb{N}$) $[t(m,n)$ $\leq$ $c$ . $g(n,m)]$\}
-\newline
-\newline
-donde $\forall^{\infty}$ quiere decir que la propiedad vale para todo natural, salvo por una cantidad finita de excepciones. Para el caso general de $n$ parametros, la definicion es similar.
-
-\subsubsection{Propiedades y formulas de suma}
-
-\textbf{Formula de Stirling}. Nos sirve para aproximar factoriales grandes, y reescribir aquellas complejidades que dependan de una suma de logaritmos. La aproximacion se expresa como $log(n!)$ $\approx$ $n$ $log(n)$ $-$ $n$
-\newline
-\newline
-Luego, un algoritmo $A$ $\in \Theta(log(n!))$ $\Leftrightarrow$ $A \in \Theta(n~log(n))$.
-\newline
-\newline
-\textbf{Serie aritmetica}. La suma $\displaystyle \sum_{k=1}^{n} k$ $=$ $1 + 2 + ... + n$ es una serie aritmetica y tiene el valor $\displaystyle \sum_{k=1}^{n} k$ $=$ $\displaystyle \frac{n ~.~ (n-1)}{2} \in \Theta(n^{2})$
-\newline
-\newline
-\newline
-\textbf{Sumas de cuadrados y cubos}. Tenemos las siguientes sumas de cuadrados y cubos:
-\newline
-\newline
-$\displaystyle \sum_{k=0}^{n} k^{2}$ $=$ $\displaystyle \frac{n ~.~ (n+1) ~.~ (2n+1)}{6}$
-\newline
-\newline
-\newline
-$\displaystyle \sum_{k=0}^{n} k^{3}$ $=$ $\displaystyle \frac{n^{2} ~.~ (n+1)^{2}}{4}$
-\newline
-\newline
-\newline
-\textbf{Serie Geometrica}. $\forall$ $x \in \mathbb{R}$, $x \neq 1$, la suma $\displaystyle \sum_{k=0}^{n} x^{k}$ $=$ $1 + x + x^{2} + ... + x^{n}$ es una serie geometrica y vale $\displaystyle \sum_{k=0}^{n} x^{k}$ $=$ $\displaystyle \frac{x^{n+1} - 1}{x-1}$ 
-\newline
-\newline
-\newline
-Cuando la suma es infinita y $|x| < 1$, tenemos la serie geometrica decreciente $\displaystyle \sum_{k=0}^{\infty} x^{k}$ $=$ $\displaystyle \frac{1}{1-x}$
-\newline
-\newline
-\newline
-Si derivamos esta sumatoria y multiplicamos ambos lados por $x$, obtenemos $\displaystyle \sum_{k=0}^{\infty} kx^{k}$ $=$ $\displaystyle \frac{1}{(1-x)^{2}}$
-\newline
-\newline
-\newline
-\textbf{Serie Armonica}. Para enteros positivos $n$, el $n$-esimo numero armonico es $H_{n}$ $=$ $1$ $+$ $\displaystyle \frac{1}{2}$ $+$ $\displaystyle \frac{1}{3}$ $+$ $\displaystyle \frac{1}{4}$ $+$ ... $+$ $\displaystyle \frac{1}{n}$ $=$ $\displaystyle \sum_{k=1}^{n} \displaystyle \frac{1}{k}$ $\leq$ $log(n+1) \in \Theta(log(n))$ 
-\newline
-\newline
-\newline
-\textbf{Series Telescopicas}. Para cualquier secuencia $a_{0},a_{1},...,a_{n}$, $\displaystyle \sum_{k=1}^{n} a_{k} - a_{k-1}$ $=$ $a_{n} - a_{0}$ debido a que cada uno de los terminos $a_{1}$, $a_{2}$,..., $a_{n-1}$ es sumado y restado exactamente una vez.
-\newpage
-
-\subsection{Diseño jerarquico de TADs}
-
-Ahora nos toca ver como pasamos de la $especificacion$ ($"$el que$"$) al $dise$ñ$o$ ($"$el como$"$) del algoritmo. Recordemos que para una misma especificacion, podemos diseñar distintos algoritmos, y para saber que algoritmo nos conviene utilizar, deberemos considerar aspectos como la eficiencia en el tiempo de ejecucion y el espacio utilizado, de acuerdo con el $contexto~de~uso$, es decir, en que orden llegaran los datos, como se los consultara, cuales seran las operaciones mas frecuentemente usadas, cual debe ser su complejidad en el peor caso, etc.
-\newline
-\newline
-Al diseñar un algoritmo bajo una cierta especificacion, estamos pasando de un paradigma $funcional$ a un paradigma $imperativo$, y queremos que ese pase resulte lo mas ordenado, metodico posible. Notemos que cuanto mas abstracto sea el TAD que vamos a implementar, mas opciones de diseño tendremos disponibles. Tenemos como objetivo obtener un diseño jerarquico y modular, permitiendo un encapsulamiento y ocultamiento de la informacion. Cada uno de los niveles en la jerarquia de diseño tendra asociado un modulo de abstraccion. Es decir, habra distintos tipos abstractos de datos que deberemos diseñar, y a cada uno de ellos le correspondera un modulo de abstraccion. Por ejemplo, consideremos al TAD Conjunto y estos dos posibles diseños:
-\newline
-\newline
-\textbf{.} Un arreglo redimensionable, con una Insercion (sin repetidos y en orden) en $O(n)$ y una busqueda en $O(log(n))$
-\newline
-\newline
-\textbf{.} Una secuencia, con una insercion en $O(1)$ y una busqueda en $O(n)$
-\newline
-\newline
-Podriamos preguntarnos cual de estos dos diseños nos conviene, pero esto va a depender del $contexto~de~uso$ en el cual vamos a utilizar esta estructura de datos (¿vamos a tener muchas mas busquedas que inserciones?).
-\newline
-\newline
-En general, el orden en el cual se diseñan los TADs es arbitrario, pero resulta una buena practica comenzar por los mas importantes o de mayor nivel de abstraccion, al ser estos quienes imponen los requerimientos de eficiencia para los TADs menos importantes. La idea va a ser, por ejemplo, comenzar diseñando un modelo para representar al TAD \tadNombre{conjuntoDeNat}, en el cual utilizamos valores del TAD \tadNombre{secuenciaDeNat}, que se podria representar con punteros.
-\newline
-\newline
-Contamos con tipos de datos \textbf{primitivos} (\TipoVariable{bool}, \TipoVariable{nat}, \TipoVariable{int}, \TipoVariable{real}, \TipoVariable{char}, \TipoVariable{puntero}) para nuestro lenguaje de diseño, los cuales se asume que ya estan definidos. Tambien tienen la particularidad de que los parametros de tipos primitivos son los unicos que siempre se pasan por \textbf{valor}, mientras que los tipos no primitivos se pasan por \textbf{referencia} (salvo que se diga lo contrario, en cuyo caso se pasa una copia y se paga el costo de realizar dicha copia).
-\newline
-\newline
-Cuando estamos pasando del mundo funcional al mundo imperativo, nos van a aparecer algunas
-cuestiones que tenemos que resolver desde el punto de vista formal. En particular, cuando estamos definiendo la Interfaz, vamos a querer definir funciones de la siguiente forma:
-\newline
-\newline
-\InterfazFuncion{Pertenece}{\In{C}{conjuntoDeNat}, \In{n}{nat}}{bool}%
-[true]
-{$res$ $\igobs$ $n \in C$}%
-\newline
-\newline
-Sin embargo, en esta expresion estariamos mezclando variables del mundo imperativo con conceptos del mundo funcional (como la igualdad observacional). Para resolver este problema de manera formal, vamos a introducir un operador funcional que, dado un valor en el mundo imperativo, nos permite vincularlo con su valor correspondiente del mundo funcional. Es decir, introduciremos una notacion definida como una funcion que va del genero imperativo $G_{I}$ al genero teorico $G_{T}$:
-\newline
-\newline
-$\puntito$: $G_{I}$ $\rightarrow$ $G_{T}$
-\newline
-\newline
-Luego, reescribimos a la operacion $pertenece$ como:
-\newline
-\newline
-\InterfazFuncion{Pertenece}{\In{C}{conjuntoDeNat}, \In{n}{nat}}{bool}%
-[true]
-{$res$ $\igobs$ $n \in C$}%
-\newline
-\newline
-La $estructura~de~representacion$ describe los valores sobre los cuales se representara el genero que se esta implementando. Esta estructura de representacion tiene que ser capaz de representar todos los posibles valores del TAD y, ademas, debe poder describir como es que las operaciones del TAD se traducen en operaciones que se realizan sobre la estructura (satisfaciendo las exigencias del contexto de uso). Para ello, vamos a tener que explicar como se relaciona la representacion con la abstraccion (que quiere decir que). La estructura de representacion de las instancias solo sera accesible a traves de las operaciones que se hayan detallado en la interfaz del modulo de abstraccion, permitiendo separar cada nivel en la jerarquia de diseño, ocultando como es que realmente se representa cada tipo.
-\newline
-\newline
-Consideremos el siguiente problema. Se nos pide implementar un conjunto de naturales, bajo el siguiente contexto: $los~numeros~del~1~al~100~deben~manejarse~en~O(1)$, $mientras~que~el~resto~en~O(n)$. $Ademas,~se~debe~poder~conocer~rapidamente~la~cardinalidad$. Vamos a representar al conjunto en tres partes. Un arreglo de 100 posiciones booleanas (un 1 en la posicion $i$ indica que el elemento $i$ pertenece al conjunto). Esto nos va a permitir manejar a los numeros del 1 al 100 en $O(1)$. Ademas, vamos a incluir en nuestra representacion una secuencia, donde se almacenaran todos los elementos que pertenezcan al conjunto y que sean mayores que 100. Y por ultimo, vamos a incluir un $nat$ para la cardinalidad. Esto lo vamos a notar de la siguiente manera:
-\newline
-\begin{Estructura}{conj\_semi\_rapido}[estr]
-	\begin{Tupla}[estr]%
-		\tupItem{rapido}{arreglo [1,...,100] de nat}%
-		\tupItem{resto}{secu(nat)}%
-		\tupItem{cardinal}{nat}%
-	\end{Tupla}
-\end{Estructura}
-
-Ahora bien, si nos convencimos de que esta es una buena representacion, tenemos que preguntarnos si es posible representar a cualquier valor del TAD \tadNombre{Conjunto} y, por otro lado, si cualquier valor que tome esta estructura tiene una contraparte en el TAD.
-\newline
-\newline
-Esta claro que todo conjunto puede ser representado por esta estructura, sin embargo, no todos los valores corresponden a instancias validas. Por ejemplo, la tupla ([0,...,0], $\langle$37, 107, 28$\rangle$, 3) no representa ninguna instancia del TAD. Por lo tanto, es necesario tener algun predicado que nos permita distinguir entre representaciones validas de las representaciones invalidas, y asi poder establecer una relacion entre la representacion y el valor representado del TAD. Este predicado se conoce como invariante de representacion.
-\newline
-\newline
-Este invariante lo vamos a agregar a las precondiciones, y lo vamos a tener que cumplir en las postcondiciones de las operaciones del modulo (no asi en las operaciones auxiliares). Esto nos va a obligar, pero tambien permitir, mantener ciertas garantias sobre las estructuras de representacion, lo que nos puede permitir hacer las cosas mas eficientemente (podemos usar algoritmos que aprovechen las garantias del invariante).
-\newline
-\newline
-Volviendo al ejemplo, las condiciones del invariante de representacion, descriptas de manera informal, deberian ser las siguientes:
-\newline
-\newline
-1) Que $resto$ solo tenga numeros mayores que 100.
-\newline
-\newline
-2) Que $resto$ no tenga numeros repetidos.
-\newline
-\newline
-3) Que $cardinal$ tenga la longitud de resto mas la cantidad de celdas de $rapido$ que esten en 1 ($true$).
-\newline
-\newline
-Veamos ahora la descripcion formal del invariante. El invariante de representacion es una funcion booleana que tiene como dominio la version abstracta del genero de representacion (el $\puntito$), e indica si la instancia es o no valida. Luego, el invariante de representacion nos queda:
-\newline
-\Rep[estr][e]{(1) ($\forall n$:nat) (esta?($n,e.resto$) $\impluego$ $n > 100$) $\yluego$ (2) ($\forall n$:nat) (cant\_apariciones($n,e.resto$) $\leq$ $1$) $\yluego$ \newline (3) $e.cant$ $=$ $long(e.resto)$ $+$ cant\_trues($e.rapido$)}
-\medskip
-\medskip
-\medskip
-donde $esta?$, $cant\_de\_apariciones$ y $long$ son funciones de secuencias, y $contar\_trues$ es una funcion sobre arreglos. En los problemas mas complicados se vuelve muy importante analizar metodicamente la estructura de representacion a la hora de elegir los predicados del invariante. Una forma de organizarse es empezar mirando cada campo de la estructura de forma individual, para ver bien que condiciones tienen que cumplir. Una vez analizado esto, podemos ver la relacion que deben tener los distintos campos entre
-si para que su informacion sea consistente.
-\newline
-\newline
-Con esto podemos restringir el conjunto de valores posibles que podria tomar la estructura de representacion. Sin embargo, todavia nos falta poder vincular las distintas instancias validas de la estructura con el valor representado del TAD. Para ello, utilizamos la \textbf{funcion de abstraccion}. Esta funcion toma una instancia abstracta ($\puntito$) de la estructura de representacion y nos devuelve una instancia abstracta del genero representado. La funcion de abstraccion debe ser un homomorfismo con respecto a la signatura
-del TAD, es decir, para toda operacion $\puntito$ del modulo, se tiene que cumplir que:
-\newline
-\newline
-$Abs(\puntito(p_{1},...,p_{n}))$ $\igobs$ $\puntito$($Abs(p_{1})$,...,$Abs(p_{n})$)
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.7\textwidth]{abs}
-	\caption{Funcion de Abstraccion}
-	\label{drivers1}
-\end{figure}
-\newpage
-Normalmente, tenemos dos formas de describir la funcion de abstraccion. La primera de ellas es en funcion de sus observadores basicos, dado que estos permiten identificar de manera univoca a cualquier instancia. Otra forma de describirla es en funcion de los generadores del TAD. Veamos como podemos escribir la funcion de abstraccion del modulo de conjunto\_semi\_rapido:
-\newline
-\newline
-\AbsFc[estr]{conjunto\_semi\_rapido $C$}[e]{ $C$ / ($\forall n$:nat) ($n$ $\in$ $C$ $\impluego$ ($n \geq 100$ $\yluego$ $r.rapido[n]$) $\lor$ ($n > 100$ $\yluego$ esta?($n,e.resto$)))}
-\medskip
-\medskip
-La funcion de abstraccion debe ser total, restringiendose a las instancias que cumplan con el invariante de representacion. Ademas, no tiene por que ser inyectiva, es decir, dos estructuras diferentes pueden representar al mismo termino de un TAD, pero tiene que ser sobreyectiva sobre las clase de equivalencia del TAD (dadas por la igualdad observacional). Por ultimo, nos falta diseñar los algoritmos que implementan las distintas operaciones del modulo. Junto con los algoritmos, incluiremos la precondicion y la postcondicion. Veamos como notamos el algoritmo para la operacion \tadNombre{Agregar(...)}:
-\newline
-\newline
-\InterfazFuncion{Agregar}{\Inout{C}{conjunto\_semi\_rapido}, \In{e}{nat}}{}%
-[$C$ $\igobs$ $C_{0}$ $\land$ $e \notin C$]
-{$C$ $\igobs$ $Ag(C_{0},e)$}%
-\newline
-\newline
-Luego, una posible implementacion del algoritmo podria ser la siguiente:
-
-\begin{algorithm}[H]{i\tadNombre{Agregar}(\Inout{C}{estr}, \In{e}{nat})}
-	\begin{algorithmic}[1]
-		\State $C.cant++$                      
-		\If{$e < 100$}
-		\State $C.rapido[e]$ $=$ $true$                      
-		\Else
-		\State AgregarAtras($C.resto,e$)                     
-		\EndIf
-		
-		\medskip
-	\end{algorithmic}
-\end{algorithm}
-
-
-Cuando estamos en la etapa de implementacion, tenemos la flexibilidad de ponerle un nombre
-especial para el algoritmo. En este caso, lo llamamos $i$, de implementacion, pero podriamos ponerle algun otro nombre. Otra cosa a tener en cuenta es que estamos trabajando directamente sobre la estructura de representacion (y no la abstraccion).
-\newpage
-
-\section{Capitulo 3. Estructuras de Datos}
-
-En los capitulos anteriores estuvimos hablando del camino que hay que recorrer entre la descripcion informal hasta llegar a una solucion concreta, y vimos algunas herramientas formales para describir y realizar ese proceso. En esta parte, nos vamos a dedicar a estudiar soluciones concretas a problemas concretos, que nos van a permitir avanzar en la implementacion de problemas fundamentales de la informatica.
-
-\subsection{Conjuntos y diccionarios}
-
-Vamos a empezar con los TADs \tadNombre{Conjunto} y \tadNombre{Diccionario}, que constituyen uno de los nucleos de la algoritmia: el problema de organizar y buscar informacion en un sistema informatico. En los conjuntos, lo unico que nos interesa es saber si un elemento particular pertenece o no al conjunto, mientras que en los diccionarios, ademas de saber si una $clave$ esta definida, nos interesa poder encontrar su $significado$.
-\newline
-\newline
-Es facil ver que si tenemos una implementacion de un diccionario, podemos implementar un conjunto simplemente ignorando el significado de las claves. Por otro lado, tambien podemos implementar un diccionario a partir de un conjunto, por ejemplo, guardando a las claves junto con sus significados en una tupla $\langle$clave,significado$\rangle$. En caso de tener como significado a una estructura compleja, podemos guardarnos un puntero a la misma, en lugar de la estructura en si. Otra opcion para el manejo de claves con significados podria ser mantener dos estructuras paralelas. La idea es que en la posicion $i$
-de una tengamos la clave, y en la misma posicion $i$ de la otra tengamos su significado. Como podemos representar diccionarios a partir de conjuntos y conjuntos a partir de diccionarios, podemos decir que ambos problemas son equivalentes. A continuacion, vamos a trabajar sobre la representacion de este tipo de estructuras, buscando representaciones e implementaciones eficientes de las mismas.
-\newline
-\newline
-La primer idea que se nos ocurre para representar a los conjuntos es a traves de estructuras secuenciales: en cada posicion del arreglo almacenamos la tupla $\langle$clave,significado$\rangle$, y un puntero para saber donde termina el arreglo.
-\newline
-\newline
-Ahora, pensemos cuales van a ser los distintos ordenes de complejidad de las operaciones basicas:
-\newline
-\newline
-\textbf{.} \tadNombre{Vacio}: para crear un diccionario vacio, nos basta con crear un arreglo vacio y definir el puntero al ultimo como \tadNombre{NIL}, por lo que la operacion nos cuesta $O(1)$.
-\newline
-\newline
-\textbf{.} \tadNombre{Definir}: para definir un nuevo elemento, tenemos que agregar este nuevo elemento al final del arreglo y actualizar el puntero al ultimo elemento, por lo que la operacion nos cuesta $O(1)$.
-\newline
-\newline
-\textbf{.} \tadNombre{Definido?}: para saber si una clave esta o no definida, tenemos que realizar una busqueda secuencial por todo el arreglo, por lo que la operacion nos lleva $O(n)$.
-\newline
-\newline
-\textbf{.} \tadNombre{Significado}: para obtener el significado de una clave, nuevamente tenemos que realizar una busqueda secuencial con una costo $O(n)$.
-\newline
-\newline
-Otra posibilidad es mantener el arreglo ordenado, permitiendo hacer uso de la busqueda binaria, mejorando la complejidad de \tadNombre{Definido?} y \tadNombre{Obtener} hasta $O(log(n))$. El problema de mantener el arreglo ordenado es que al momento de \tadNombre{Definir} una nueva clave, debemos buscar la posicion que le toca en el arreglo, y correr todos los elementos siguientes, con un costo de $O(n)$. Por lo tanto, este segundo modelo seria mejor en contextos de uso estaticos, en el que se realicen muchas busquedas y pocas inserciones. Cualquiera de estas dos opciones tiene operaciones con complejidad en $O(n)$, por lo que nos gustaria tener alguna estructura mas eficiente, de manera tal que todas las operaciones se puedan realizar con un costo sub-lineal. Para ello, vamos a representar conjuntos a traves de $arboles$ $binarios$.
-\newline
-\newline
-Un grafo $G$ = $(V,E)$ es un conjunto de nodos ($V$) unidos por un conjunto de lineas, llamadas $ejes$ ($E$). Decimos que un grafo es conexo cuando podemos ir de cualquier nodo a cualquier otro nodo siguiendo una secuencia de ejes. Las secuencias de ejes pueden formar caminos, si no visitamos dos veces un mismo vertice, o ciclos, si visitamos a algun vertice mas de una vez. Un $arbol$ es un grafo conexo y aciclico. Si cuenta con un nodo distinguido $r$, llamado $raiz$, decimos que el arbol es $enraizado$ en $r$. Normalmente, cuando dibujamos un arbol enraizado, ponemos la raiz en la cima, similar a un arbol familiar, con los otros ejes saliendo hacia abajo de la raiz. Entonces, podemos describir las relaciones
-entre los nodos haciendo una analogia del arbol familiar, usando terminos como $padre$, $hijos$, $hermanos$, $ancestros$, etc.
-\newline
-\newline
-Un arbol $k$-ario es aquel en el que cada nodo puede tener a lo sumo $k$ hijos. En esta seccion, vamos a trabajar especificamente sobre arboles binarios, donde tenemos un nodo inicial (el nodo raiz), del cual pueden salir a lo sumo dos nodos (hijo izquierdo e hijo derecho), y por cada nodo que no sea el raiz, tenemos un nodo padre y podemos tener a lo sumo dos hijos.
-\newline
-\newline
-Una forma de particionar los nodos de un arbol es la siguiente. Decimos que un nodo es una hoja del arbol si no tiene hijos; caso contrario, decimos que el nodo es $interno$. Tambien podemos particionar al arbol en nodos $externos$ y nodos internos: un eje que no apunta a un nodo interno, apunta a un nodo externo. Por ejemplo, un nodo con ambos hijos apuntaria a dos nodos internos; un nodo con solo un hijo apuntaria a un nodo interno y a uno externo; un nodo hoja apuntaria a dos nodos externos.
-\newline
-\newline
-Pensando un poco sobre el costo de las operaciones de un diccionario sobre un arbol binario (sin ninguna restriccion particular), nos estarian quedando de la siguiente manera:
-\newline
-\newline
-\textbf{.} \tadNombre{Vacio}: para crear un diccionario vacio, nos basta con crear un arbol vacio, el cual tiene como raiz a un NIL, por lo que la operacion nos cuesta $O(1)$.
-\newline
-\newline
-\textbf{.} \tadNombre{Definir}: para definir un nuevo elemento, tenemos que definir una regla para agregarlo al arbol. Podemos tomar como regla que se agrega en el primer lugar posible en el que entra el nodo, sin tener que inaugurar un nuevo nivel. Esto lo podemos hacer manteniendo un puntero al ultimo, por lo que la operacion nos cuesta $O(1)$.
-\newline
-\newline
-\textbf{.} \tadNombre{Definido?}: para saber si una clave esta o no definida, tenemos que realizar una busqueda secuencial por todo el arbol, por lo que la operacion nos lleva $O(n)$.
-\newline
-\newline
-\textbf{.} \tadNombre{Significado}: para obtener el significado de una clave, nuevamente tenemos que realizar una busqueda secuencial con una costo $O(n)$.
-\newline
-\newline
-Podemos ver que no hemos mejorado en cuanto a la complejidad de las operaciones. Sin embargo, lo que podemos hacer es restringir un poco la forma en la que esta organizado el arbol binario, manteniendo un invariante sobre la estructura que nos permita mejorar el costo de las operaciones.
-
-\subsection{Arbol binario de busqueda (ABB)}
-
-Un Arbol Binario de Busqueda (ABB) es un arbol binario que satisface que para todo nodo, los valores de los elementos en su subarbol izquierdo son menores que el valor de ese nodo, y los valores de los elementos de su subarbol derecho son mayores. Luego, podemos definir el invariante de un arbol ABB de la siguiente forma:
-\newline
-\newline
-1) el valor de todos los elementos del subarbol izquierdo es menor que el valor de la raiz,
-\newline
-\newline
-2) el valor de todos los elementos del subarbol derecho es mayor que el valor de la raiz,
-\newline
-\newline
-3) el subarbol izquierdo es un ABB,
-\newline
-\newline
-4) el subarbol derecho es un ABB.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.58\textwidth]{abb}
-	\caption{Ejemplos de arboles binarios. (47 no puede pertenecer al subarbol derecho de 49)}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-Formalmente, tomando como estructura de representacion para los arboles binario $ab(nodo)$ la tupla $\langle$$I, r, D$$\rangle$, donde $I$ es el subarbol izquierdo, $r$ la raiz y $D$ el subarbol derecho, podemos plantear el siguiente invariante de representacion para los arboles ABB:
-\newline
-\Rep[$ab(nodo)$][e]{(0) ABB($e$) $=$ Nil?($e$) $\oluego$ \newline
-	 (1) ($\forall c$:$clave$) (esta?($c,Izq(e)$) $\impluego$ $c < clave(raiz(e))$) $\land$ \newline 
-	 (2) ($\forall c$:$clave$) (esta?($c,Der(e)$) $\impluego$ $c > clave(raiz(e))$) $\land$ \newline 
-	 (3) $ABB(Izq(e))$
- 	\newline 
- 	(4) $ABB(Der(e))$}
-\medskip
-\medskip
-\medskip
-Notemos que para poder construir un ABB, es necesario poder dar un orden total a las claves, es decir, que podamos determinar, dadas dos claves cualesquiera $c_{1}$, $c_{2}$, si $c_{1}$ $\leq$ $c_{2}$. Ahora, veamos algunos algoritmos basicos para los ABB:
-
-\begin{algorithm}[H]{i\tadNombre{Vacio}(\In{}{$\secuvacia$}, \Out{A}{ab(nodo)})}
-	\begin{algorithmic}[1]
-		\State \textbf{return} NIL 
-		
-		\medskip
-	\end{algorithmic}
-\end{algorithm}
-
-\begin{algorithm}[H]{i\tadNombre{Definir}(\In{c}{clave}, \In{s}{significado}, \Inout{A}{ab(nodo)})}
-	\begin{algorithmic}[1]
-		\If{$A == nil$}
-		\State $A$ $\gets$ $ab(NIL, \langle c,s \rangle, NIL)$                      
-		\Else
-		\If{$c < r_{c}$}
-		\State $A$ $\gets$ $ab(definir(c,s,I), \langle r_{c},r_{s} \rangle, D)$
-		\Else                    
-		\State $A$ $\gets$ $ab(I, \langle r_{c},r_{s} \rangle, definir(c,s,D))$                     
-		\EndIf
-		\EndIf
-		
-		\medskip
-	\end{algorithmic}
-\end{algorithm}
-
-Podemos ver que el costo de insercion va a depender de la cantidad de recursiones que tengamos que hacer para llegar desde el nodo raiz hasta el nodo externo en donde vamos a colocar el nuevo nodo. Por lo tanto, tanto la operacion de busqueda como la de insercion nos va a quedar en $\Theta(h)$, siendo $h$ la altura del arbol. En principio, esto pareceria ser mas eficiente que las primeras implementaciones de diccionarios que vimos, ya que si las claves que nos van llegando siguen una distribucion uniforme, es esperable que nos vaya quedando un arbol casi balanceado, por lo que nos quedaria un arbol de altura $\approx$ $log(n)$ en el caso promedio.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.35\textwidth]{abb2}
-	\caption{Insercion en ABB}
-	\label{drivers1}
-\end{figure}
-
-
-
-Sin embargo, si vamos insertando de forma descuidada los distintos elementos, el ABB resultante podria quedar desbalanceado. Con esto nos referimos a que muchos nodos en el arbol tengan un solo hijo, de manera tal que las ramas se vuelvan largas y finas. Cuando esto ocurre, las operaciones en el arbol dejan de ser eficientes, ya que, en el peor caso, todos los nodos en el arbol podrian tener exactamente un hijo (exceptuando la unica hoja). Por lo tanto, para la busqueda de un elemento en el arbol nos quedaria en $O(n)$ comparaciones, al tener que comparar con todos los nodos del arbol.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.2\textwidth]{abb1}
-	\caption{Insercion en un ABB de nodos de manera creciente. Complejidad $O(n)$}
-	\label{drivers1}
-\end{figure}
-
-Para el algoritmo de borrado, \tadNombre{Borrar}(u: nodo, A: ab(nodo)), primero tenemos que realizar una busqueda para encontrar el elemento a borrar. Luego, tenemos tres casos:
-\newline
-\newline
-1) Si $u$ es una hoja, lo unico que tenemos que hacer es buscar al padre de $u$ en $A$, y luego eliminar la hoja $u$ (reemplazandolo por NIL). Si $u$ no tiene padre, significa que es la raiz, y como es hoja, estamos en el caso de un arbol de un unico nodo, por lo que al quitarlo, nos quedariamos con el arbol vacio.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{abb3}
-	\caption{Borrar una hoja}
-	\label{drivers1}
-\end{figure}
-
-2) Si $u$ tiene un solo hijo, primero debemos buscar al padre $w$ de $u$. Si $u$ no tiene padre, significa que $u$ es la raiz, por lo que debemos reemplazar a la raiz de $A$ por la raiz del unico subarbol de $u$. Si u tiene padre, tenemos dos casos: o bien $u$ es hijo izquierdo o bien es hijo derecho. Si es hijo izquierdo, significa que $u$ es menor a $w$, al igual que todos los hijos de $u$. Entonces, podemos mover a todo el subarbol de $u$ (no importa si es subarbol derecho o izquierdo), y colocarlo donde antes estaba $u$, ya que sabemos que todos ellos son menores a $w$.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.65\textwidth]{abb4}
-	\caption{Borrar un nodo $u$ con un solo hijo $v$}
-	\label{drivers1}
-\end{figure}
-
-3) Si $u$ tiene dos hijos, lo que vamos a hacer es buscar un reemplazo de u dentro de alguno de los subarboles de $u$, el cual vamos a mover desde su posicion original a la posicion de $u$. Para ello, debemos encontrar algun nodo que al ubicarlo en la posicion de $u$, respete el invariante del ABB, es decir, debe ser mayor a todos los nodos del subarbol izquierdo de $u$ y debe ser menor a todos los nodos del subarbol derecho de $u$. Tenemos dos candidatos que cumplen esta condicion: el nodo de mas a la derecha dentro del subarbol izquierdo (predecesor de $u$) y el nodo de mas a la izquierda dentro del subarbol derecho (sucesor de $u$). Vamos a considerar el primer caso. El nodo que esta mas a la derecha dentro del subarbol izquierdo es mayor a todos los nodos del subarbol izquierdo, ademas, es menor que $u$, por lo que tambien es menor a todos los nodos del subarbol derecho. Por lo tanto, queda claro que al colocarlo en la posicion de $u$, se respeta el invariante. Para moverlo, lo que vamos a hacer es copiarlo a la posicion de $u$, y luego borrarlo dentro del subarbol izquierdo al que pertenecia. Sabemos que no vamos a caer devuelta en el caso
-3 porque este nodo no puede tener un hijo derecho; sino, no seria el de mas a la derecha. Luego, caemos en el caso 1 o en el caso 2, que sabiamos resolver. Por lo tanto, el costo de la operacion de borrado tambien nos va a quedar en $\Theta(h)$.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.75\textwidth]{abb6}
-	\caption{Borrado en ABB de un nodo con dos hijos}
-	\label{drivers1}
-\end{figure}
-
-
-Una ultima propiedad de los arboles ABB es que podemos recorrerlos en tiempo lineal, imprimiendo las claves ordenadas de menor a mayor, a traves de un algoritmo recursivo llamado \textbf{inorder tree walk}. Se llama asi porque primero imprime todas las claves del subarbol izquierdo, luego la clave de la raiz y finalmente todas las claves del arbol derecho (recursivamente). Similarmente, tenemos el \textbf{preorder tree walk} que imprime la raiz antes que cualquier subarbol, y el \textbf{postorder tree walk} que imprime la raiz despues de ambos subarboles (en los tres casos, se imprime primero el subarbol izquierdo y antes del subarbol derecho).
-
-\begin{algorithm}[H]{\tadNombre{Inorder-tree-walk(x)}}
-	\begin{algorithmic}[1]
-		\If{$x \neq NIL$}
-		\State Inorder-tree-walk($izq$)                      
-		\State imprimir $x$
-		\State Inorder-tree-walk($der$)
-		\EndIf
-		
-		\medskip
-	\end{algorithmic}
-\end{algorithm}
-
-Para darnos cuenta de que el algoritmo es lineal en funcion de la cantidad de elementos, pensar que solo visitamos a cada nodo una unica vez, y que el costo de cada visita es constante. Esta forma de recorrer el arbol nos esta dando implicitamente una forma de ordenar $n$ elementos en tiempo $\Theta(n~log(n))$ en el caso promedio, lo cual nos estaria diciendo de que esta estructura es optima (en el caso promedio), en cuanto al costo asintotico de sus operaciones, ya que sabemos que el problema de ordenamiento basado en comparaciones de claves completas es $\Omega(n~log(n))$.
-\newpage
-
-\subsection{Arboles AVL}
-
-Queriamos obtener una estructura que nos permita mejorar la complejidad de las operaciones de diccionario para el peor caso, y con los arboles ABB seguimos teniendo el mismo problema de antes, ya que algunas operaciones tienen costo lineal en el peor caso. Uno de los conceptos claves que deberiamos tener en cuenta, a partir del desarrollo de los ABBs, es que el costo de las operaciones depende de la altura del arbol, por lo que si pudieramos controlar esta altura, podriamos mejorar la complejidad de las operaciones. Luego, nuestro objetivo es encontrar una estructura similar a los ABBs que nos asegure que el arbol se mantenga \textbf{balanceado}. La idea es que si logramos que las ramas del arbol sean lo mas
-parecidas entre si o, dicho de otro modo, que el arbol sea lo mas completo posible, tendriamos que la rama mas larga, que define el caso peor, seria lo mas corta posible.
-\newline
-\newline
-Existen varios metodos para mantener un arbol balanceado, garantizando la eficiencia en las operaciones de busqueda, insercion y borrado. Entre las tecnicas mas viejas tenemos el uso de arboles AVL y arboles 2-3; otras estructuras mas modernas incluyen a los Red-Black Trees y los Splay Trees. En esta seccion vamos a estudiar las propiedades de los arboles AVL para ver como consiguen mantener balanceado el arbol.
-\newline
-\newline
-Cuando hablamos de un arbol \textbf{perfectamente balanceado}, a lo que nos referimos es a que todas las ramas tengan casi la misma longitud (dos ramas difieren en a lo sumo una unidad), y que todos los nodos internos tengan ambos hijos. Se puede demostrar que un arbol perfectamente balanceado de $n$ nodos tiene altura $log_{2}(n) + 1$. El problema de mantener un arbol perfectamente balanceado es que no se conocen algoritmos eficientes que permitan mantener el invariante de los ABB a traves de sucesiones de inserciones y borrados, por lo que tendriamos una degradacion en la performance (mas adelante vamos a ver otra estructura conocida como $heap$, cuyo invariante es lo suficientemente debil como para que sea sencillo mantenerlo perfectamente balanceado).
-\newline
-\newline
-Luego, buscamos una propiedad que sea mas debil que el balanceo perfecto, pero que nos permita tener operaciones eficientes. Se dice que un arbol es $balanceado~en~altura$ si las alturas de los subarboles izquierdo y derecho \textbf{de cada nodo} difieren en a lo sumo una unidad. Antes pediamos que la altura de $todas$ las ramas difieran en a lo sumo una unidad, mientras que ahora lo que estamos pidiendo es que la $altura$ del subarbol derecho y el izquierdo difieran en a lo sumo una unidad, es decir, que la rama mas larga de uno y la rama mas larga del otro difieran en longitud a lo sumo una unidad. De esta manera,
-permitimos tener ramas que varien en mas de una unidad en su longitud, por lo que queda claro que la propiedad de balanceo en altura es mas debil que la propiedad de balanceo perfecto. Con esta idea en mente, definimos el $factor~de~balanceo$ (\textbf{FDB}) de un nodo $u$ como
-\newline
-\newline
-$FDB$ $=$ $altura(D_{u})$ $-$ $altura(I_{u})$,
-\newline
-\newline
-siendo $D_{u}$ el subarbol derecho de $u$ e $I_{u}$ el subarbol izquierdo, y decimos que un arbol es balanceado en altura si para todo nodo $u$ vale que $-1 \leq FDM(u) \leq 1$. Vamos a asumir que como parte de la estructura de los arboles AVL tenemos precalculado el factor de balanceo para cada nodo. La razon es que aunque seria posible averiguar los factores de balanceo calculando las alturas de los subarboles involucrados, este metodo encareceria demasiado los algoritmos.
-\newline
-\newline
-Lo que queremos ver es que un arbol AVL tiene una altura logaritmica en funcion de la cantidad de nodos. Para demostrar esto, lo que se hace es ver que para toda altura $h$, cualquier arbol AVL tiene una cantidad exponencial de nodos. Para ello, nos alcanza con ver que aquel arbol AVL de altura $h$ de menor cantidad de nodos, tiene una cantidad exponencial de nodos en funcion de la altura. Este tipo de arboles AVL, que tienen el minimo numero de nodos para una altura $h$, se conocen como \textbf{arboles de Fibonacci}, porque se puede probar que la cantidad de nodos de un arbol de Fibonacci $Fibo_{h}$ $=$ $Fibo_{h-1}$ $+$ $Fibo_{h-2}$ $+$ $1$, y que $Fibo_{h}$ $=$ $Fibo_{h-2}$ $- 1$, siendo $F_{i}$ el $i$-esimo termino de la sucesion de Fibonacci. Para ver esto, lo que tenemos que saber es que se puede construir un arbol de Fibonacci de altura $i+2$ a partir de unir dos arboles de Fibonacci: uno de altura $i$ con otro de altura $i+1$.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{bal1}
-	\caption{En un arbol balanceado en altura $|FDB| \leq 1$ para cada nodo}
-	\label{drivers1}
-\end{figure}
-\newpage
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.58\textwidth]{arboles-fibonacci}
-	\caption{Arboles de Fibonacci}
-	\label{drivers1}
-\end{figure}
-
-A partir de esto, se puede probar que un arbol de Fibonacci con $n$ nodos tiene una altura menor a $1,44$ $log(n+2)$ $-$ $0,328$, por lo que quedaria demostrado que un AVL de $n$ nodos tiene altura $\Theta(log(n))$, al ser un arbol de Fibonacci lo $"$mas desbalanceado$"$ que puede llegar a ser un arbol AVL. Con todo esto en mente, nos falta ver si es posible realizar las operaciones de diccionarios de forma eficiente, manteniendo esta estructura de los AVLs.
-\newline
-\newline
-\textbf{Insercion:} Basicamente, la insercion en un arbol AVL consta de tres pasos: primero tenemos que insertar al elemento como lo hariamos en un ABB ($\Theta(log(n))$), recalculamos los FDBs partiendo desde abajo hacia arriba, y luego tenemos que realizar una serie de \textbf{rotaciones} que nos permitan recuperar el invariante del AVL, es decir, que $-1 \leq FDB(u) \leq 1$ para todo nodo $u$.
-\newline
-\newline
-Tenemos dos tipos de rotaciones: rotacion a derecha y rotacion a izquierda (ver Fig. 3.3). En ambos casos, si aplicamos una rotacion sobre un ABB, se mantiene el invariante del ABB. El costo de una rotacion es $O(1)$, porque lo unico que tenemos que hacer es cambiar de lugar unos pocos punteros.
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.58\textwidth]{rotaciones}
-	\caption{Tipos de rotaciones}
-	\label{drivers1}
-\end{figure}
-
-\newpage
-
-\subsubsection{Rotaciones en los AVL}
-
-Casos posibles
-\newline
-\newline
-\textbf{.} RR: inserción en el subárbol derecho de un hijo derecho (del nodo que se desbalancea)
-\newline
-\newline
-\textbf{.} LR: inserción en el subárbol izquierdo de un hijo derecho (del nodo que se  desbalancea)
-\newline
-\newline
-\textbf{.} RL: inserción en el subárbol derecho de un hijo izquierdo (del nodo que se  desbalancea)
-\newline
-\newline
-\textbf{.} LL: inserción en el subárbol izquierdo de un hijo izquierdo (del nodo que se  desbalancea)
-
-\subsubsection{Rotacion simple (caso RR)}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{rotsimple}
-	\caption{Rotacion simple (caso RR)}
-	\label{drivers1}
-\end{figure}
-
-Esto se soluciona con una rotacion a izquierda.
-\newline
-\newline
-La inserción no influye en los antepasados de P porque luego de la rotación recuperan su factor de balanceo anterior.
-
-\subsubsection{Rotacion doble (caso LR)}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{rotdoble}
-	\caption{Rotacion doble (caso LR)}
-	\label{drivers1}
-\end{figure}
-
-Esto se soluciona aplicando primero una rotacion a derecha sobre el nodo Q y por ultimo, aplicamos una rotacion a izquierda sobre el nodo P.
-\newline
-\newline
-La inserción no influye en los antepasados de P.
-\newline
-\newline
-\newline
-Supongamos que teniamos un AVL antes de insertar un nuevo nodo $w$. Luego de realizar la insercion, como hariamos en un ABB, los unicos nodos cuya altura se podria ver afectada son aquellos que pertenecen a la rama que va desde la raiz hasta $w$. Como la altura de ningun otro nodo pudo verse afectada, estos nodos son lo unicos cuyo FDB pudo verse modificado. Por lo tanto, para recalcular los FDB nos basta con recorrer la rama afectada, que sabemos que tiene longitud proporcional a $log(n)$, por ser un arbol (casi) balanceado en altura.
-\newline
-\newline
-Sea $z$ el primer nodo desbalanceado que nos encontremos yendo de $w$ hacia la raiz (como $z$ esta desbalanceado, necesariamente tiene al menos un nieto). Ademas, sea $y$ el hijo de $z$ con mayor altura, que debe ser ancestro de $w$ (para que $z$ quede desbalanceado, se debe insertar un nodo en el arbol de mayor altura). Finalmente, sea $x$ el hijo de $y$ con mayor altura, siendo $x$ ancestro de $w$ (notemos que no puede haber empates porque sino el FDB de $z$ no se veria afectado al insertar $w$). Ademas, $x$ es nieto de $z$ y podria ser igual a $w$. Como $z$ se volvio desbalanceado por una insercion en el subarbol de su hijo
-$y$, la altura de $y$ es mayor en exactamente dos unidades que la altura de su hermano.
-\newline
-\newline
-Para rebalancear el subarbol enraizado en $z$, lo que vamos a hacer es aplicar una serie de rotaciones, dependiendo de si y es hijo izquierdo o derecho de $z$, $y$ de si $x$ es hijo derecho o izquierdo de $y$. Si renombramos temporalmente a $x$, $y$, $z$ como $a$, $b$, $c$, donde $a \leq b \leq c$, tenemos cuatro posibilidades de mapear $x, y, z$ a $a, b, c$ (ver Fig. 3.4). Nuestro objetivo es reemplazar a $z$ con el nodo llamado $b$, colocando como hijos a $a$ y $c$, reconectando al resto del arbol (sin romper el invariante de los ABB). Cuando $b = y$, tenemos que realizar una $rotacion$ $simple$ (rotamos $y$ para que quede como padre de $z$); sino, tenemos que realizar una $rotacion$ $doble$ (rotamos $x$ sobre $y$, y luego $x$ sobre $z$).
-\newline
-\newline
-Con esta reestructuracion, lo que conseguimos es mover hacia arriba al hijo $"$alto$"$ de $z$, mientras que al mismo tiempo empujamos hacia abajo al hijo $"$corto$"$ de $z$, recuperando el balanceo en el subarbol enraizado en $b$. Luego, hemos recuperado la propiedad de balanceo en altura aplicando una serie de rotaciones $locales$ sobre $x, y, z$. Ademas, como el subarbol enraizado en $b$ tiene una altura menor que el antiguo subarbol enraizado en $z$ (menor en una unidad), todos los ancestros de $z$ que podrian haber estado desbalanceados se vuelven balanceados (pensar que antes de la insercion estaba balanceado, y lo que hicimos fue recuperar la altura que teniamos antes de la insercion), por lo que recuperamos la propiedad de balanceo en altura de forma $global$.
-\newpage
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.65\textwidth]{rot-dos}
-	\caption{Operacion de \textbf{reestructuracion}: (a) rotacion a izquierda en $y$; (b) rotacion a derecha en $y$; (c) rotacion a derecha en $y$, seguida de rotacion izquierda en $z$; (d) rotacion a izquierda en $y$, seguida de rotacion a derecha en $z$.}
-	\label{drivers1}
-\end{figure}
-
-Con todo esto en cuenta, nos queda que el costo del primer y segundo paso es proporcional a la altura del arbol ($\Theta(log(n))$), y el costo del ultimo paso, que consiste en hacer a lo sumo dos rotaciones, nos queda en $O(1)$. Por lo tanto, concluimos que el costo total del algoritmo de insercion en los arboles AVL esta en $\Theta(log(n))$.
-\newpage
-\textbf{Borrado}: Al igual que en el caso de la insercion, comenzamos el borrado de un elemento sobre un AVL como si se tratase de un ABB tradicional. La dificultad agregada que tiene trabajar con los AVL es que al momento de borrar un elemento se podria romper el balanceo en altura. En particular, luego de remover un nodo del arbol, elevando al sucesor o al predecesor, algun nodo en el camino entre el padre $w$ del nodo borrado hasta la raiz  podria quedar desbalanceado. De hecho, a lo sumo se podria desbalancear un unico nodo (pensar que siempre borramos hojas).
-\newline
-\newline
-Al igual que en la insercion, vamos a reacomodar tres nodos para recuperar el balanceo. Sea $z$ el primer nodo desbalanceado que encontramos yendo hacia arriba desde $w$ hasta la raiz. Sea y el hijo de mayor altura de $z$ (y no puede ser ancestro de $w$), y sea $x$ el hijo de $y$ que se define de la siguiente manera: si uno de los hijos de $y$ es mas alto que el otro, $x$ es el hijo mas alto; sino, sea x el hijo de $y$ que esta del mismo lado que $y$, es decir, si $y$ es hijo derecho, $x$ es hijo derecho de $y$.
-\newline
-\newline
-Luego, aplicamos una operacion de reestructuracion sobre este subarbol, que restaura la propiedad de balanceo en altura de forma local, obteniendo un subarbol enraizado en un nodo que llamaremos temporalmente $b$. Desafortunadamente, esta reestructuracion podria reducir la altura del subarbol enraizado en $b$ en 1, lo que podria causar que el ancestro de $b$ quede desbalanceado. Si esto sucede, volvemos a aplicar la operacion de reestructuracion sobre el subarbol enraizado en el ancestro de $b$, y continuamos subiendo en el arbol hasta llegar a la raiz (en el peor caso). Como la altura del arbol esta en $O(log(n))$, a lo sumo vamos a tener que realizar $O(log(n))$ reestructuraciones, cada una con costo constante. Por lo tanto, la operacion de \tadNombre{Borrado} tambien cuesta $\Theta(log(n))$.
-\newline
-\newline
-\textbf{Ejemplo}
-\newline
-\newline
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{borr1}
-	\caption{Ejemplo de borrado en AVL. Arbol inicial}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.4\textwidth]{borr2}
-	\caption{Ejemplo. Calculo del factor de balanceo para verificar que se trata de un arbol AVL}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{borr3}
-	\caption{Ahora, supongamos que queremos borrar el nodo numero 7. El borrado se realiza como en un ABB tradicional. Y como en este caso, el nodo 7 es una hoja, simplemente lo borramos y listo}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.35\textwidth]{borr4}
-	\caption{Una vez borrado el nodo numero 7, recalculamos el factor de balanceo del arbol para verificar que siga siendo un AVL}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.55\textwidth]{borr5}
-	\caption{Ahora, supongamos que queremos borrar el nodo numero 6. Estamos en el caso que solo tiene un hijo, es decir, el subarbol izquierdo}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.4\textwidth]{borr6}
-	\caption{Eliminamos el nodo numero 6 y colgamos al nodo hijo (numero 2) del nodo padre (numero 14) del numero 6. Finalmente, recalculamos el factor de balanceo de cada uno de los nodos}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.32\textwidth]{borr7}
-	\caption{Ahora, supongamos que queremos borrar el nodo numero 14. Estamos en el caso que el nodo tiene 2 subarboles hijos}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.4\textwidth]{borr8}
-	\caption{En este caso, buscamos el predecesor/sucesor inmediato (nodo numero) del nodo 14. Una vez encontrado (nodo numero 2), lo coloco en la posicion del nodo numero 14 y como es una hoja, lo coloco y listo.
-		\newline
-		\newline
-		Al realizarlo, observamos que el nodo numero 2 tiene un factor de balanceo 2 y por lo tanto, no es un arbol AVL.}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.35\textwidth]{borr9}
-	\caption{Para solucionar el factor de balanceo del nodo numero 2, utilizamos las rotaciones. Como tenemos un balanceo RR, aplicamos una rotacion a izquierda del nodo numero 2.}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.3\textwidth]{borr10}
-	\caption{Finalmente, ahora si se cumple el factor de balanceo para nodo del arbol y confirmamos un arbol AVL.}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.45\textwidth]{borr11}
-	\caption{Ahora, supongamos que queremos borrar el nodo numero 18. Realizo el borrado como en cualquier ABB y como es una hoja , lo borro y listo.}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.35\textwidth]{borr12}
-	\caption{Una vez borrado el nodo numero 18, calculo el factor de balanceo de cada nodo del arbol y confirmo que sigue siendo un arbo AVL. }
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.46\textwidth]{borr13}
-	\caption{Ahora, supongamos que quiero borrar el nodo numero 75. Realizo el borrado como en cualquier ABB y como es una hoja , lo borro y listo.}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.3\textwidth]{borr14}
-	\caption{Una vez borrado el nodo numero 75, calculo el factor de balanceo de cada nodo del arbol y confirmo que sigue siendo un arbo AVL.}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.5\textwidth]{borr15}
-	\caption{Ahora, supongamos que quiero borrar el nodo numero 19. Realizo el borrado como en cualquier ABB y como es una hoja , lo borro y listo.}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.35\textwidth]{borr16}
-	\caption{Al realizarlo, observamos que el nodo numero 21 tiene un factor de balanceo 2 y por lo tanto, no es un arbol AVL.}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{borr17}
-	\caption{Como estamos en el caso balanceo LR, tenemos que que aplicar 2 rotaciones.}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{borr18}
-	\caption{Comenzamos aplicando la rotacion a la derecha del nodo numero 50.}
-	\label{drivers1}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.55\textwidth]{borr19}
-	\caption{Luego, aplicamos la rotacion a la izquierda del nodo numero 21}
-	\label{drivers1}
-\end{figure}
-\newpage
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=0.4\textwidth]{borr20}
-	\caption{Finalmente, recalculando el factor de balanceo, obtenemos que cada nodo cumple y por lo tanto, confirmamos que es un arbol AVL.}
-	\label{drivers1}
-\end{figure}
-
-
-\subsection{Radix searching}
-
-Los metodos de busqueda que funcionan a partir de examinar la clave de a partes, en lugar de
-considerar la clave completa, son conocidos como $radix~searching~methods$. Por ejemplo, si las claves son enteros, sus partes podrian ser los bits que las codifican; si las claves son strings, las partes podrian ser sus caracteres. La motivacion de estas estructuras es encontrar una implementacion de diccionarios que termine dependiendo del $tama$ñ$o$ de las claves, y no tanto de la $cantidad$ de claves.
-\newline
-\newline
-Las principales ventajas de los metodos de radix searching son que proveen una eficiencia razonable en el peor caso, sin la complicacion de balanceo los arboles AVL; proveen una forma sencilla de manejar claves de longitud variable; ahorran espacio guardando parte de la clave dentro de la estructura de busqueda; y proveen un acceso rapido a los datos, siendo competitivos tanto con los arboles balanceados como las tecnicas de hashing. Las desventajas de estos metodos son el uso ineficiente del espacio para algunas implementaciones, y que la eficiencia puede verse degradada si no tenemos un acceso eficiente a las partes que componen las claves.
-
-\subsubsection{Arboles de busqueda digital}
-
-El metodo de radix searching mas simple esta basado en el uso de los $arboles~de~busqueda~digital$(ABD). Los algoritmos de insercion y busqueda de los ABD son identicos a los algoritmos de los ABB, salvo por una diferencia: no vamos a recorrer el arbol a partir del resultado de la comparacion de claves completas, sino que vamos a recorrer el arbol en funcion de los bits (digitos o caracteres) de la clave. En el primer nivel, se considera el bit mas significativo; en el segundo nivel, el segundo bit mas significativo; y asi siguiendo, hasta encontrar la clave o llegar a un nodo externo.
-\newline
-\newline
-En la Fig. 3.5 podemos ver un ejemplo de un ABD. Supongamos que queremos insertar el elemento $X$ en el arbol. En cada paso, nos movemos a derecha o a izquierda dependiendo de si la $i$-esima posicion de la clave tenemos 1 o 0. Una vez alcanzamos un nodo externo, lo reemplazamos por $X$.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.5\textwidth]{abd}
-\caption{Arboles de busqueda digital}
-\label{drivers1}
-\end{figure}
-
-\newpage
-
-Los bits de las claves controlan la busqueda y la insercion, pero notemos que los ABD no cumplen con el invariante de los ABB. Es decir, no es necesario que todos los nodos a la izquierda de un nodo sean menores que este ni que todos los nodos a la derecha sean mayores. Lo que si es cierto es que las claves a la izquierda de un nodo son mas chicas que las claves a su derecha, ya que comparten los primeros $k$ bits y los nodos de la derecha tienen un 1 en su siguiente bit, mientras que los nodos de la izquierda tienen un 0. Sin embargo, el nodo que estamos mirando podria tener la clave mas chica entre todas, la
-mas grande, o cualquier valor entre todas las claves en ese subarbol.
-\newline
-\newline
-Los ABD se caracterizan por tener la propiedad de que cada clave esta en algun lugar a lo largo del camino especificado por sus bits. Esta propiedad es suficiente para buscar e insertar elementos en el arbol, teniendo que pagar el costo de realizar una comparacion de clave completa por cada nivel (porque la clave podria estar en cualquier posicion del camino). Podemos notar que la altura del arbol de busqueda digital es exactamente igual al mayor numero de bits sucesivos iguales entre dos claves cualesquiera, es decir, la longitud del mayor prefijo comun entre dos claves. Por lo tanto, la altura del arbol esta acotada
-por la longitud maxima de las claves. Si tenemos $n$ claves de longitud $b$, en el peor caso vamos a tener $O(b)$ comparaciones de claves. Por lo tanto, el caso peor para los arboles ABD es mucho mejor que el peor caso de los ABB convencionales, especialmente si tenemos muchas claves relativamente cortas, es decir, si $n$ es mucho mayor a $b$. En el caso promedio, asumiendo una distribucion uniforme en la codificacion de las claves, vamos a tener $O(log(n))$ comparaciones de claves.
-
-\subsubsection{Tries}
-
-Las claves de busqueda pueden ser muy largas, posiblemente de mas de 20 caracteres. En estas situaciones, el costo de comparar una clave por igualdad puede terminar siendo dominante en el costo de la busqueda, por lo que no puede ser ignorado. En los arboles de busqueda digital, todavia tenemos que comparar claves en cada nodo. En esta seccion, vamos a ver una estructura de datos que nos permite usar los bits de las claves para guiar la busqueda, de la misma manera que haciamos en los ABD, pero comparando un solo digito en cada nodo, en lugar de comparar claves completas. Ademas, esta estructura es ordenada, por lo que nos va a permitir diseñar un algoritmo de ordenamiento recursivo.
-\newline
-\newline
-Esta estructura se conoce como $trie$, derivado de la palabra $retrieval$. La idea es que tengamos dos tipos de nodos: los nodos internos solo van a contener enlaces a otros nodos del arbol, mientras que los nodos hoja van a contener las claves y no van a tener punteros. Esto nos va a permitir usar los bits de las claves para guiar la busqueda, al igual que haciamos en los ABD, mientras mantenemos el siguiente invariante en cada nodo: todas las claves cuyo bit actual es 0 caen en el subarbol izquierdo y todas las demas en el subarbol derecho. Empezando desde la raiz, vamos recorriendo el arbol moviendonos a derecha o a izquierda dependiendo de si el $i$-esimo bit mas significativo es 0 o 1, hasta llegar a una hoja que contiene la clave o a un nodo externo, en cuyo caso el elemento no estaba en el arbol. Notemos que este algoritmo nos permite encontrar el prefijo comun mas largo entre una clave de busqueda y el resto de las claves.
-\newline
-\newline
-Para insertar una clave en el $trie$, primero realizamos una busqueda.
-\newline
-\newline
-\textbf{.} Si la busqueda termina en un enlace a NIL (y no en una hoja), creamos un nuevo nodo hoja que contenga la clave a insertar y hacemos que este enlace apunte al nodo creado (pensar que como no llegamos a una hoja, no hay ninguna otra clave en el trie con este prefijo).
-\newline
-\newline
-\textbf{.} Si la busqueda termina en una hoja, debemos continuar bajando por el trie, agregando un nodo interno por cada bit que compartan la clave de busqueda y la clave encontrada, terminando ambas claves como hojas de un nodo que se corresponda con el bit mas significativo en el que difieran. En algunas implementaciones, en lugar de parar cuando no necesitamos mas bifurcaciones, se representa la clave completa, caracter por caracter. Esto requiere de mayor espacio, pero facilita el procesamiento de datos con longitud variable.
-\newline
-\newline
-Para un trie construido a partir de $n$ claves aleatorias de $b$ bits, intuitivamente se necesitan $\Theta(log(n))$ comparaciones de bits en el caso promedio (mas una comparacion de clave completa). En el peor caso, nos queda en $O(b)$ comparaciones de bits.
-\newline
-\newline
-Una propiedad de los tries es que su estructura es independiente del orden de insercion: hay un unico trie para cualquier conjunto de claves distintas. Este hecho es una caracteristica distintiva de los tries: todas las demas estructuras que vimos dependen tanto del conjunto de claves como del orden en el que se las inserta. Ademas, los tries tienen la propiedad de que las claves aparecen en orden, de manera tal de que podemos implementar un algoritmo de ordenamiento de forma recursiva, recorriendo el arbol
-$in-order$.
-\newline
-\newline
-Esta estructura tiene dos problemas a resolver: cuando tenemos dos claves con un prefijo en comun muy largo, se nos forma una rama muy larga en la que todos los nodos tienen un unico hijo, lo que lleva a la creacion de nodos innecesarios en el arbol, y el segundo problema que tenemos es que hay dos tipos distintos de nodos en el arbol, lo cual complica la implementacion de los algoritmos, agregando un cierto overhead. A continuacion, vamos a ver algunas variantes de los tries que buscan reducir la cantidad de nodos utilizados y reducir la altura del arbol.
-\newline
-\newline
-\textbf{Patricia:} Morrison desarrollo una forma de evitar ambos problemas, metodo al que llamo Patricia ($"$Practical Algorithm To Retrieve Information Coded In Alphanumeric$"$). Patricia nos permite la busqueda de $n$ claves de longitud arbitraria en un arbol de tan solo $n$ nodos, requiriendo una unica comparacion de clave completa por busqueda. La ramificacion $"$unidireccional$"$ se evita de la siguiente forma. Cada nodo contiene el indice del bit que debe ser evaluado para decidir que camino tomar. De esta manera, miramos directamente el bit donde se toma la decision significativa, salteando todas las comparaciones de bits innecesarias. El efecto es similar a compactar los caminos intermedios que no tienen bifurcaciones, en un unico eje. Por otro lado, la necesidad de tener distintos tipos de nodos se evita de la siguiente manera. Vamos a almacenar los datos en los nodos internos y vamos a reemplazar los enlaces a los nodos externos con enlaces que
-apuntan hacia un nodo interno adecuado, subiendo en el arbol.
-\newpage
-
-\section{Arboles B}
-
-Comenzamos presentando las caracteristicas de estos arboles.
-\newline
-\newline
-\textbf{.} Arbol $N$-ario balanceado y ordenado. Es $balanceado$ porque se cumple que $|FDB| \leq 1$ y ademas, se autobalancea. Es $ordenado$ porque para cada nodo, los valores menores a la clave contenida en este se encuentran en el subarbol izquierdo y los valores mayores a la clave contenida en este se encuentran en el subarbol derecho.
-\newline
-\newline
-\textbf{.} En cada nodo tiene $k$ claves ($k > 1$)
-\newline
-\newline
-\textbf{.} Es de orden $k+1$ ya que puede tener $k+1$ hijos por cada nodo
-\newline
-\newline
-\textbf{.} El nodo tambien es conocido como $pagina$
-\newline
-\newline
-\textbf{.} Un nodo valido tendra como minimo $\displaystyle \frac{k}{2}$ (redondeando hacia arriba) claves no vacias a excepcion de la raiz
-\newline
-\newline
-Vamos a estudiar las operaciones  de insercion y borrado de una clave en un arbol B.
-
-\subsection{Insercion}
-
-Queremos realizar la insercion de los siguientes elementos: 7,12,15,50,22,46,23,8,39,26,14,49,7,1,2.
-\newline
-\newline
-En este caso:
-\newline
-\newline
-\textbf{.} Cada nodo tiene $k = 3$ claves
-\newline
-\newline
-\textbf{.} Es de orden $k+1 = 4$ ya que puede tener $4$ hijos por cada nodo
-\newline
-\newline
-\textbf{.} Un nodo valido tendra como minimo $m$ $=$ $\displaystyle \frac{3}{2}$ $=$ 1.5 $\uparrow$ $=$ $2$ claves no vacias
-
-\subsubsection{Resolucion}
-
-Para la insercion del 7, comenzamos preguntando si existe un arbol. Como no existe, voy a crear la raiz y coloco al 7 como primer valor de la celda.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-siete}
-\caption{Insercion de la clave 7}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 12, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como todavia no tiene hijos, pero tiene espacio en la celda para almacenar al 12, le pregunta al 7 si $7 < 12$.
-\newline
-Como $7 < 12$ es verdadero y la siguiente celda esta libre, se coloca al 12 a la izquierda del 7.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-doce}
-\caption{Insercion de la clave 12}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Para la insercion del 15, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como todavia no tiene hijos, pero tiene espacio en la celda para almacenar al 15, le pregunta al 7 si $7 < 15$.
-\newline
-Como $7 < 15$ es verdadero y la siguiente celda no esta libre, le pregunta al 12 si $12 < 15$ y como $12 < 15$ es verdadero y la siguiente celda esta libre se coloca al 15 a la izquierda del 12.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-quince}
-\caption{Insercion de la clave 15}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 50, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como todavia no tiene hijos y no tiene espacio en la celda para almacenar al 50, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 50 en una posicion de modo que la celda quede ordenada. Es decir:
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-cincuenta-pre}
-\caption{Insercion de la clave 50 en la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-
-Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 12).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-cincuenta-pre-dos}
-\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Entonces, el 12 pasa a ser la nueva raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-cincuenta}
-\caption{Insercion de la clave 50}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 22, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 22 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 22$.
-\newline
-\newline
-Como $12 < 22$ es verdadero y la siguiente celda esta libre, debo irme por el subarbol derecho del 12. Recusivamente, preguntando a la celda que contiene al 15 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 22 debe insertarse en dicha de manera que quede ordenada. Es decir, como $15 < 22$, avanza y $50 < 22$ $Abs!$, coloca al 22 en esa posicion y empuja a todos los demas elementos hacia la derecha.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-veintidos}
-\caption{Insercion de la clave 22}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 46, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 46 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 46$.
-\newline
-\newline
-Como $12 < 46$ es verdadero y la siguiente celda esta libre, debo irme por el subarbol derecho del 12. Recusivamente, preguntando a la celda que contiene al 15, 22 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 22 debe insertarse en dicha de manera que quede ordenada. Pero no tiene espacio en la celda para almacenar al 46, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 46 en una posicion de modo que la celda quede ordenada. Es decir:
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-cuarentaseis-pre}
-\caption{Insercion de la clave 46 en la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 22).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-cuarentaseis-pre-dos}
-\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-
-Entonces, el 22 pasa a la raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-cuarentaseis}
-\caption{Insercion de la clave 46}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 23, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 23 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 46$.
-\newline
-\newline
-Como $12 < 23$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 23$ es verdadero y la siguiente celda no esta libre, debo irme por el subarbol derecho del 22. Recusivamente, preguntando a la celda que contiene al 46 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 23 debe insertarse en dicha de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-veintitres}
-\caption{Insercion de la clave 23}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Para la insercion del 8, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 8 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 8$.
-\newline
-\newline
-Como $12 < 8$ $Abs!$ y la siguiente celda no esta libre, debo irme por el subarbol izquierdo del 12. Recusivamente, preguntando a la celda que contiene al 7 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 8 debe insertarse en dicha de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-ocho}
-\caption{Insercion de la clave 8}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 39, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 39 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 39$.
-\newline
-\newline
-Como $12 < 39$ es verdadero y la siguiente celda esta libre, avanzo. Como $22 < 39$ es verdadero y la siguiente celda esta libre debo irme por el subarbol derecho del 22. Recusivamente, preguntando a la celda que contiene al 23, 46 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 39 debe insertarse en dicha de manera que quede ordenada. Pero no tiene espacio en la celda para almacenar al 39, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 39 en una posicion de modo que la celda quede ordenada. Es decir:
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-treintanueve-pre}
-\caption{Insercion de la clave 46 en la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-
-Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 39).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-treintanueve-pre-dos}
-\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Entonces, el 39 pasa a la raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-treintanueve}
-\caption{Insercion de la clave 39}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 26, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 8 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 26$.
-\newline
-\newline
-Como $12 < 26$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 26$ es verdadero y la siguiente celda no esta libre, avanzo. Finalmente, como $39 < 26$ $Abs!$ y la siguiente celda no esta libre (no hay mas), debo irme por el subarbol izquierdo del 39. Recusivamente, preguntando a la celda que contiene al 23 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 26 debe insertarse en dicha de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-veintiseis}
-\caption{Insercion de la clave 26}
-\label{drivers1}
-\end{figure}
-
-\newpage
-
-Para la insercion del 14, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 14 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 14$.
-\newline
-\newline
-Como $12 < 14$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 14$ $Abs!$ y la siguiente celda no esta libre (no hay mas), debo irme por el subarbol izquierdo del 22. Recusivamente, preguntando a la celda que contiene al 15 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 14 debe insertarse en dicha de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-catorce}
-\caption{Insercion de la clave 14}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 49, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 49 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 14$.
-\newline
-\newline
-Como $12 < 49$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 49$ es verdadero y la siguiente celda no esta libre, avanzo. Como $39 < 49$ no hay mas celdas, debo irme por el subarbol derecho del 39. Recusivamente, preguntando a la celda que contiene al 46 y 50 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 49 debe insertarse en dicha de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-cuarentanueve}
-\caption{Insercion de la clave 49}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Para la insercion del 17, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 17 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 17$.
-\newline
-\newline
-Como $12 < 17$ es verdadero y la siguiente celda no esta libre, avanzo. Como $22 < 17$ $Abs!$ y la siguiente celda no esta libre, debo irme por el subarbol izquierdo del 22. Recusivamente, preguntando a la celda que contiene al 14 y 15 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 17 debe insertarse en dicha de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-diecisiete}
-\caption{Insercion de la clave 17}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 1, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 1 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 1$.
-\newline
-\newline
-Como $12 < 17$ $Abs!$ y la siguiente celda no esta libre, debo irme por el subarbol izquierdo del 12. Recusivamente, preguntando a la celda que contiene al 7 y 8 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos pero tiene un espacio libre, el 1 debe insertarse en dicha de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{ins-uno}
-\caption{Insercion de la clave 1}
-\label{drivers1}
-\end{figure}
-
-Para la insercion del 2, comenzamos preguntando si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como tiene hijos, el 2 debe insertarse en una hoja. Entonces, le pregunta al 12 si $12 < 2$.
-\newline
-\newline
-Como $12 < 2$ $Abs!$ y la siguiente celda no esta libre debo irme por el subarbol izquierdo del 12. Recusivamente, preguntando a la celda que contiene al 1, 7 y 8 si existe un arbol. Como existe, voy a la raiz y le pregunta si tiene hijos. Como no tiene hijos, el 2 debe insertarse en dicha de manera que quede ordenada. Pero no tiene espacio en la celda para almacenar al 2, voy a generar una lista atemporal de $k+1 = 4$ posiciones y ubico al 2 en una posicion de modo que la celda quede ordenada. Es decir:
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-dos-pre}
-\caption{Insercion de la clave 2 en la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 2).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-dos-pre-dos}
-\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-
-Entonces, el 2 pasa a la raiz del arbol pero como no hay espacio para ubicarlo, se vuelve a crear un nodo atemporal.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-dos-pre-tres}
-\caption{Insercion de la clave 2 en la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-
-Ahora, como un nodo solo puede espacio para $k = 3$ claves, entonces divido la celda atemporal por la mitad y obtengo dos partes iguales y tomo el ultimo valor de la mitad izquierda (en este caso, 12).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.3\textwidth]{ins-dos-pre-cuatro}
-\caption{Division de la celda atemporal de $k+1 = 4$ posiciones}
-\label{drivers1}
-\end{figure}
-\newpage
-
-Entonces, el 12 pasa a la raiz del arbol y las claves menores a el se ubican del subarbol izquierdo mientras que las claves mayores a el se ubican del subarbol derecho qudando todas las hojas al mismo nivel.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.9\textwidth]{ins-dos}
-\caption{Insercion de la clave 2}
-\label{drivers1}
-\end{figure}
-\newpage
-
-\subsection{Borrado}
-
-Cuando realizamos insercion de elementos, creamos un nodo atemporal, divimos y creamos un nuevo nodo. En el caso del borrado, vamos a realizar todo lo contrario. Es decir, cuando se borra, no divimos sino que $unimos$ o $fusionamos$. Queremos realizar la eliminacion de los siguientes elementos: 29,9,18,62.
-\newline
-\newline
-En este caso:
-\newline
-\newline
-\textbf{.} Cada nodo tiene $k = 4$ claves
-\newline
-\newline
-\textbf{.} Es de orden $k+1 = 5$ ya que puede tener $5$ hijos por cada nodo
-\newline
-\newline
-\textbf{.} Un nodo valido tendra como minimo $m$ $=$ $\displaystyle \frac{3}{2}$ $=$ 1.5 $\uparrow$ $=$ $2$ claves no vacias
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.9\textwidth]{elim-orig}
-\caption{Arbol B original}
-\label{drivers1}
-\end{figure}
-
-\subsubsection{Caso 1. Borrado de una clave $k$ ubicada en una hoja}
-
-Cuando queremos eliminar una clave $k$, lo primero que debemos hacer es buscarla. Por lo tanto, necesitamos un $metodo$ $de$ $busqueda$.
-\newline
-\newline
-En este caso, vamos a eliminar al 29. Tenemos varios casos a analizar cuando eliminamos una hoja. Observemos que al eliminar el 29, el nodo sigue siendo un nodo valido porque tiene al menos 2 claves no vacias. Por lo tanto, puedo borrar tranquilamente al 29.  
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{elim-veintinueve}
-\caption{Borrado de la clave 29}
-\label{drivers1}
-\end{figure}
-\newpage
-
-\subsubsection{Caso 1b. Borrado de una clave $k$ ubicada en una hoja}
-
-Ahora supongamos que queremos eliminar la clave 9. Observemos que si la eliminamos como en el caso anterior, el nodo no es valido porque solo tiene 1 clave no vacia.
-\newline
-\newline
-Cuando no es un nodo valido, debe preguntarle primero a su hermano izquierdo si puede prestarle un elemento. Como no tiene hermano izquierdo, le consulta al hermano derecho. Como el hermano derecho si puede prestarle porque al darle un elemento, sigue teniendo al menos 2 claves no vacias.
-\newline
-\newline
-En el caso de que le preste el hermano izquierdo, le prestara el elemento que se encuentre mas a la derecha en su respectivo nodo. En el caso de que le preste el hermano derecho, le prestara el elemento que se encuentre mas a la izquierda en su respectivo nodo. En este caso, como le presta el hermano derecho, el elemento mas a la izquierda es el 15.  
-\newline
-\newline
-Luego, el 15 reemplaza al padre de ambos nodos (la clave numero 13) y el 13 baja al nodo donde esta el elemento a eliminar (clave numero 9) de manera que quede ordenada.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{elim-nueve}
-\caption{Borrado de la clave 9}
-\label{drivers1}
-\end{figure}
-
-\subsubsection{Caso 1c. Borrado de una clave $k$ ubicada en una hoja}
-
-Ahora supongamos que queremos eliminar la clave 18. Observemos que si la eliminamos como en el caso anterior, el nodo no es valido porque solo tiene 1 clave no vacia.
-\newline
-\newline
-Cuando no es un nodo valido, debe preguntarle primero a su hermano izquierdo si puede prestarle un elemento. Como el hermano izquierdo no puede prestarle porque se convierte en un nodo invalido, le consulta al hermano derecho El hermano derecho tampoco puede prestarle porque tambien se convierte en un nodo invalido.
-\newline
-\newline
-Entonces, le solicita ayuda a su padre y este se une con el elemento restante del nodo (16) al nodo de su hermano izquierdo.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{elim-dieciocho}
-\caption{Borrado de la clave 18}
-\label{drivers1}
-\end{figure}
-\newpage
-
-\subsubsection{Caso 2. Borrado de una clave $k$ ubicada en un nodo interno}
-
-En este caso, queremos eliminar al nodo 62. Como es un nodo interno, debemos buscar el predecesor o sucesor inmediato. Si elegimos al sucesor inmediato (clave numero 63), se elimina a la clave 63 de su nodo y dicho nodo se convierte en invalido. Como el hermano derecho no puede prestarle y no tiene hermano izquierdo, se une con su padre al nodo de su hermano derecho.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.7\textwidth]{elim-sesentados-pre}
-\caption{Borrado de la clave 62}
-\label{drivers1}
-\end{figure}
-
-Pero observemos ahora que el nodo que contiene a la clave 45 es invalido. Entonces, le pregunta al hermano si puede prestarle. Como el hermano izquierdo no puede prestarle, le pregunta al hermano derecho y como no tiene hermano derecho, le solicita ayuda al padre.
-\newline
-\newline
-Por lo tanto, se fusionan o unen en el nodo hermano izquierdo (contiene al 20 y 23) el 39 y el 45 de manera que quede ordenado el nodo.
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{elim-sesentados}
-\caption{Borrado de la clave 62}
-\label{drivers1}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
-%^%
-\newpage
-\begin{tabular}{|c|c|c|c|c|c|}
-\hline
-Algoritmo &  Selection Sort   & Insertion Sort & Heap Sort & Merge Sort & Quick Sort \\ \hline
-Mejor caso  & $O(n^{2})$  & $O(n)$ & $O(n~log(n))$ & $O(n~log(n))$ & $O(n~log(n))$ \\ \hline
-Caso promedio & $O(n^{2})$  & $O(n^{2})$ & $O(n~log(n))$ & $O(n~log(n))$ & $O(n~log(n))$      \\ \hline
-Peor caso & $O(n^{2})$  & $O(n^{2})$ & $O(n~log(n))$ & $O(n~log(n))$ & $O(n^{2})$          \\ \hline
-Estabilidad & Inestable & Estable & Inestable & Estable*& Inestable   \\ \hline
-\end{tabular}
-\newline
-\newline
-\newline
-\newline
-* Puede haber implementaciones que lo hagan inestable
-
-\section{Complejidad de los algoritmos usando distintas estructuras}
-
-\begin{tabular}{|c|c|c|c|c|}
-	\hline
-	Operacion/Estructura & Arbol ABB   & Arbol AVL & Hash (cerrado) & Hash (abierto)  \\ \hline
-	Vacio  & $O(1)$  & $O(1)$ & - & -  \\ \hline
-	Insercion/definir  & CP = $O(log(n))$ PC = $O(n)$  & $\Theta(log(n))$ & $O(n)$* & -  \\ \hline
-	Busqueda/def? & CP = $O(log(n))$ PC = $O(n)$  & $\Theta(log(n))$ & $O(n)$* & -       \\ \hline
-	Borrado &  CP = $O(log(n))$ PC = $O(n)$  & $\Theta(log(n))$ & $O(n)$* & -           \\ \hline
-\end{tabular}
-\newline
-\newline
-\newline
-\newline
-\begin{tabular}{|c|c|c|c|}
-	\hline
-	Operacion/Estructura & Acceso secuencial indexado (ISAM)  & Arboles B & Arboles 2-3-4    \\ \hline
-	Vacio  & -  & - & -   \\ \hline
-	Insercion/definir/Encolar  & $O(n)$ & $O(log(n))$ & $O(log(n))$   \\ \hline
-	Busqueda/def? & $O(1)$  & $O(log(n))$ & $O(log(n))$  \\ \hline
-	Borrado/Desencolar &  -   & $O(log(n))$ & $O(log(n))$  \\ \hline
-\end{tabular}
-\newline
-\newline
-\newline
-\newline
-\begin{tabular}{|c|c|c|c|c|}
-	\hline
-	Operacion/Estructura & Tries  & Heap & Skip Lists & Splay Trees  \\ \hline
-	Vacio  & $O(1)$  & $O(1)$ & $O(1)$ & $O(1)$  \\ \hline
-	Insercion/definir/Encolar  & CP = $O(log(n))$ PC = $O(1)$  & $O(log(n))$ &  CP = $O(log(n))$ PC = $O(n)$ & $O(log(n))$**  \\ \hline
-	Busqueda/def? & CP = $O(log(n))$ PC = $O(1)$  & $O(log(n))$ & CP = $O(log(n))$ PC = $O(n)$ & $O(log(n))$**       \\ \hline
-	Borrado/Desencolar &  CP = $O(log(n))$ PC = $O(1)$  & $O(log(n))$ & CP = $O(log(n))$ PC = $O(n)$ & $O(log(n))$**           \\ \hline
-\end{tabular}
-\newline
-\newline
-\newline
-\newline
-CP = Caso Promedio
-\newline
-\newline
-PC = Peor Caso 
-\newline
-\newline
-* $n$ es la longitud de la lista asociada a $h(k)$
-\newline
-\newline
-** el costo es amortizado, el costo para secuencias de $m$ operaciones es $O(m~log(n))$
-
-\end{document}
