@@ -1424,3 +1424,70 @@ Ahora, la complejidad de las operaciones tienen costo:
 \newline
 \newline
 ¿Se podrá hacer mejor?
+
+\subsection{Representación de conjuntos y diccionarios a través de Arboles Binarios}
+
+El costo de crear un diccionario vacio es $O(1)$ porque simplemente debemos crearlo y setearlo a \textit{nil}
+\newline
+\newline
+Para calcular el costo de la operación \textit{def?}, tendría que crear un algoritmo para recorrer cada uno de los nodos del árbol e ir chequeando si es igual al elemento que estamos buscando. En el peor caso, vamos a recorrer todos los nodos del árbol.
+\newline
+\newline
+Para \textit{definir} o agregar un nuevo elemento al árbol, podría considerar colocarlo como hoja en algún espacio que se encuentre disponible sin necesidad de inaugurar un nuevo nivel. En ese caso, estariamos trabajando con \textit{árboles completos} y tener un puntero al espacio libre o simplemente buscarlo por todo el árbol hasta encontrarlo lo cual produce un costo de $O(n)$ con $n$ la cantidad de elementos del árbol.
+
+\subsection{Árbol Binario de Búsqueda}
+
+Un Árbol Binario de Búsqueda es un árbol binario que satisface la siguiente propiedad:
+\newline
+\newline
+Para todo nodo, los valores de los elementos en su subárbol izquierdo son menores que el valor del nodo, y los valores de los elementos de su subárbol derecho son mayores que el valor del nodo.
+\newline
+\newline
+Dicho de otra forma, el valor de todos los elementos del subárbol izquierdo es menor que el valor de la raíz, el valor de todos los elementos del subárbol derecho es mayor que el valor de la raíz, y tanto el subárbol izquierdo como el subárbol derecho... son ABB 
+\newpage
+Veamos un ejemplo de ABB.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.5\textwidth]{abb-1}
+	\label{drivers1}
+\end{figure}
+\medskip
+\medskip
+Es efectivamente un ABB porque todos los nodos del subárbol izquierdo son menores que la raíz (21) y todos los nodos del subárbol derecho son mayores que la raíz (21). Además, todos los subárboles izquierdos y derechos son ABBs.
+\newline
+\Rep[$ab(nodo)$][e]{(0) ABB($e$) $=$ Nil?($e$) $\oluego$ \newline
+	 (1) ($\forall c$:$clave$) (esta?($c,Izq(e)$) $\impluego$ $c < clave(raiz(e))$) $\land$ \newline 
+	 (2) ($\forall c$:$clave$) (esta?($c,Der(e)$) $\impluego$ $c > clave(raiz(e))$) $\land$ \newline 
+	 (3) $ABB(Izq(e))$
+ 	\newline 
+ 	(4) $ABB(Der(e))$}
+\medskip
+\medskip
+\medskip
+Ahora, veamos algunos \textbf{algoritmos} básicos de los ABB:
+
+\begin{algorithm}[H]{i\tadNombre{Vacio}(\In{}{$\secuvacia$}, \Out{A}{ab(nodo)})}
+	\begin{algorithmic}[1]
+		\State \textbf{return} NIL 
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[H]{i\tadNombre{Definir}(\In{c}{clave}, \In{s}{significado}, \Inout{A}{ab(nodo)})}
+	\begin{algorithmic}[1]
+		\If{$A == nil$}
+		\State $A$ $\gets$ $ab(NIL, \langle c,s \rangle, NIL)$                      
+		\Else
+		\If{$c < r_{c}$}
+		\State $A$ $\gets$ $ab(definir(c,s,I), \langle r_{c},r_{s} \rangle, D)$
+		\Else                    
+		\State $A$ $\gets$ $ab(I, \langle r_{c},r_{s} \rangle, definir(c,s,D))$                     
+		\EndIf
+		\EndIf
+		
+		\medskip
+	\end{algorithmic}
+\end{algorithm}
+\newpage
