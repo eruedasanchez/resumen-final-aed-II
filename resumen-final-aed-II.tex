@@ -1685,6 +1685,74 @@ Por último, el costo del borrado en un ABB requiere de dos operaciones:
 En el peor caso, ambos costos son lineales: $O(n)$ $+$ $O(n)$ = $O(n)$
 \newpage
 
+Anteriormente, vimos que la complejidad en la inserción de un ABB depende de la altura $h$ del mismo por lo que si pudiesemos controlar la profundidad del árbol, estariamos pudiendo controlar la complejidad de las operaciones. Por lo tanto, vamos a querer que el árbol siempre se encuentre \textbf{balanceado}. 
+
+\subsection{Introducción al balanceo}
+
+¿Qué altura tiene un árbol completo? Un árbol de $n$ nodos tiene una altura de $log_{2}(n)$.
+\newline
+\newline
+Pero no podemos pretender tener siempre árboles completos porque resulta demasiado caro mantenerlos debido a las posibles inserciones y borrados.
+\newline
+\newline
+Por lo tanto, querriamos implementar árboles $k$-arios donde:
+\newline
+\newline
+\textbf{.} Cada nodo tiene 0 o $k$ hijos
+\newline
+\newline
+\textbf{.} La longitud de dos ramas cualesquiera difieran en a lo sumo en una unidad
+
+\subsection{Balanceo perfecto}
+
+\textbf{Teorema}: Un arbol binario \textit{perfectamente balanceado} de $n$ nodos tiene altura $lg_{2}(n) + 1$
+\newline
+\newline
+\textbf{Demostración (por inducción)}
+\newline
+\newline
+Vamos a utilizar el siguiente lema:
+\newline
+\newline
+Si cada nodo tiene 0 o 2 hijos $n_{h}$ = $n_{i} + 1$ donde:
+\newline
+\newline
+$n_{h}$ = \#hojas, $n_{i}$ = \#nodos internos y $n$ = $n_{h}$ + $n_{i}$  
+\newline
+\newline
+Entonces, comenzamos demostrando que $n_{h}$ = $n_{i} + 1$ 
+\newline
+\newline
+Como cada nodo tiene 0 o 2 hijos, si a una hoja le agregamos 2 hijos nuevos, tenemos 2 hijos más, 1 hoja que desaparece porque ahora se suma a los nodos internos. Por lo tanto, inductivamente luego de realizar esta operación, obtenemos que:
+\newline
+\newline
+$n_{h}'$ = $n_{h}$ + 2 (hojas nuevas) - 1 (pasó a ser nodo interno) 
+\newline
+\newline
+$n_{h}'$ = $n_{h}$ + 1 y por H.I $n_{h}$ = $n_{i} + 1$ y por lo tanto:
+\newline
+\newline
+$n_{h}'$ = ($n_{i} + 1$) + 1 y por lo tanto ($n_{i} + 1$) es el nuevo número de nodos internos. Entonces:
+\newline
+\newline
+$n_{h}'$ = $n_{i}'$ + 1
+\newline
+\newline
+Por lo tanto, probamos que el número de hojas es igual al numero de nodos internos + 1.
+\newline
+\newline
+Luego, como el número de hojas es igual al número de nodos internos + 1 y $n$ = $n_{h}$ + $n_{i}$, podemos concluir que las hojas son más del 50\% de los nodos del árbol.
+\newline
+\newline
+Con el lema probado, vamos a demostrar el teorema. Para ello, podamos el árbol eliminando primero las hojas de las ramas más largas. Luego, podamos todas las hojas y nos queda otro árbol con las mismas características (todas las ramas tienen la misma longitud y todos los nodos tiene 0 o $k$ (2 en nuestro caso) hijos) y como cada vez que podemos una hoja, vamos a eliminar mas de la mitad de los nodos por el lema que recién probamos, vamos a poder realizar $lg_{2}(n)$ podas y por lo tanto, probamos que la altura de estos arboles es $lg_{2}(n)$ + 1.  
+\newline
+\newline
+Por lo tanto, el costo de búsqueda/inserción/borrado es $O(lg(n))$.
+\newline
+\newline
+Pero sucesiones de inserciones y borrados pueden destruir el balanceo.
+\newpage
+
 
 
 
