@@ -1596,6 +1596,96 @@ $log_{2}(n+1)$ $-$ $1$ = $h$
 Por lo tanto, podemos acotar $log_{2}(n+1)$ por $lg(n)$. 
 \newpage 
 
+\subsubsection{Borrado en ABB}
+
+Queremos implementar la operación \TipoVariable{Borrar(u,A)} donde \TipoVariable{u} es el elemento a borrar y \TipoVariable{A} es el árbol. 
+\newline
+\newline
+Luego, tenemos tres casos para implementar:
+\newline
+\newline
+\textbf{.} $u$ es una hoja
+\newline
+\newline
+\textbf{.} $u$ tiene un solo hijo
+\newline
+\newline
+\textbf{.} $u$ tiene dos hijos
+\newline
+\newline
+Veamos el caso donde $u$ es una hoja. Para ello, debemos:
+\newline
+\newline
+\textbf{.} Buscar al padre
+\newline
+\newline
+\textbf{.} Eliminar la hoja
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-3}
+	\label{drivers1}
+\end{figure}
+
+Por lo tanto, la complejidad en este tipo de borrado es el equivalente a la búsqueda del padre porque eliminación se realiza en tiempo constante, es decir, la complejidad cuando se borra una hoja es $O(n)$.
+\newline
+\newline
+Ahora, veamos el caso donde se desea borrar un nodo $u$ con un solo hijo $v$. Para ello, debemos:
+\newline
+\newline
+\textbf{.} Buscar al padre $w$ de $u$
+\newline
+\newline
+\textbf{.} Si existe $w$ (si no existe, $u$ es la raíz del árbol y simplemente asignamos como la nueva raíz a $v$), reemplazar la conexión $(w,u)$ con la conexión $(w,v)$.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-4}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+Por último, veamos un ejemplo de aplicación para este caso:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-5}
+	\label{drivers1}
+\end{figure}
+
+Ahora, veamos el caso donde se desea borrar un nodo $u$ con dos hijos. Para ello, debemos:
+\newline
+\newline
+\textbf{.} Encontrar el \textit{predecesor inmediato} $v$ o \textit{sucesor inmediato} de $u$
+\newline
+\newline
+$v$ no puede tener dos hijos, en caso contrario no sería el predecesor inmediato (sucesor).
+\newline
+\newline
+\textbf{.} Copiar la clave de $v$ en lugar de la $u$
+\newline
+\newline
+\textbf{.} Borrar el nodo $v$. $v$ es hoja, o bien tiene un solo hijo, lo que nos lleva a los casos anteriores.
+\newline
+\newline
+Veamos el siguiente ejemplo considerando el predecesor inmediato:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-6}
+	\label{drivers1}
+\end{figure}
+
+Por último, el costo del borrado en un ABB requiere de dos operaciones:
+\newline
+\newline
+\textbf{.} El borrado de un nodo interno requiere encontrar al nodo que hay que borrar ($O(n)$) y a su predecesor inmediato ($O(n)$).
+\newline
+\newline
+En el peor caso, ambos costos son lineales: $O(n)$ $+$ $O(n)$ = $O(n)$
+\newpage
+
+
 
 
 
