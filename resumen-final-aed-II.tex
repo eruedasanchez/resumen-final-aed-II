@@ -1753,6 +1753,180 @@ Por lo tanto, el costo de búsqueda/inserción/borrado es $O(lg(n))$.
 Pero sucesiones de inserciones y borrados pueden destruir el balanceo.
 \newpage
 
+\subsection{Balanceo en altura. Árboles AVL}
+
+Un árbol se dice \textbf{balanceado en altura} si las alturas de los subárboles izquierdo y derecho de \textbf{cada nodo} difieren en a lo sumo una unidad.
+\newline
+\newline
+A diferencia del \textit{balanceo perfecto} donde las diferencias de altura de todas las ramas fueran de a lo sumo una unidad, en este caso, estamos pidiendo que la rama más larga (altura) del subárbol derecho difiera de la rama más larga (altura) del subárbol izquierdo en a lo sumo una unidad. 
+\newline
+\newline
+Los árboles balanceados en altura se llaman \textbf{árboles AVL}.
+\newline
+\newline
+Por lo tanto, consideramos un árbol AVL si:
+\newline
+\newline
+\textbf{.} Es un árbol ABB
+\newline
+\newline
+\textbf{.} $|$FDB$|$ $\leq$ 1 para cada nodo
+\newline
+\newline
+Ahora, queremos ver que \textbf{tan altos son los AVL}.
+\newline
+\newline
+Si queremos demostrar que la altura de un árbol con $n$ nodos es menor que $f(n)$, eso es lo mismo que demostrar que un árbol con altura $x$ tiene más que $f^{-1}(x)$ nodos.
+\newline
+\newline
+Por lo tanto, si queremos demostrar que la altura de un árbol con $n$ nodos es menor que $log(n)$, eso es lo mismo que demostrar que un árbol con altura $x$ tiene más que $exp(x)$ nodos. 
+\newline
+\newline
+Los árboles AVL con el mínimo número de nodos dada la altura se llaman \textbf{árboles de Fibonacci}. Por lo tanto:
+\newline
+\newline
+\textbf{.} El mínimo número de nodos de un árbol de altura 1 es 1 (solo la raíz).
+\newline
+\newline
+\textbf{.} El mínimo número de nodos de un árbol de altura 2 es 2 (la raíz más un hijo derecho o izquierdo).
+\newline
+\newline
+\textbf{.} El mínimo número de nodos de un árbol de altura 3 es 4 (la raíz más un subárbol izquierdo de altura 2 y un subárbol derecho de altura 1).
+\newline
+\newline
+\textbf{.} El mínimo número de nodos de un árbol de altura 4 es 7 (la raíz más un subárbol izquierdo correspondiente al árbol de Fibonacci de altura 3 y un subárbol derecho correspondiente al árbol de Fibonacci de altura 2).
+\newline
+\newline
+La cantidad de nodos de un árbol AVL con altura $i+2$ con mín cantidad de nodos es $AVL_{i+2}$ = $AVL_{i+1}$ + $AVL_{i}$ + 1   
+\newline
+\newline
+Por lo tanto, podemos construir la siguiente tabla con la cantidad mínima de nodos de un árbol AVL de altura $h$:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{abb-7}
+	\label{drivers1}
+\end{figure}
+\newpage
+Donde se obtienen las siguientes relaciones:
+\newline
+\newline
+$AVL_{i+2}$ = $AVL_{i+1}$ + $AVL_{i}$ + 1
+\newline
+\newline
+$F_{i+2}$ = $F_{i}$ + $F_{i+1}$ 
+\newline
+\newline
+$AVL_{i}$ = $F_{i+2}$ - 1
+\newline
+\newline
+Luego, la función de Fibonacci es exponencial en $i$, la altura de un árbol AVL con la mínima cantidad de nodos es exponencial dada la altura, la máxima altura es logaritmica.   
+\newline
+\newline
+Un árbol de Fibonacci tiene todos los factores de balanceo de sus nodos internos $\pm$ 1. Es el árbol balanceado más cercano a la condición de no balanceo. 
+\newline
+\newline
+Un árbol de Fibonacci con $n$ nodos tiene altura $<$ 1.44 $log(n+2)$ - 0.328. Por lo tanto, un árbol AVL de $n$ nodos tiene altura $\Theta(lg(n))$.
+
+\subsubsection{Inserción en Árboles AVL}
+
+Antes de realizar las inserciones, veamos el concepto de las \textbf{rotaciones} con la siguiente imagen: 
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{abb-8}
+	\label{drivers1}
+\end{figure}
+
+\textbf{.} En el arbol de la izquieda se aplica una \textbf{rotación a izquierda (RL(x))} en el nodo $x$ generando como resultado el subarbol de la derecha.
+\newline
+\newline
+\textbf{.} En el arbol de la derecha se aplica una \textbf{rotación a derecha (RR(y))} en el nodo $y$ generando como resultado el subarbol de la izquierda.
+\newline
+\newline
+Entonces, veamos el siguiente ejemplo:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.25\textwidth]{abb-9}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+Insertamos el nodo número 22 y observamos que se rompe el factor de balanaceo. Para ello, aplicamos una rotación a derecha (RR) sobre el nodo 28 donde $y$ = 28 y $x$ = 25 y $A$ = 22 obteniendo el siguiente resultado:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.25\textwidth]{abb-10}
+	\label{drivers1}
+\end{figure}
+
+Y podemos observar que nuevamente el arbol cumple con el factor de balanceo.
+\newline
+\newline
+Ahora, queremos insertar el nodo número 55 y lo realizamos de la siguiente manera:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.25\textwidth]{abb-11}
+	\label{drivers1}
+\end{figure}
+
+Sin embargo, podemos observar que el nodo 67 rompre el factor de balanceo (-2).
+\newpage
+Ahora, para solucionar esto aplicamos primero una rotación a izquierda sobre el nodo 51 y luego una rotación a derecha sobre el nodo 67 logrando mantener nuevamente el factor de balanceo.  
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-12}
+	\label{drivers1}
+\end{figure}
+
+Por lo tanto, para insertar un nodo en un árbol AVL, debemos:
+\newline
+\newline
+1. Insertar el nuevo nodo como en un ABB clasico. El nuevo nodo es una hoja.
+\newline
+\newline
+2. Recalcular los factores de balanceo que cambiaron por la inserción. Solo en la rama en la que ocurrió la inserción, de abajo hacia arriba.
+\newline
+\newline
+3. Si en la rama aparece un factor de balanceo $\pm$ 2 hay que rebalancear a través de las \textbf{rotaciones}.
+\newline
+\newline
+\textbf{Rotaciones en los árboles AVL}
+\newline
+\newline
+Los casos posibles de rotaciones son:
+\newline
+\newline
+\textbf{.} RR: inseerción en el subarbol derecho de un hijo derecho (del nodo que se desbalancea).
+\newline
+\newline
+\textbf{.} LR: inseerción en el subarbol izquierdo de un hijo derecho (del nodo que se desbalancea).
+\newline
+\newline
+\textbf{.} RL: inseerción en el subarbol derecho de un hijo izquierdo (del nodo que se desbalancea).
+\newline
+\newline
+\textbf{.} LL: inseerción en el subarbol izquierdo de un hijo izquierdo (del nodo que se desbalancea).
+\newline
+\newline
+\textbf{Costo de la inserción en los árboles AVL}
+\newline
+\newline
+\textbf{.} Paso 1: Proporcional a la altura del árbol $\Theta(log(n))$
+\newline
+\newline
+\textbf{.} Paso 2: Proporcional a la altura del árbol $\Theta(log(n))$
+\newline
+\newline
+\textbf{.} Paso 3: $O(1)$ se hace una o dos rotaciones por inserción
+\newline
+\newline
+En total, $\Theta(log(n))$. 
+\newpage
+
 
 
 
