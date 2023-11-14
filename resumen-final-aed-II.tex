@@ -1927,6 +1927,145 @@ Los casos posibles de rotaciones son:
 En total, $\Theta(log(n))$. 
 \newpage
 
+\subsubsection{Borrado en Árboles AVL}
+
+Para borrar un nodo en un árbol AVL, debemos:
+\newline
+\newline
+1. Borrar el nuevo nodo como en un ABB clasico. \newline
+\newline
+2. Recalcular los factores de balanceo que cambiaron por la inserción. Solo en la rama en la que ocurrió el borrado, de abajo hacia arriba.
+\newline
+\newline
+3. Para cada nodo con factor de balanceo $\pm$ 2 hay que rebalancear a través de las \textbf{rotaciones} simples o dobles donde tenemos $O(lg(n))$ rotaciones en el peor caso.
+\newline
+\newline
+\textbf{Ejemplo}
+\newline
+\newline
+Supongamos que tenemos el siguiente árbol AVL que se encuentra balanceado:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-13}
+	\label{drivers1}
+\end{figure}
+
+Ahora, queremos borrar el nodo número 7.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-14}
+	\label{drivers1}
+\end{figure}
+\newpage
+Como el nodo número 7 es una hoja lo borramos simplemente y calculando nuevamente los factores de balanceo, obtenemos que el arbol se encuentra balanceado. 
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-15}
+	\label{drivers1}
+\end{figure}
+
+Ahora, queremos eliminar el nodo número 6.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-16}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+Como el nodo 16 tiene un solo hijo, buscamos su padre y lo conectamos con su hijo (nodo número 2) obteniendo el siguiente árbol que recalculando los factores de balanceo, se encuentra balanceado. 
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-17}
+	\label{drivers1}
+\end{figure}
+
+Ahora, queremos borrar el nodo número 14.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-18}
+	\label{drivers1}
+\end{figure}
+\newpage
+Estamos en el caso de un nodo con dos hijos. Por lo tanto, buscamos el predecesor inmediato y lo reemplazamos en la posición del nodo a eliminar obteniendo el siguiente árbol:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-19}
+	\label{drivers1}
+\end{figure}
+
+En este caso, el árbol rompe el factor de balanceo en el nodo número 2 (+2). Tenemos un balanceo de tipo RR y lo solucionamos con una rotación a izquierda aplicada en el nodo número 2 obteniendo el siguiente árbol que cumple con el factor de balanceo:
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-20}
+	\label{drivers1}
+\end{figure}
+\newpage
+Ahora, queremos eliminar el nodo número 18.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-21}
+	\label{drivers1}
+\end{figure}
+
+Como el nodo 18 es una hoja, lo borramos simplemente y verificamos que se cumple el factor de balanceo.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-22}
+	\label{drivers1}
+\end{figure}
+\newpage
+Ahora, queremos eliminar el nodo número 75. Como es una hoja lo eliminamos simplemente y y verificamos que se cumple el factor de balanceo.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-23}
+	\label{drivers1}
+\end{figure} 
+
+Ahora, queremos eliminar el nodo número 19. Como es una hoja lo eliminamos simplemente pero no se cumple el factor de balanceo.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-24}
+	\label{drivers1}
+\end{figure} 
+\newpage
+Estamos en un caso de balanceo LR. Lo solucionamos con una rotación doble. Primero, aplicando una rotación a derecha sobre el nodo 50 y luego una rotación a izquierda sobre el nodo 21 obteniendo el siguiente árbol completo que ahora verifica el factor de balanceo.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abb-25}
+	\label{drivers1}
+\end{figure} 
+
+\textbf{Costo del borrado en los árboles AVL}
+\newline
+\newline
+En el caso peor hay que hacer rotaciones (simples o dobles) a lo largo de toda la rama.
+\newline
+\newline
+\textbf{.} Paso 1: Borrado como en un ABB. Proporcional a la altura del árbol $\Theta(log(n))$
+\newline
+\newline
+\textbf{.} Paso 2: Recalculo de los factores de balanceo. Proporcional a la altura del árbol $\Theta(log(n))$
+\newline
+\newline
+\textbf{.} Paso 3: Rotaciones simples o dobles. $\Theta(log(n))$ . $\Theta(1)$
+\newline
+\newline
+En total, $\Theta(1)$. 
+
+
 
 
 
