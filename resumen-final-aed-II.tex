@@ -1333,3 +1333,94 @@ De forma más general, queremos decir que la función de abstracción debe ser u
 \newline
 Es decir, que la abstracción de la implementación de una operación $\puntito$ tiene que ser observacionalmente equivalente a la implementación de la abstracción de esa operación.  
 \newpage
+
+\section{Clase Teórica 05. Diseño de Conjuntos y Diccionarios}
+
+Ahora, nos vamos a enfocar en soluciones a problemas concretos que nos van a permitir avanzar en la implementación de la solución para una serie de problemas fundamentales para la informatica. En particular, vamos a trabajar con \textit{conjuntos} y \textit{diccionarios}.  
+\newline
+\newline
+Presentemos, entonces, el TAD \tadNombre{Diccionario}.
+\newline
+\begin{tad}{\tadNombre{Diccionario(clave, significado)}}
+	\medskip	
+        \textbf{observadores basicos}
+        \medskip
+	\tadOperacion{def?}{clave/c, dicc(clave;significado)/d}{bool}{}
+ \medskip
+	\tadOperacion{obtener}{clave/c, dicc(clave;significado)/d}{significado}{def?($c,d$)}
+	\medskip
+        \medskip
+        \textbf{generadores}
+	\medskip
+	\tadOperacion{vacio}{}{dicc(clave,significado)}{}
+	\medskip
+	\tadOperacion{definir}{clave, significado, dicc(clave;significado)}{dicc(clave,significado)}{}
+        \medskip
+        \medskip
+        \textbf{otras operaciones}
+        \medskip
+\tadOperacion{borrar}{clave/c, dicc(clave;significado)/d}{dicc(clave,significado)}{def?($c,d$)}
+	\medskip
+ \tadOperacion{claves}{dicc(clave;significado)}{conj(clave)}{}
+	\medskip
+ \tadOperacion{. =dicc}{dicc($\alpha$), dicc($\alpha$)}{bool}{}
+	\medskip
+\end{tad}
+\medskip
+\medskip
+A partir de ahora, vamos a buscar representaciones o implementaciones eficientes de conjuntos y diccionarios.
+
+\subsection{Representación secuencial de conjuntos y diccionarios}
+
+Los conjuntos y diccionarios pueden representarse a través de estructuras secuenciales.
+\newline
+\newline
+Consideramos para ello la siguiente estructura:
+
+\begin{Estructura}{diccionario}[estr]
+	\begin{Tupla}[estr]%
+		\tupItem{dicc}{[tupla(clave,significado)]}%
+		\tupItem{ult}{puntero(tupla(clave,significado))}%
+	\end{Tupla}
+\end{Estructura}
+\medskip
+En esta estructura, $dicc$ es un arreglo de tuplas donde en cada posición se encuentra una tupla donde en la primer componente se encuentra definida la $clave$ y en la segunda su correspondiente $significado$. Luego, $ult$ es un puntero que apunta a la ultima tupla insertada en el arreglo.
+\newline
+\newline
+Ahora, calculemos el orden de complejidad utilizando la estructura de las operaciones básicas de un diccionario.
+\newline
+\newline
+La operación \textbf{vacio} tiene costo $O(1)$.
+\newline
+\newline
+La operación \textbf{definir} tiene costo $O(1)$ dado que tenemos que mover el puntero una posición más de la que se encuentra actualmente e insertar alli la tupla con la clave y su significado.
+\newline
+\newline
+La operación \textbf{def?} tiene costo $O(n)$ porque debemos buscar de manera secuencial por todo el arreglo para chequear si la clave se encuentra definida en alguna tupla suponiendo que $n$ son la cantidad de tuplas clave-significado definidas en el arreglo.
+\newline
+\newline
+La operación \textbf{obtener} tiene costo $O(n)$ porque tenemos costo $O(n)$ para realizar la búsqueda de la clave en el arreglo y una vez encontrada, obtener tiene costo $O(1)$. Por lo tanto, $O(n + 1)$ = $O(max\{n,1\})$ = $O(n)$.
+\newline
+\newline
+Otra estructura que podriamos plantear en la misma que en el caso anterior pero que el arreglo se encuentre \textbf{ordenado}.
+\newline
+\newline
+En este caso, la operación de crear un arreglo vacio tiene costo $O(1)$ pero la operación $definir$ tiene un costo $O(n)$ dado que ahora no se puede mover el puntero a la última posición del arreglo sino que hay que ubicar a la tupla en su posición correspondiente para que quede ordenada y en el peor caso, podriamos querer colocar una tupla donde su clave tenga valor mínimo y esto implicaría mover a todas las tuplas una posición hacia abajo generando un costo de $O(n)$. Mientras que las operaciones $def?$ y $obtener$ pasan a tener costo $O(lg(n))$ porque podemos aplicar búsqueda binaria.
+\newline
+\newline
+Otra estructura que podriamos plantear es una lista de clave significado \TipoVariable{lista(tupla(clave,significado))} donde las operaciones tienen el mismo costo que en el caso del arreglo no ordenado.
+\newline
+\newline
+Otra estructura que podriamos plantear es una lista de clave significado \TipoVariable{lista(tupla(clave,significado))} que se encuentre \textbf{ordenada} pero sería el caso menos beneficioso porque crear un diccionario vacio tiene costo $O(1)$, la operación $definir$ tiene costo $O(n)$ pero las operaciones $def?$ y $obtener$ tienen costo $O(n)$ porque en listas no se puede realizar búsqueda binaria.
+\newline
+\newline
+Ahora, la complejidad de las operaciones tienen costo:
+\newline
+\newline
+\textbf{.} Tiempo: $O(n)$ en el peor caso en al menos alguna operación.
+\newline
+\newline
+\textbf{.} Espacio: $O(n)$
+\newline
+\newline
+¿Se podrá hacer mejor?
