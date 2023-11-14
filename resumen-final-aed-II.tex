@@ -1491,3 +1491,130 @@ Ahora, veamos algunos \textbf{algoritmos} básicos de los ABB:
 	\end{algorithmic}
 \end{algorithm}
 \newpage
+
+\subsubsection{Inserción en ABB}
+
+Basicamente, para realizar una inserción en un ABB debemos realizar dos pasos:
+\newline
+\newline
+\textbf{.} Buscar al padre del nodo a insertar 
+\newline
+\newline
+\textbf{.} Insertarlo como hijo de ese padre.
+\newline
+\newline
+Entonces, formemos un ABB con los elementos del arreglo \TipoVariable{[49,21,52,56,67,54,77,83,75]}.
+\newline
+\newline
+\textbf{.} Para insertar el nodo 49, como el árbol está vacio, inserto este nodo como raíz.
+\newline
+\newline
+\textbf{.} El nodo 21, como 21 $<$ 49, lo inserto como hijo izquierdo del 49.
+\newline
+\newline
+\textbf{.} El nodo 52, como 52 $>$ 49, lo inserto como hijo derecho del 49.
+\newline
+\newline
+\textbf{.} El nodo 56, como 56 $>$ 49 y 56 $>$ 52 lo inserto como hijo derecho del 52.
+\newline
+\newline
+\textbf{.} El nodo 67, como 67 $>$ 49, 67 $>$ 52 y 67 $>$ 56 lo inserto como hijo derecho del 56.
+\newline
+\newline
+\textbf{.} El nodo 54, como 54 $>$ 49, 54 $>$ 52 y 54 $<$ 56 lo inserto como hijo izquierdo del 56.
+\newline
+\newline
+\textbf{.} El nodo 77, como 77 $>$ 49, 77 $>$ 52, 77 $>$ 56 y 77 $>$ 67 lo inserto como hijo derecho del 67.
+\newline
+\newline
+\textbf{.} El nodo 83, como 83 $>$ 49, 83 $>$ 52, 83 $>$ 56, 83 $<$ 67 y 83 $>$ 77 lo inserto como hijo derecho del 77.
+\newline
+\newline
+\textbf{.} El nodo 75, como 75 $>$ 49, 75 $>$ 52, 75 $>$ 56, 75 $<$ 67 y 75 $<$ 77 lo inserto como hijo izquierdo del 77.
+\newline
+\newline
+Por lo tanto, obtenemos el siguiente árbol:
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.35\textwidth]{abb-2}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+Por lo tanto, el \textbf{costo de la inserción} depende de la  distancia del nodo a la raiz (podriamos decir tambien de la altura del árbol).
+\newline
+\newline
+\textbf{.} En el peor caso, por ejemplo, si tenemos que insertar la secuencia $S_{0}$ = \{1,2,3,4,5,6,7\} el costo es $O(n)$ porque todos los nodos se van a insertando en el subarbol derecho, queda formada una única rama (\textit{árbol desbalanceado}) y la altura del árbol es $n$.
+\newline
+\newline
+\textbf{.} En el caso promedio, por ejemplo, si tenemos que insertar la secuencia $S_{1}$ = \{4,2,3,6,1,5,7\} el costo es $O(lg(n))$ porque todos los nodos se van a insertando de forma tal que se forma un \textit{árbol balanceado}) y la altura esperada del árbol es $lg(n)$.
+\newline
+\newline
+Entonces, si un árbol tiene $n$ nodos, el primer nivel tiene 1 nodo, el segundo nivel tiene 2 nodos, el tercer nivel tiene 4 nodos y por lo tanto, si el árbol tiene altura $h$, el último nivel tiene $2^{h}$ nodos. Por lo tanto:
+\newline
+\newline
+$n$ = $\displaystyle \sum_{i=0}^{h} 2^{i}$
+\newline
+\newline
+\newline
+$n$ = $\displaystyle \frac{1-2^{h+1}}{1-2}$ por Serie Geometrica
+\newline
+\newline
+\newline
+$n$ = $\displaystyle \frac{1-2^{h+1}}{-1}$
+\newline
+\newline
+\newline
+$n$ = $-1+2^{h+1}$
+\newline
+\newline
+$n$ = $2^{h+1} - 1$
+\newline
+\newline
+Y escribiendolo en función de $h$, obtenemos:
+\newline
+\newline
+$n$ = $2^{h+1} - 1$
+\newline
+\newline
+$n + 1$ = $2^{h+1}$
+\newline
+\newline
+$log_{2}(n+1)$ = $log_{2}(2^{h+1})$
+\newline
+\newline
+$log_{2}(n+1)$ = $(h+1)$ . $log_{2}(2)$
+\newline
+\newline
+$log_{2}(n+1)$ = $h+1$
+\newline
+\newline
+$log_{2}(n+1)$ $-$ $1$ = $h$
+\newline
+\newline
+Por lo tanto, podemos acotar $log_{2}(n+1)$ por $lg(n)$. 
+\newpage 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
