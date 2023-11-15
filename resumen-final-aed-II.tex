@@ -2065,6 +2065,46 @@ En el caso peor hay que hacer rotaciones (simples o dobles) a lo largo de toda l
 \newline
 En total, $\Theta(1)$. 
 
+\section{Clase Teórica 06. Tries}
+
+La motivación para esta clase es:
+\newline
+\newline
+\textbf{.} Buscar una implementación de diccionarios menos dependiente de la cantidad de claves.
+\newline
+\newline
+\textbf{.} La idea es independizarnos de la cantidad de claves pero manteniendo un rendimiento razonable en el peor caso enfocandonos en el tamaño de las claves y un poco menos en el tamaño del conjunto.
+\newline
+\newline
+\textbf{.} Lograr estructuras de datos muy rápidas en la práctica.
+\newline
+\newline
+\textbf{.} Adecuadas para claves de tamaño variable.
+
+\subsection{Idea}
+
+La idea es no hacer comparaciones de claves completas, sino de \textbf{partes} de ellas. Por ejemplo, si las claves son números enteros, las \textit{partes} podrían ser los dígitos/bits y si las claves son strings, las \textit{partes} podrían ser los caracteres.
+
+\subsection{Desventajas}
+
+Las principales desventajas de estas implementaciones son:
+\newline
+\newline
+Algunas implementaciones pueden requerir mucha memoria.
+\newline
+\newline
+Las operaciones sobre las componentes de las claves puede no ser fácil, o ser muy ineficiente en algunos lenguajes de alto nivel.
+
+\subsection{Árboles de búsqueda dígital}
+
+La primera estructura con acercamiento a los \textit{tries} son los árboles de búsqueda dígital. 
+\newline
+\newline
+Son parecidos a los ABB. Para guardar una clave, vamos recorriendo el camino en el árbol que nos lleva a su posición.
+\newline
+\newline
+Pero la posición no está determinada por comparaciones $>$ o $<$ sino por los bits, dígitos o caracteres, es decir, por las \textbf{partes} de la clave.
+
 
 
 
