@@ -2351,6 +2351,31 @@ Tenemos el universo de claves $K$, las claves que estoy manipulando en un moment
 Podemos observar que el gran problema es encontrar la función $h$ donde el objetivo principal es que la función $h$ indexe a a cada clave en una posición que se encuentre libre en el la tabla $T$.
 \newpage
 
+Entonces:
+\newline
+\newline
+La función de \textbf{hash perfecta} propone que si tengo dos claves distintas $k_{1}$,$k_{2}$, al aplicarle la función de hash, $h(k_{1})$ y $h(k_{2})$ tambien son distintas. Es decir, $k_{1}$ $\neq$ $k_{2}$, entonces $h(k_{1})$ $\neq$ $h(k_{2})$.
+\newline
+\newline
+Requiere que $N$ $\geq$ $|$$K$$|$ y es raramente razonable en la práctica porque generalmente $|$$K$$|$ $>$$>$ $N$.
+\newline
+\newline
+Por lo tanto, ahora nos vamos a encontrar con claves distintas que, al aplicarles la función de hash $h$, se mapeen a la misma posición del arreglo. A este fenomeno lo llamamos \textbf{colisión}. 
+\newline
+\newline
+\textbf{Resolución de colisiones}
+\newline
+\newline
+Los métodos se diferencian por la forma de ubicar a los elementos que dan lugar a colisión. Tenemos dos familias principales:
+\newline
+\newline
+\textbf{.} Direccionamiento cerrado o concatenación: a la $i$-esima posición de la tabla se le asocia la lista de los elementos tales que $h(k)$ = $i$.
+\newline
+\newline
+\textbf{.} Direccionamiento abierto: todos los elementos se guardan en la tabla.
+
+
+
 
 
 
