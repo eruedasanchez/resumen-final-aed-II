@@ -2144,6 +2144,86 @@ Tambien podemos afirmar que la longitud del camino más largo es igual al mayor 
 La búsqueda o inserción en un árbol de $n$ claves de $b$ bits, necesita en promedio (suponiendo la distribución equitativa de las claves) $log(n)$ comparaciones de clave completa porque cada vez nos paramos en un nodo, tenemos que mirar la clave completa para ver si ese era el nodo que estabamos buscando, y $b$ en el peor caso.
 \newpage
 
+\subsection{Tries}
+
+Con base en los Árboles de Búsqueda Dígital, vamos a introducir una nueva estructura llamada \textbf{tries}.
+\newline
+\newline
+Un \textbf{trie} es un árbol $k+1$-ario para alfabetos de $k$ elementos.
+\newline
+\newline
+Ahora, la información no va a estar asociada a los nodos sino a los \textbf{ejes} del árbol dado que representan componentes de las claves.
+\newline
+\newline
+Por ejemplo:
+\newline
+\newline
+\textbf{.} Si las claves son $strings$, los ejes representan caracteres.
+\newline
+\newline
+\textbf{.} Si las claves son $enteros$, los ejes representan dígitos o bits.
+\newline
+\newline
+En un trie, cada subárbol representa al conjunto de claves que comienza con las etiquetas de los ejes llevan hasta él. Podriamos considerar esta definición como la función de abstracción.
+\newline
+\newline
+Los nodos internos no contienen claves.
+\newline
+\newline
+Las claves o los punteros a la información se almacenan en las hojas.
+\newline
+\newline
+Veamos el siguiente ejemplo de \textit{trie}.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{trie-1}
+	\label{drivers1}
+\end{figure} 
+
+Tenemos un diccionario que contiene cinco palabras (BIG, BIGGER, BILL, GOOD, GOSH).
+\newline
+\newline
+Inicialmente, en el subárbol derecho se encuentra la secuencia vacia.
+\newline
+\newline
+En el subárbol izquierdo se encuentran todas las palabras que comienzan con B. El primer nodo almacena todas las palabras que comienzan con B. luego, si seguimos avanzando, nos encontramos con el nodo que almacena todas las palabras que comienzan con BI. Si seguimos avanzando hacia el hijo izquierdo, nos encontramos con las palabras que comienzan con BIG; y si avanzamos hacia el hijo derecho nos encontramos con las palabras que comienzan con BIL. Ahora, si seguimos avanzando por la letra L, nos encontramos con todas las palabras que comienzan con BILL. Y como BILL es una palabra que queremos insertar se añade otro eje (convierte al árbol en $k+1$-ario) y su hoja contiene la palabra BILL. Podemos observar el mismo caso para BIG donde se crea un eje con el signo \$ indicando que la hoja que contiene es la palabra BIG y en los demás ejes se almacenan las palabras que comienzan con BIG.
+\newline
+\newline
+En el subárbol del centro se encuentran las palabras que comienzan con G. Y el análisis que se realiza es el mismo que para el caso de B.
+\newpage
+
+\subsubsection{Propiedades de los tries}
+
+A continuación, veamos algunas propiedades de los \textit{tries}.
+\newline
+\newline
+\textbf{.} Para buscar o insertar, tenemos que hacer, a lo sumo, una comparación de clave completa cuando llego a una hoja
+\newline
+\newline
+\textbf{.} A diferencia de los ABB y los ABD, la estructura del trie es la misma independientemente del orden en que se insertan las claves, o sea, hay un único trie para un conjunto de claves.
+\newline
+\newline
+\textbf{.} La búsqueda/inserción en un trie construido a partir de $n$ claves de $b$ bits, necesita en promedio $log(n)$ comparaciones de bits en promedio (suponiendo la distribución equitativa de las claves) y $b$ comparaciones en el peor caso.
+
+\subsection{Implementación de tries}
+
+Ahora, nos vamos a enfocar en como representar los $tries$.
+\newline
+\newline
+\textbf{.} La primer posibilidad es tener en cada nodo interno, un arreglo de punteros. Caso que utilizamos \textit{memoria estática}. Veamos el siguiente ejemplo.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{trie-2}
+	\label{drivers1}
+\end{figure}
+
+Observamos que cada clave contiene un puntero que apunta a otro arreglo de punteros en el caso de haya palabras que comiencen con esa clave. Caso contrario, el puntero apunta a $nil$. Y en todos los casos, tenemos una posición adicional en el array para el puntero que representa al subárbol de la palabra que terminó allí.
+\newline
+\newline
+Por lo tanto, la implementacion con arreglos es muy eficiente en términos de tiempo, el algoritmo es simple pero es extremadamente ineficiente en términos de memoria porque solo en el caso de las letras, estamos reservando 26 posiciones para cada arreglo cuando sólo podriamos llegar a utilizar una o dos posiciones. Es decir, esto ocurre cuando el alfabeto es grande y el diccionario es chico. Para solucionar esto, se podría agrupar caracteres pocos frecuentes. 
+
 
 
 
