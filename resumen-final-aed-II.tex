@@ -2223,6 +2223,48 @@ Observamos que cada clave contiene un puntero que apunta a otro arreglo de punte
 \newline
 \newline
 Por lo tanto, la implementacion con arreglos es muy eficiente en términos de tiempo, el algoritmo es simple pero es extremadamente ineficiente en términos de memoria porque solo en el caso de las letras, estamos reservando 26 posiciones para cada arreglo cuando sólo podriamos llegar a utilizar una o dos posiciones. Es decir, esto ocurre cuando el alfabeto es grande y el diccionario es chico. Para solucionar esto, se podría agrupar caracteres pocos frecuentes. 
+\newpage
+\textbf{.} La segunda posibilidad es tener para cada nodo, un puntero a sus hijos y además, cada nodo puede estar en una lista con sus hermanos. Caso que utilizamos \textit{memoria dinámica}. Veamos el siguiente ejemplo.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{trie-3}
+	\label{drivers1}
+\end{figure}
+
+Podemos observar que, cada nodo, tiene dos punteros. Uno al mayor de sus hijos (puntero rojo) y otro al que le sigue en su lista de hermanos (puntero azul).
+\newline
+\newline
+Por lo tanto, la implementacion con punteros es eficiente en términos de tiempo solo si hay pocas claves porque en lugar de hacer un solo acceso a claves como en lugar, tenemos que recorrer potencialmente toda la lista de manera secuencial. Por ejemplo, si queremos ver si existen claves que comiencen con la letra Z, tendriamos que recorrer desde el nodo que contiene a B, pasar por el de G y asi hasta llegar a Z. Debido a esto, requiere algoritmos sobre manejo de listas pero es mucho mas eficiente en términos de memoria. 
+
+\subsection{Tries compactos}
+
+Son parecidos a los tries tradicionales pero colapsamos las cadenas que llevan hacia hojas.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.63\textwidth]{trie-4}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+\subsection{Tries más compactos: Patricia}
+
+Ahora colapsamos todas las cadenas. Por ejemplo, vemos que todas las palabras que comienzan con B, continuan con BI y todas las palabras que comienzan con G, continuan con GO. 
+\newline
+\newline
+Además, un eje puede representar más de un caracter.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.63\textwidth]{trie-5}
+	\label{drivers1}
+\end{figure}
+
+La altura de un árbol Patricia binario está acotada por $n$ (el número de claves). Eso no sucede con los modelos anteriores. 
+\newpage
+
+
 
 
 
