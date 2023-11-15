@@ -2264,6 +2264,93 @@ Además, un eje puede representar más de un caracter.
 La altura de un árbol Patricia binario está acotada por $n$ (el número de claves). Eso no sucede con los modelos anteriores. 
 \newpage
 
+\section{Clase Teórica 07. Diseño de conjuntos y diccionarios con Hashing}
+
+\subsection{Tablas Hash}
+
+Son adecuadas para representar diccionarios.
+\newline
+\newline
+Representan la generalización del concepto de arreglo.
+\newline
+\newline
+Importantes para el acceso a datos en memoria secundaria.
+\newline
+\newline
+\textbf{.} Los accesos se dan en memoria secundaria
+\newline
+\newline
+\textbf{.} El costo de los accesos es el predominante
+
+\subsection{Direccionamiento directo}
+
+Supongamos el caso donde tenemos que almacenar perfiles de clientes y tengo que encontrar alguna manera de indexarlos en un diccionario por su clave. 
+\newline
+\newline
+Una opción posible de clave es considerar el número de DNI dado que es único por persona. Para ello, puedo considerar tener un arreglo de longitud $10^{8}$ para almacenar los DNI's que van desde el 0 hasta el 99.999.999 
+\newline
+\newline
+Cuando quiero consultar, por ejemplo, por el DNI 28.543.897, basta con acceder a esa posición del arreglo y obtener el DNI.
+\newline
+\newline
+La ventaja de esto es que puedo acceder a cualquier DNI en tiempo $O(1)$. Pero, el problema es que se produce mucho desperdicio de memoria porque si solo necesito registrar 10000 clientes, estoy utilizando 100000000 de entradas para solo 10000 clientes. 
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{hash-1}
+	\label{drivers1}
+\end{figure}
+
+Sin embargo, podemos ver estamos indexando números de DNI pero estamos buscando la generalización de los arreglos y no indexar unicamente números enteros positivos.
+\newpage
+
+\subsection{Objetivos}
+
+Por lo tanto, queremos:
+\newline
+\newline
+\textbf{.} Indexar otros tipos de datos (no sólo enteros)
+\newline
+\newline
+\textbf{.} $n$ = \# claves efectivamente usadas 
+\newline
+\newline
+\textbf{.} Tiempo de búsqueda: $O(1)$
+\newline
+\newline
+Observemos que la \# claves posibles puede ser mucho mayor que la \# claves efectivamente usadas
+
+\subsubsection{Indexar otros tipos de datos}
+
+Necesitamos de una función de correspondencia entre cualquier tipo de datos y un entero. A esto, se lo denomina \textbf{Pre-hashing}. 
+
+\subsubsection{$n$ = \# claves efectivamente usadas}
+
+Vamos a representar un diccionario como una tupla $\langle T,h \rangle$ donde: 
+\newline
+\newline
+\textbf{.} $T$ es un arreglo con $N$ = tam($T$) celdas.
+\newline
+\newline
+\textbf{.} La función $h$ (hash) que mapea del universo de claves $K$ al arreglo especifico de tamaño $N$, es decir, $h$:$K$ $\rightarrow$ \{0,...,$N-1$\}
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{hash-2}
+	\label{drivers1}
+\end{figure}
+
+Tenemos el universo de claves $K$, las claves que estoy manipulando en un momento dado ($k_{0}$,$k_{1}$,$k_{2}$,$k_{3}$) y la función de hash que, al aplicarla sobre cada una de esas claves, me ubica en una posición correspondiente en el arreglo como vemos a continuación. 
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{hash-3}
+	\label{drivers1}
+\end{figure}
+
+Podemos observar que el gran problema es encontrar la función $h$ donde el objetivo principal es que la función $h$ indexe a a cada clave en una posición que se encuentre libre en el la tabla $T$.
+\newpage
+
 
 
 
