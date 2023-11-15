@@ -2104,6 +2104,46 @@ Son parecidos a los ABB. Para guardar una clave, vamos recorriendo el camino en 
 \newline
 \newline
 Pero la posición no está determinada por comparaciones $>$ o $<$ sino por los bits, dígitos o caracteres, es decir, por las \textbf{partes} de la clave.
+\newpage
+Veamos el siguiente ejemplo.
+
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{abd-1}
+	\label{drivers1}
+\end{figure} 
+
+Como el árbol está inicialmente vacio, insertamos la clave E como raíz.
+\newline
+\newline
+Luego, como la clave J comienza con el bit 0, lo colocamos como hijo izquierdo de la raíz.
+\newline
+\newline
+Como la clave M comienza con el bit 0, lo colocamos como hijo izquierdo de la raíz. Pero como ya se encuentra ocupado por la letra J, el siguiente bit es 1 y lo insertamos como hijo derecho del nodo J.
+\newline
+\newline
+Como la clave P comienza con el bit 1, lo colocamos como hijo derecho de la raíz. 
+\newline
+\newline
+Como la clave L comienza con el bit 0, lo colocamos como hijo izquierdo de la raíz. Pero como ya se encuentra ocupado por la letra J, el siguiente bit es 1 y lo colocamos como hijo derecho del nodo J. Pero como tambien ya se encuentra ocupado por la letra M, el siguiente bit es 1 y lo colocamos como hijo derecho del nodo M.
+\newline
+\newline
+Como la clave O comienza con el bit 0, lo colocamos como hijo izquierdo de la raíz. Pero como ya se encuentra ocupado por la letra J, el siguiente bit es 1 y lo colocamos como hijo derecho del nodo J. Pero como ya se encuentra ocupado por la letra M, el siguiente bit es 1 y lo colocamos como hijo derecho del nodo M. Como tambien ya se encuentra ocupado por la letra L, el siguiente bit es 1 y lo colocamos como hijo derecho del nodo L.
+\newline
+\newline
+Y siguiendo este patrón, insertamos las claves restantes obteniendo el árbol que se muestra en la imagen.
+
+\subsubsection{Propiedades}
+
+El peor caso es mucho mejor que el de los ABBs. El número de claves es grande, es decir, que si todas las claves viven en un conjunto $U$, entonces $n$ $<$ $|$ $U$ $|$, es decir, que el número de nodos es menor al cardinal del conjunto $U$ que contiene todas la claves. Por otro lado, si las claves no son largas, la altura del árbol va a ser pequeña y va a estar dada por la cantidad de bits que conforman a la claves, es decir, si las claves se encuentran el conjunto $U$, el tamaño de cada clave está dado por $log(|U|)$. 
+\newline
+\newline
+Tambien podemos afirmar que la longitud del camino más largo es igual al mayor número de bits sucesivos iguales de dos claves cualesquiera a partir del bit más a la izquierda (o sea, mayor prefijo común).
+\newline
+\newline
+La búsqueda o inserción en un árbol de $n$ claves de $b$ bits, necesita en promedio (suponiendo la distribución equitativa de las claves) $log(n)$ comparaciones de clave completa porque cada vez nos paramos en un nodo, tenemos que mirar la clave completa para ver si ese era el nodo que estabamos buscando, y $b$ en el peor caso.
+\newpage
+
 
 
 
