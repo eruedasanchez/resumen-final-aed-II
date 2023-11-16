@@ -2540,6 +2540,56 @@ Comencemos viendo el algoritmo de \textbf{inserción} para este método.
 \includegraphics[width=0.6\textwidth]{abierto-1}
 	\label{drivers1}
 \end{figure}
+\newpage
+Veamos el siguiente ejemplo de inserción.
+\newline
+\newline
+Supongamos que queremos insertar las claves 7,10,2,12 y tenemos la tabla $T$ con 5 lugares.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{abierto-2}
+	\label{drivers1}
+\end{figure}
+
+Entonces, comenzamos insertando la clave número 7.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{abierto-3}
+	\label{drivers1}
+\end{figure}
+
+Como la posición numero 2 se encuentra vacia, lo insertamos sin problemas.
+\newpage
+Ahora, continuamos insertando la clave número 10.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{abierto-4}
+	\label{drivers1}
+\end{figure}
+
+Como la posición numero 0 se encuentra vacia, lo insertamos sin problemas.
+\newline
+\newline
+Continuamos insertando la clave número 2. Como en el intento 0, la función de hash me envia la clave a la posición 2 y se encuentra ocupada por el 7, incremento en una unidad el intento y ahora (2+1) mod 5 = 3 y como la posición 3 se encuentra libre, inserto la clave número 2 en la posición 3 de la tabla sin problemas.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{abierto-5}
+	\label{drivers1}
+\end{figure}
+\medskip
+\medskip
+Por último, insertamos la clave número 12. Como en el intento 0, la función de hash me envia la clave a la posición 2 y se encuentra ocupada por el 7, incremento en una unidad el intento y ahora (12+1) mod 5 = 3 y como la posición 3 se encuentra ocupada por el 2, incremento en una unidad el intento y ahora (12+2) mod 5 = 4 y como la posición 4 se encuentra libre, inserto la clave número 12 en la posición 4 de la tabla sin problemas.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{abierto-6}
+	\label{drivers1}
+\end{figure}
+\newpage
 
 
 
