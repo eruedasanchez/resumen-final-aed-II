@@ -2509,6 +2509,37 @@ Por lo tanto, si:
 Por útimo si $n$ $\sim$ $|$$T$$|$, entonces las operaciones tienen costo $O(1)$.
 \newline
 \newline
+\textbf{Método de hashing por direccionamiento abierto}
+\newline
+\newline
+Todos los elementos se almacenan en la tabla.
+\newline
+\newline
+Las colisiones se resuelven dentro de la tabla.
+\newline
+\newline
+\textbf{.} Si la posición calculada está ocupada, hay que buscar una posición libre.
+\newline
+\newline
+\textbf{.} Los distintos métodos con direccionamiento abierto se distinguen por el método de barrido que utilizan.
+\newline
+\newline
+\textbf{.} La función hash pasa a depender del número de intentos realizados
+\newline
+\newline
+\textbf{.} Dirección = $h(k,i)$ para el $i$-esimo intento
+\newline
+\newline
+\textbf{.} $h(k,i)$ debe generar todas las posiciones de $T$
+\newline
+\newline
+Comencemos viendo el algoritmo de \textbf{inserción} para este método.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{abierto-1}
+	\label{drivers1}
+\end{figure}
 
 
 
