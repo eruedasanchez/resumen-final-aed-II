@@ -2373,7 +2373,64 @@ Los métodos se diferencian por la forma de ubicar a los elementos que dan lugar
 \newline
 \newline
 \textbf{.} Direccionamiento abierto: todos los elementos se guardan en la tabla.
-
+\newline
+\newline
+\textbf{Requisitos de una función de hash}
+\newline
+\newline
+Entonces para evitar las colisiones, tratamos de encontrar una uniformidad simple, es decir, tratar de que las claves se distribuyan lo más equitativamente posible entre todas las posiciones del arreglo. Es decir:
+\newline
+\newline
+$\forall$ $j$ $\displaystyle \sum_{k \in K, h(k)=j}^{}$$P(k)$ $\approx$ $\displaystyle \frac{1}{|N|}$
+\newline
+\newline
+Para todo $j$ donde $j$ son las posiciones del arreglo, si sumamos sobre todas las claves tales que la función de hash la envio a la posición $j$, la probabilidad de las claves tiene que ser igual o converger a $\displaystyle \frac{1}{|N|}$ donde $N$ es el tamaño de la tabla. Es decir, si agrupamos a todos los que van a parar al mismo lugar tiene que ser igual a $\displaystyle \frac{1}{|N|}$ del total de las claves.    
+\newline
+\newline
+Pero, el problema es que esta uniformidad es dificil de conseguir porque $P$ es generalmente desconocida, es decir, no se conoce la distribución de $P$. 
+\newline
+\newline
+Para ver esto, veamos el siguiente ejemplo.
+\newline
+\newline
+Sea $|$$T$$|$=5 (longitud de la tabla) y $h(k)$ = $k$ mod $5$. Entonces, queremos mapear los siguientes conjuntos: \{1,7,10,14\} y \{1,6,11,16\} 
+\newline
+\newline
+Comencemos analizando el caso de \{1,7,10,14\}.
+\newline
+\newline
+\textbf{.} $h(1)$ = 1 mod 5 = 1
+\newline
+\newline
+\textbf{.} $h(7)$ = 7 mod 5 = 2
+\newline
+\newline
+\textbf{.} $h(10)$ = 10 mod 5 = 0
+\newline
+\newline
+\textbf{.} $h(14)$ = 14 mod 5 = 4
+\newline
+\newline
+En este caso, cada clave se ubica en una posición diferente y obtenemos la uniformidad simple.
+\newpage
+Ahora, analicemos el caso de \{1,6,11,16\}.
+\newline
+\newline
+\textbf{.} $h(1)$ = 1 mod 5 = 1
+\newline
+\newline
+\textbf{.} $h(6)$ = 6 mod 5 = 1
+\newline
+\newline
+\textbf{.} $h(11)$ = 11 mod 5 = 1
+\newline
+\newline
+\textbf{.} $h(16)$ = 16 mod 5 = 1
+\newline
+\newline
+En este caso, todas las claves se ubican en la posición 1, es decir, se produce aglomeración de los elementos.
+\newline
+\newline
 
 
 
