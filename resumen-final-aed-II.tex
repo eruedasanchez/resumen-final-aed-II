@@ -2590,6 +2590,92 @@ Por último, insertamos la clave número 12. Como en el intento 0, la función d
 	\label{drivers1}
 \end{figure}
 \newpage
+Ahora, continuemos viendo el algoritmo de \textbf{búsqueda} para este método.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{busq-1}
+	\label{drivers1}
+\end{figure}
+\medskip
+\medskip
+Para comprender mejor el algoritmo, veamos el siguiente ejemplo.
+\newline
+\newline 
+Supongamos que queremos buscar las claves número 12 y 30 en la siguiente tabla:
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.2\textwidth]{busq-2}
+	\label{drivers1}
+\end{figure}
+\medskip
+\medskip
+Para ello, aplicamos la función de hash en el intento 0 pero se encuentra la clave número 7 en la posición 2. Por lo tanto, incremento el intento, la función de hash me devuelve la posición 3 pero en esta posición se encuentra la clave número 2. Entonces, incremento el intento, la función de hash devuelve la posición 4 la cual contiene a la clave número 12.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{busq-3}
+	\label{drivers1}
+\end{figure}
+\newpage
+Ahora, continuamos buscando la clave número 30. Para ello, aplicamos la función de hash en el intento 0 pero se encuentra la clave número 10 en la posición 0. Por lo tanto, incremento el intento, la función de hash me devuelve la posición 1 y esta contiene NULL, es decir, esta vacia la celda. De acuerdo al algoritmo, NULL nos indica que debemos terminar la ejecución y finalizar con la búsqueda.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{busq-4}
+	\label{drivers1}
+\end{figure}
+\newpage
+Ahora, supongamos la siguiente situación:
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{busq-5}
+	\label{drivers1}
+\end{figure}
+
+Mi objetivo es buscar la clave número 12 pero si justo se elimina la clave número 2, la posición 3 queda en NULL. Entonces, al iniciar el algoritmo de búsqueda de la clave 12, el primer intento, me envia a la posición 2 y como 7 != 12, incremento en uno el intento. Luego, el intento 1 me envia a la posición 3 pero ahora se encuentra NULL y por lo tanto, debo terminar la búsqueda y retorno que la clave número 12 no se encuentra en la tabla cuando en realidad si lo está. 
+\newline
+\newline
+Por lo tanto, en el algoritmo debemos tener cuidado con \TipoVariable{T[h(k,i)] != null}. Es decir, podemos marcar los elementos como \textit{borrados} en lugar de \textit{null} pero seguimos teniendo algunos problemas.
+\newline
+\newline
+Por lo tanto, vamos a diferenciar los métodos de \textbf{direccionamiento abierto} de acuerdo a la función de \textbf{barrido} que elijan.
+\newline
+\newline
+Nos referimos al \textbf{barrido} cuando una función $h(k,i)$ debe recorrer todas las posiciones de la tabla ante una colisión.
+\newline
+\newline
+Podemos diferenciar tres grandes formas en la que va realizando el barrido:
+\newline
+\newline
+\textbf{.} Barrido linear
+\newline
+\newline
+\textbf{.} Barrido cuadrático
+\newline
+\newline
+\textbf{.} Hashing doble
+\newline
+\newline
+Se diferencian entre si por su complejidad de cálculo y por el comportamiento respecto a los fenomenos de aglomeración.
+\newline
+\newline
+\textbf{Barrido linear}
+\newline
+\newline
+Calculamos $h(k,i)$ = ($h'(k) + i$) mod $|T|$ donde $h'(k)$ es una función de hashing.
+\newline
+\newline
+Se recorren todas las posiciones en la secuencia $T[h'(k)]$, $T[h'(k)+1]$,..., $T[|T|]$, 0, 1, ..., $T[h'(k)-1]$
+\newline
+\newline
+Posibilidad de \textbf{aglomeración primaria}: dos secuencias de barrido que tienen una colisión, siguen colisionando.
+\newline
+\newline
+Los elementos se aglomeran por largos tramos.
+
 
 
 
