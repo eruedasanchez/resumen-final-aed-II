@@ -2431,6 +2431,84 @@ Ahora, analicemos el caso de \{1,6,11,16\}.
 En este caso, todas las claves se ubican en la posición 1, es decir, se produce aglomeración de los elementos.
 \newline
 \newline
+\textbf{Método de hashing por concatenación}
+\newline
+\newline
+Comencemos viendo el siguiente ejemplo. Supongamos que tenemos 5 claves $k_{1}$ = 0, $k_{2}$ = 4, $k_{4}$ = 10, $k_{5}$ = 9, $k_{7}$ = 14 y tenemos la función de hash $h(k)$ = $k$ mod 5 y queremos insertarlas en una tabla $T$ donde $|$$T$$|$ = 5.
+\newline
+\newline
+Por lo tanto:
+\newline
+\newline
+\textbf{.} $h(k_{1})$ = 0 mod 5 = 0
+\newline
+\newline
+\textbf{.} $h(k_{2})$ = 4 mod 5 = 4
+\newline
+\newline
+\textbf{.} $h(k_{4})$ = 10 mod 5 = 0
+\newline
+\newline
+\textbf{.} $h(k_{5})$ = 9 mod 5 = 4
+\newline
+\newline
+\textbf{.} $h(k_{7})$ = 14 mod 5 = 4
+\newline
+\newline
+Entonces, $h(k_{1})$ = $h(k_{4})$ = 0 y $h(k_{2})$ = $h(k_{5})$ = $h(k_{7})$ = 4
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{conc-1}
+	\label{drivers1}
+\end{figure}
+
+Estas \textbf{colisiones} las resolvemos mediante el método de concatenación. Es decir, en cada posición de la tabla, no hay claves sino un puntero a una lista de todas las claves que están en el diccionario y luego de aplicarles la función de hash, fueron enviadas a esa posición.
+\newline
+\newline
+\textbf{Complejidad de los algoritmos para el método de hashing por concatenación}
+\newline
+\newline
+\textbf{.} Insertar($el,k$): Inserción al principio de la lista asociada a la posición $h(k)$: costo $O(1)$.
+\newline
+\newline
+\textbf{.} Buscar($k$): Búsqueda lineal en la lista asociada a la posición $h(k)$. Por lo tanto, el costo es \textit{O(longitud de la lista asociada a h(k))}.
+\newline
+\newline
+\textbf{.} Borrar($k$): Búsqueda en la lista asociada a la posición $h(k)$. Por lo tanto, el costo es \textit{O(longitud de la lista asociada a h(k))}.
+\newline
+\newline
+¿Cuánto miden las listas?
+\newline
+\newline
+El peor caso ocurren cuando todas las claves una vez aplicada la función de hash, son enviadas a la posición de la tabla. Por lo tanto, la complejidad es $O(n)$ donde $n$ es la cantidad de claves totales. 
+\newline
+\newline
+En el caso promedio, si tenemos una función de hash que distribuye bien los elementos en la tabla, vamos a tener una mejor situación que en el caso peor. 
+\newline
+\newline
+Por lo tanto, si:
+\newline
+\newline
+\textbf{.} $n$ = \# elementos/claves en la tabla 
+\newline
+\newline
+\textbf{.} $\alpha$ = $\displaystyle \frac{n}{|T|}$ factor de carga
+\newline
+\newline
+\newline
+\textbf{Teorema}: Bajo la hipótesis de uniformidad simple de la función de hash, si las colisiones se resuelven por concatenación, en promedio:
+\newline
+\newline
+\textbf{.} Una búsqueda fallida requiere tiempo $\Theta(1+\alpha)$
+\newline
+\newline
+\textbf{.} Una búsqueda exitosa requiere tiempo $\Theta(1+\displaystyle \frac{\alpha}{2})$
+\newline
+\newline
+Por útimo si $n$ $\sim$ $|$$T$$|$, entonces las operaciones tienen costo $O(1)$.
+\newline
+\newline
 
 
 
