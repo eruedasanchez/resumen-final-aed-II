@@ -2701,6 +2701,39 @@ Por último, la función $h'(k)$ en el intento 0 envía a la clave número 105 a
 Este fenómeno se denomina \textbf{aglomeración primaria}. Es decir, genero grandes \textit{clusters} porque solo puedo realizar la inserción de manera eficiente en el intento 0 cuando inserto el primer elemento de la secuencia. 
 \newline
 \newline
+\textbf{Barrido cuadrático}
+\newline
+\newline
+$h(k,i)$ = ($h'(k)$ + $c_{1}$$i$ + $c_{2}$$i^{2}$) mod $|T|$ donde $h'(k)$ es una función de hashing y $c_{1}$ y $c_{2}$ son constantes que hay que elegir de manera tal que a recorrer todos los $i$, eventualmente la función va a probar con todos las posiciones de la tabla, es decir, que estas constantes en algún momento, mapeen a todas las posiciones de la tabla.   
+\newline
+\newline
+Veamos algunos ejemplos de funciones de hash para el barrido cuadrático:
+\newline
+\newline
+$h(k,i)$ = $h'(k)$ + $i^{2}$, $h(k, i+1)$ = $h'(k)$ + $(i+1)^{2}$, $i$ = 1,..., $\displaystyle \frac{(|T|-1)}{2}$
+\newline
+\newline
+$h(k,i)$ = $h'(k)$ + $\displaystyle \frac{i}{2}$ + $\displaystyle \frac{i^{2}}{2}$, $|T|$ = $2^{x}$
+\newline
+\newline
+Consideremos que en este caso, los saltos se van produciendo de manera cada vez mas espaciada. Por ejemplo, en el intento 0 considerando la función de hash $h(k,i)$ = ($h'(k)$ + $c_{1}$$i$ + $c_{2}$$i^{2}$) mod $|T|$ suponiendo que $c_{1}$ = $c_{2}$ = 1:
+\newline
+\newline
+\textbf{.} $h(k,0)$ = $h'(k)$ mod $|T|$
+\newline
+\newline
+\textbf{.} $h(k,1)$ = ($h'(k)$ + 2) mod $|T|$
+\newline
+\newline
+\textbf{.} $h(k,2)$ = ($h'(k)$ + 6) mod $|T|$
+\newline
+\newline
+\textbf{.} $h(k,3)$ = ($h'(k)$ + 12) mod $|T|$
+\newline
+\newline
+De esta manera, evitamos los \textit{clusters} de la aglomeración primaria. Pero podemos observar que, al realizar estos saltos, si una inserción cae en colisión, esa secuencia va a seguir colisionando. Es decir, si las claves están hasheadas a una misma posición, esas colisiones se van a ir repitiendo. Este fenomeno se denomina \textbf{aglomeración secundaria}.  
+\newline
+\newline
 
 
 
