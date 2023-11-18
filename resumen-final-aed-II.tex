@@ -2839,6 +2839,23 @@ Luego, el invariante de representación de un heap o condición de heap debe cum
 \newline
 \newline
 \textbf{Observación:} Un \textit{heap} no es un \textit{ABB} ni una estructura totalmente ordenada.
+\subsection{Operaciones sobre un (max-) heap}
+
+Básicamente, las mismas que tenemos definidas en el TAD \tadNombre{Cola de Prioridad}.
+\newline
+\newline
+\textbf{.} Vacia: Crea un heap vacio
+\newline
+\newline
+\textbf{.} Próximo: Devuelve el elemento de máxima prioridad, sin modificar el heap.
+\newline
+\newline
+\textbf{.} Encolar: Agrega un nuevo elemento, hay que reestablecer el invariante.
+\newline
+\newline
+\textbf{.} Desencolar: Elimina el elemento de máxima prioridad, hay que reestablecer el invariante.
+\newpage
+\subsection{Implementación de heaps}
 
 
 
