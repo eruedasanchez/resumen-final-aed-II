@@ -2995,6 +2995,56 @@ Ahora, veamos formalmente el algoritmo de \textbf{desencolar}.
 \newline
 \textbf{.} Bajar la raíz. La operación \textit{bajar} se basa en que mientras el elemento no sea hoja y su prioridad sea menor a alguna de sus hijos, lo intercambiamos con el hijo de mayor prioridad.
 \newpage
+\subsection{Costos}
+
+Tanto para encolar como para desencolar, los costos son proporcionales a la altura del $heap$, que es logarítmico. Por lo tanto, la complejidad de las operaciones mencionadas es $O(log(n))$.
+
+\subsection{Array2Heap}
+
+Dado un array $arr$, lo transforma en un array que representa un $heap$ a través de una permutación de sus elementos.
+\newline
+\newline
+El algoritmo más básico se basa en recorrer todo el arreglo y para elemento, ir encolandolo (función con costo $O(log(n)$) en un nuevo arreglo de manera que preserva el invariante de $heap$.
+\newline
+\newline
+Por lo tanto, el costo de esta operación, utilizando la \textit{aproximación de Stirling} ($ln(n!)$ $\approx$ $n~ln(n) - n$) es:
+\newline
+\newline
+$\displaystyle \sum_{i=1}^{n} lg(i)$ = $lg(n!)$ = $\displaystyle \frac{ln(n!)}{ln(2)}$ $\approx$ $\displaystyle \frac{1}{ln(2)}$ . ($n~ln(n) - n$) = $\Theta(n~log(n))$   
+\newline
+\newline
+¿Podemos mejorar la complejidad de esta operación?
+\newline
+\newline
+El \textbf{algoritmo de Floyd} está basado en la idea de aplicar la operación \textit{bajar} a árboles binarios tales que los hijos de la raíz son raices de heaps.
+\newline
+\newline
+Progresivamente, se \textit{heapifican} (\textit{heapify}) los subárboles con raíz en el penúltimo nivel, luego los del antepenúltimo, etc.
+\newline
+\newline
+Esta algoritmo tiene una estrategia \textit{bottom-up}.
+\newline
+\newline
+Veamos el siguiente ejemplo:
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{floyd-1}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Observemos que de acuerdo a la implementación de heaps en arreglos, nos queda definido como en el árbol de la imagen. 
+\newline
+\newline
+Luego, aplicamos el algoritmo de floyd desde las hojas. Como todas las hojas cumplen el invariante de $heap$, continuamos por el penúltimo nivel.
+\newline
+\newline
+Una vez situados en el penúltimo nivel, comenzamos a analizar de derecha a izquierda.
+\newline
+\newline
+El árbol que tiene como raíz al nodo 64 es un $max-heap$.
+
 
 
 
