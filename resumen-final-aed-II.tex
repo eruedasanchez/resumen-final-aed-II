@@ -2909,6 +2909,92 @@ Ahora, sea un hijo $i$ ubicado en la posición $i$, entonces el padre $j$ se ubi
 \newline
 \newline
 La principal \textbf{desventaja} es que trabajamos con una implementación estática y puede ser necesario duplicar o achicar el arreglo a medida que se agregan/eliminan elementos.
+\subsection{Algoritmos}
+
+Ahora vamos a ver los algoritmos para las operaciones sobre \textit{heaps}. Todos los algoritmo sirven para implementaciones sobre arrays o punteros. 
+\newline
+\newline
+Comencemos viendo el algoritmo para calcular el \textbf{próximo}.
+\newline
+\newline
+El elemento de máxima prioridad está en la posición 0 del arreglo.
+\newline
+\newline
+Operación de costo constante $O(1)$.
+\newline
+\newline
+Continuamos viendo el algoritmo para \textbf{encolar} un elemento.
+\newline
+\newline
+Veamos, primero el siguiente ejemplo:
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{heap-2}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Supongamos que queremos insertar el nodo número 15.
+\newline
+\newline
+En la imagen \textit{a)} observamos que como un heap debe ser \textit{izquierdista}, la única donde podemos insertar al nodo es en la posición indicada.
+\newline
+\newline
+Una vez insertado el nodo, vemos que no se cumple el invariante de \textit{heap} porque 7 $<$ 15. Entonces, intercambio sus posiciones como se muestra en la imagen \textit{b)}.
+\newline
+\newline
+Una vez realizado el intercambio, observamos nuevamente que no se cumple el invariante de \textit{heap} porque 10 $<$ 15 e intercambio sus posiciones como se muestra en la imagen \textit{c)}. 
+\newline
+\newline
+Por último, una vez realizado el intercambio, observamos que ahora si se cumple el invariante de \textit{heap} porque 15 $<$ 20 y finalizamos con la operación de inserción como se muestra en la imagen \textit{d)}. 
+\newline
+\newline
+\newline
+\newline
+\newline
+\newline
+Veamos, ahora formalmente, los pasos para el algoritmo de inserción.
+\newline
+\newline
+\textbf{.} Insertar elemento al final del heap
+\newline
+\newline
+\textbf{.} Subir (\textit{sift-up}) elemento. La operación \textit{subir} se basa en que mientras el elemento al que se le aplica la función no sea la raíz y la prioridad del elemento sea mayor a la prioridad del padre, intercambiamos la posición del elemento con la del padre.
+\newline
+\newline
+Ahora, veamos el algoritmo de \textbf{desencolar}. Notemos que cuando queremos desencolar queremos eliminar al elemento de mayor prioridad, es decir, queremos eliminar a la raíz.
+\newline
+\newline
+Veamos el siguiente ejemplo:
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{heap-3}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Luego de eliminar a la raíz, observamos en la imagen \textit{a)} que el nodo 6 no puede estar en su posición porque se romple la condición de heap.
+\newline
+\newline
+Entonces, aprovechando que el nodo 20 que se encuentra en la raíz se va a eliminar, ocupo su posición con el nodo 6 como se muestra en la imagen \textit{b)}.
+\newline
+\newline
+Ahora, como no se cumple el invariante de $heap$ porque 6 $<$ 15 y 10, tengo que colocar en la posición que corresponda al 6 para volver a tener un heap. Para ello, comparo al nodo 6 con el máximo de sus hijos (en este caso, el máximo es el 15) y los intercambio como se muestra en la imagen \textit{c)}.
+\newline
+\newline
+Por último, podemos observar que luego de este intercambio, tampoco se cumple el invariante de heap porque 6 $<$ 14 y 13. Entoces, realizo la misma operación que en el caso anterior y lo intercambio con el 14. Finalmente, tenemos nuevamente un \textit{heap} como se muestra en la imagen \textit{d)}.
+\newline
+\newline
+Ahora, veamos formalmente el algoritmo de \textbf{desencolar}.
+\newline
+\newline
+\textbf{.} Reemplazar el primer elemento con la última hoja y eliminar la última hoja.
+\newline
+\newline
+\textbf{.} Bajar la raíz. La operación \textit{bajar} se basa en que mientras el elemento no sea hoja y su prioridad sea menor a alguna de sus hijos, lo intercambiamos con el hijo de mayor prioridad.
+\newpage
 
 
 
