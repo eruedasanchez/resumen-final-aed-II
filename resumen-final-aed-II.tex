@@ -3079,7 +3079,73 @@ Continuamos viendo el árbol que tiene como raíz al nodo 5. Como no cumple la c
 	\label{drivers1}
 \end{figure}
 \newpage
+Avanzamos un nivel más hacia arriba y tenemos que considerar todo el árbol. Como no cumple la condición de heap, aplicamos la operación \textit{bajar} al nodo 66 y lo intercambiamos con el 89 para que sea un $heap$. Como no cumple la condición de heap, aplicamos la operación \textit{bajar} al nodo 66 y lo intercambiamos con el 68 para que sea un $heap$. Como no cumple la condición de heap, aplicamos la operación \textit{bajar} al nodo 66 y lo intercambiamos con el 67 para que sea un $heap$.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{floyd-6}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Podemos observar ahora como el arreglo obtenido es una permutación del arreglo original.
 
+\subsection{Análisis del Algoritmo de Floyd}
+
+Ahora, analicemos la complejidad del algoritmo de Floyd.
+\newline
+\newline
+En el caso peor, cada llamada a bajar realiza el máximo número de intercambios.
+\newline
+\newline
+Supongamos un heap con $n$ = $2^{k} - 1$ nodos, es decir, un arbol binario completo de altura $k$. Entonces:
+\newline
+\newline
+\textbf{.} En el último nivel hay $\displaystyle \frac{n+1}{2}$ hojas
+\newline
+\newline
+\textbf{.} En el último nivel hay $\displaystyle \frac{n+1}{4}$ hojas
+\newline
+\newline
+\textbf{.} En el último nivel hay $\displaystyle \frac{n+1}{8}$ hojas
+\newline
+\newline
+Y así sucesivamente ...
+\newline
+\newline
+Por lo tanto, una llamada de \textit{bajar} sobre un nodo de nivel $i$, provoca como máximo $k-i$ intercambios. Es decir, 1 intercambio si $i$ es el penúltimo nivel, 2 si $i$ es el antepenúltimo nivel, $k-1$ si $i=1$. Entonces:
+\newline
+\newline
+\# max de intercambios = (\# nodos en el penúltimo nivel) . 1 + (\# nodos en el antepenúltimo nivel) . 2 + ... + (\# nodos en el nivel 2) . ($k-2$) + (\# nodos en el nivel 1) . ($k-1$) con $k$ = $log(n+1)$. Es decir: 
+\newline
+\newline
+\# max de intercambios = ($\displaystyle \frac{n+1}{4}$) . 1 + ($\displaystyle \frac{n+1}{8}$) . 2 + ... + 2 . ($log(n+1) - 2$) + 1 . ($log(n+1) - 1$) 
+\newline
+\newline
+\# max de intercambios = $\displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{n+1}{2^{i}}(i-1)$
+\newline
+\newline
+\# max de intercambios = $(n+1)$ $\displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{i-1}{2^{i}}$
+\newline
+\newline
+\# max de intercambios = $(n+1)$ ( $\displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{i}{2^{i}}$ - $\displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{1}{2^{i}}$)
+\newline
+\newline
+\newline
+Ahora, considerando que:
+\newline
+\newline
+$\displaystyle \sum_{i=2}^{\infty} \displaystyle \frac{i}{2^{i}}$ $=$ $\displaystyle \frac{3}{2}$ y $\displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{1}{2^{i}}$ $>$ 0
+\newline
+\newline
+Deducimos que:
+\newline
+\newline
+\# max de intercambios = $(n+1)$ $\displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{i-1}{2^{i}}$ $<$ $(n+1)$ ($\displaystyle \frac{3}{2} - \displaystyle \sum_{i=2}^{log(n+1)} \displaystyle \frac{1}{2^{i}}$) $<$ $\displaystyle \frac{3}{2}$$(n+1)$
+\newline
+\newline
+\newline
+Lo que implica que \# max de intercambios = $O(n)$
 
 
 
