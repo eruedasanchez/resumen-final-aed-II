@@ -2675,6 +2675,32 @@ Posibilidad de \textbf{aglomeración primaria}: dos secuencias de barrido que ti
 \newline
 \newline
 Los elementos se aglomeran por largos tramos.
+\newline
+\newline
+Veamos ahora, un ejemplo de \textbf{aglomeración primaria}.
+\newline
+\newline
+Tenemos la función de hash $h(k,i)$ = $(h'(k) + i)$ mod 101 con $h'(k)$ = $k$ mod 101.
+\newline
+\newline
+Queremos realizar la siguiente secuencia de inserciones \{2, 103, 104, 105, ...\}
+\newline
+\newline
+Podemos observar que la función $h'(k)$ en el intento 0 envía a la clave número 2 a la posición 2 de la tabla y como se encuentra libre, la inserto sin problemas.
+\newline
+\newline
+Luego, la función $h'(k)$ en el intento 0 envía a la clave número 103 a la posición 2 de la tabla y como se encuentra ocupada por la clave número 2, incremento en uno el intento. Ahora, en el intento 1, $h(103, 1)$ envia la clave a la posición número 3 de la tabla y como se encuentra libre, la inserto sin problemas.  
+\newline
+\newline
+Ahora, la función $h'(k)$ en el intento 0 envía a la clave número 104 a la posición 3 de la tabla y como se encuentra ocupada por la clave número 103, incremento en uno el intento. Ahora, en el intento 1, $h(104, 1)$ envia la clave a la posición número 4 de la tabla y como se encuentra libre, la inserto sin problemas.  
+\newline
+\newline
+Por último, la función $h'(k)$ en el intento 0 envía a la clave número 105 a la posición 4 de la tabla y como se encuentra ocupada por la clave número 104, incremento en uno el intento. Ahora, en el intento 1, $h(105, 1)$ envia la clave a la posición número 5 de la tabla y como se encuentra libre, la inserto sin problemas.  
+\newline
+\newline
+Este fenómeno se denomina \textbf{aglomeración primaria}. Es decir, genero grandes \textit{clusters} porque solo puedo realizar la inserción de manera eficiente en el intento 0 cuando inserto el primer elemento de la secuencia. 
+\newline
+\newline
 
 
 
