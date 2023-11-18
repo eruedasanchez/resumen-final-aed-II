@@ -2856,6 +2856,59 @@ Básicamente, las mismas que tenemos definidas en el TAD \tadNombre{Cola de Prio
 \textbf{.} Desencolar: Elimina el elemento de máxima prioridad, hay que reestablecer el invariante.
 \newpage
 \subsection{Implementación de heaps}
+Todas las representaciones usadas para árboles binarios son admisibles
+\newline
+\newline
+\textbf{.} Representación con punteros, eventualmente hijo-padre.
+\newline
+\newline
+\textbf{.} Representación con arrays. En este caso, decimos que es una \textit{representación implícita} porque la posición de los elementos en el arreglo nos va a dar información/significado acerca de cual es la relación entre esos elementos.
+
+\subsubsection{Representación con arrays}
+
+Cada nodo $v$ es almacenado en la posición $p(v)$.
+\newline
+\newline
+\textbf{.} Si $v$ es la raíz, entonces $p(v)$ = 0
+\newline
+\newline
+\textbf{.} Si $v$ es hijo izquierdo de $u$, entonces $p(v)$ = 2$p(u)$ + 1 
+\newline
+\newline
+\textbf{.} Si $v$ es hijo derecho de $u$, entonces $p(v)$ = 2$p(u)$ + 2
+\newline
+\newline
+A continuación, vemos un ejemplo de cómo representar un \textit{heap} en un arreglo utilizando las funciones descriptas.
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.6\textwidth]{heap-1}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Veamos las \textbf{ventajas} de esta representación.
+\newline
+\newline
+\textbf{.} Son muy eficientes en términos de espacio.
+\newline
+\newline
+\textbf{.} Facilidad de navegación. 
+\newline
+\newline
+Sea un padre $i$ ubicado en la posición $i$ e hijos $j_{izq}$ y $j_{der}$. Entonces:
+\newline
+\newline
+$j_{izq}$ = $2i$ + 1
+\newline
+\newline
+$j_{der}$ = $2i$ + 2
+\newline
+\newline
+Ahora, sea un hijo $i$ ubicado en la posición $i$, entonces el padre $j$ se ubica en la posición $j$ = $\displaystyle \frac{i-1}{2}$ con $j$ parte entera
+\newline
+\newline
+La principal \textbf{desventaja} es que trabajamos con una implementación estática y puede ser necesario duplicar o achicar el arreglo a medida que se agregan/eliminan elementos.
 
 
 
