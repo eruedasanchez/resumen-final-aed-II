@@ -2734,6 +2734,78 @@ Consideremos que en este caso, los saltos se van produciendo de manera cada vez 
 De esta manera, evitamos los \textit{clusters} de la aglomeración primaria. Pero podemos observar que, al realizar estos saltos, si una inserción cae en colisión, esa secuencia va a seguir colisionando. Es decir, si las claves están hasheadas a una misma posición, esas colisiones se van a ir repitiendo. Este fenomeno se denomina \textbf{aglomeración secundaria}.  
 \newline
 \newline
+\newline
+\newline
+\textbf{Hashing doble}
+\newline
+\newline
+La idea es que el barrido también dependa de la clave.
+\newline
+\newline
+Proponemos la función de hash $h(k,i)$ = ($h_{1}(k)$ + $i$$h_{2}(k)$) mod $|T|$ donde $h_{1}(k)$ y $h_{2}(k)$ son funciones de hashing.
+\newline
+\newline
+A diferencia de los barridos anteriores, el \textit{hashing doble} no tiene aglomeración primaria y reduce los fenómenos de aglomeración secundaria aunque no los descarta.
+\newpage
+
+\subsection{Funciones de hash}
+
+Tenemos muchos metodos para construir funciones de hash. Entre ellos:
+\newline
+\newline
+\textbf{.} División
+\newline
+\newline
+\textbf{.} Partición
+\newline
+\newline
+\textbf{.} Mid-square
+\newline
+\newline
+\textbf{.} Extracción
+\newline
+\newline
+El objetivo es distribuir las claves lo más uniforme posible para minizar las colisiones.
+
+\subsubsection{División}
+
+Consideramos la función $h(k)$ = $k$ mod $|T|$. La complejidad es baja porque solo se realiza una división pero debemos tener cuidado con el valor de $|T|$. Por ejemplo:
+\newline
+\newline
+\textbf{.} No potencias de 2. Si tenemos $|T|$ = $2^{p}$ entonces todas las claves con los $p$ bits menos significativos iguales, colisionan.
+\newline
+\newline
+\textbf{.} No potencias de 10 si las claves son números decimales por el mismo motivo que el caso anterior, las claves podrían ser multiplos de 10.
+\newline
+\newline
+Una buena elección en la práctica podría ser un número primo no demasiado cercano a una potencia de 2. Por ejemplo, $h(k)$ = $k$ mod 701 para $|T|$=2048 valores posibles.
+
+\subsubsection{Partición}
+
+Particionar la clave $k$ en $k_{1}$,$k_{2}$,...,$k_{n}$.
+\newline
+\newline
+Consideramos la función de hash $h(k)$ = $f(k_{1},k_{2},...,k_{n})$
+\newline
+\newline
+Por ejemplo, consideramos que la clave es un número de una tarjeta de crédito y una posible función de hash:
+\newline
+\newline
+4772 6453 7348 $\rightarrow$ \{477, 264, 537, 348\} 
+\newline
+\newline
+$f(477, 264, 537, 348)$ = (477 + 264 + 537 + 348) mod 701
+\newline
+\newline
+$f(477, 264, 537, 348)$ = 224
+
+\subsubsection{Extracción}
+
+Propone usar solamente una parte de la clave para calcular la dirección.
+\newline
+\newline
+Por ejemplo, las 6 cifras centrales del número de tarjeta de crédito. Es decir, 4772 6453 7348 $\rightarrow$ 264537
+\newpage
 
 
 
