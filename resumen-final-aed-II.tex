@@ -2806,6 +2806,40 @@ Propone usar solamente una parte de la clave para calcular la dirección.
 \newline
 Por ejemplo, las 6 cifras centrales del número de tarjeta de crédito. Es decir, 4772 6453 7348 $\rightarrow$ 264537
 \newpage
+\section{Clase Teórica 08. Colas de Prioridad y Heaps}
+
+\subsection{Colas de prioridad}
+
+La prioridad en general la expresamos con un entero pero puede ser cualquier otro tipo $\alpha$ con un orden $<_{\alpha}$ asociado.
+
+\subsection{Representación de Colas de prioridad}
+
+La implementación más eficiente de las colas de prioridad es a través de \textbf{heaps}.
+\newline
+\newline
+Un \textbf{heap} es un tipo de ordenamiento de mis elementos que no es del todo ordenado como los árboles AVL o una lista ordenada pero lo suficiente como para extraer facilmente el máximo o míinimo y de esa manera, se vuelva a armar el invariante que permite que el próximo máximo/mínimo sea fácil de extraerlo.  
+\newline
+\newline
+Por lo tanto, \tadNombre{Cola de Prioridad($\alpha$, $<_{\alpha}$)} se representa con \textit{heap}.
+\newline
+\newline
+Luego, el invariante de representación de un heap o condición de heap debe cumplir:
+\newline
+\newline
+1. Ser un árbol binario perfectamente balanceado, es decir, la longitud de todas las ramas difiere en a lo sumo 1
+\newline
+\newline
+2. La clave (prioridad) de cada nodo es mayor o igual que la de sus hijos, si los tiene
+\newline
+\newline
+3. Todo subárbol es un heap
+\newline
+\newline
+4. (No obligatorio): Es \textit{izquierdista}, o sea, el último nivel está lleno desde la izquierda, es decir, las ramas que le falten hijos deben estar todas a la derecha (o todos las hojas deben estar juntos a la izquierda del árbol)
+\newline
+\newline
+\textbf{Observación:} Un \textit{heap} no es un \textit{ABB} ni una estructura totalmente ordenada.
+
 
 
 
