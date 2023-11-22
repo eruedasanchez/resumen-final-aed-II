@@ -3222,6 +3222,22 @@ Para ordenar un arreglo de posiciones $i$, ..., $n-1$ debemos:
 \textbf{.} Ordenarlo a través del mismo algoritmo el arreglo de posiciones $i+1$, ..., $n-1$
 \newpage
 
+\subsubsection{Complejidad}
+
+Para calcular la complejidad de este algoritmo alcanza con contar la cantidad de comparaciones. 
+\newline
+\newline
+Entonces, si queremos ordenar un arreglo de $n$ elementos, tenemos $n-1$ ejecuciones del ciclo principal y en la $i$-esima iteración, tenemos que encontrar el mínimo entre $n-i$ elementos y por lo tanto, necesitamos $n-i-1$ comparaciones.
+\newline
+\newline
+Por lo tanto, el costo de este algoritmo es:
+\newline
+\newline
+$\displaystyle \sum_{i=0}^{n-2}$ $(n-i-1)$ = $\displaystyle \sum_{i=1}^{n-1}$ $\displaystyle \frac{n~(n-1)}{2}$ $\approx$ $O(n^{2})$
+\newline
+\newline
+\newline
+Observemos que el costo no depende del eventual ordenamiento parcial o total del arreglo, es decir, en todos los casos, el costo asociado es $O(n^{2})$.
 
 
 
