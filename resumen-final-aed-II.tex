@@ -3317,6 +3317,28 @@ Para $i$ desde 1 hasta $n-1$ hacer
 \TipoVariable{a[j+1] $\leftarrow$ elem} 
 \newpage
 
+\subsubsection{Complejidad}
+
+Si queremos ordenar un arreglo de $n$ elementos, tenemos $n-1$ ejecuciones del ciclo principal y en la $i$-esima iteración hay que ubicar al elemento junto a otros $i-1$ elementos y por lo tanto, necesitamos $i-1$ comparaciones. 
+\newline
+\newline
+Por lo tanto, el costo de este algoritmo es:
+\newline
+\newline
+$\displaystyle \sum_{i=0}^{n-1}$ $(i-1)$ = $\displaystyle \frac{(n-1)~(n-2)}{2}$ $\approx$ $O(n^{2})$
+\newline
+\newline
+Observemos que si el arreglo está parcialmente ordenado, las cosas mejoran porque no voy a tener que realizar todas las comparaciones e intercambios    
+
+\subsection{Estabilidad}
+
+Decimos que un algoritmo es \textbf{estable} si mantiene el orden anterior de elementos con igual clave. Es decir, si dos registros $i$ y $j$ con claves iguales mantienen su orden relativo una vez ordenado el arreglo.
+\newline
+\newline
+Selection sort es inestable en el caso (6,1), (4,3), (6,5), (1,7)
+\newline
+\newline
+Insertion sort es un algoritmo estable unicamente teniendo el cuidado de que si hay claves con el mismo, ir colocandolas despues de las que ya fueron insertadas para no perder la estabilidad.
 
 
 
