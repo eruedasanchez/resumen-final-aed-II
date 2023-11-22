@@ -3263,6 +3263,33 @@ Luego, en cada iteración, el algoritmo respeta el siguiente \textbf{invariante}
 \newline
 \newline
 
+Donde posee el siguiente \textbf{pseudocódigo}:
+\newline
+\newline
+Para $i$ desde 1 hasta $n-1$ hacer, \TipoVariable{Insertar(i)}
+\newline
+\newline
+Para $i$ desde 1 hasta $n-1$ hacer
+\newline
+\newline
+\TipoVariable{j $\leftarrow$ i-1, elem $\leftarrow$ a[i]}
+\newline
+\newline
+\TipoVariable{mientras j $\geq$ 0 $\yluego$ a[j] $>$ elem} hacer
+\newline
+\newline
+\TipoVariable{a[j+1] $\leftarrow$ a[j]} 
+\newline
+\newline
+\TipoVariable{j $\leftarrow$ j-1} 
+\newline
+\newline
+\TipoVariable{endwhile} 
+\newline
+\newline
+\TipoVariable{a[j+1] $\leftarrow$ elem} 
+\newpage
+
 
 
 
