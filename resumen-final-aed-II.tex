@@ -3239,6 +3239,31 @@ $\displaystyle \sum_{i=0}^{n-2}$ $(n-i-1)$ = $\displaystyle \sum_{i=1}^{n-1}$ $\
 \newline
 Observemos que el costo no depende del eventual ordenamiento parcial o total del arreglo, es decir, en todos los casos, el costo asociado es $O(n^{2})$.
 
+\subsection{Insertion Sort}
+
+Este algoritmo consiste en:
+\newline
+\newline
+Repetir para las posiciones sucesivas $i$ del arreglo:
+\newline
+\newline
+\textbf{.} Insertar el $i$-esimo elemento en la posición que le corresponde del arreglo 0,...,$i$.
+\newline
+\newline
+Luego, en cada iteración, el algoritmo respeta el siguiente \textbf{invariante}:
+\newline
+\newline
+\textbf{.} Los elementos entre la posición 0 y la posición $i$ son los elementos que ocupaban las posiciones 0 a $i$ del arreglo original.
+\newline
+\newline
+\textbf{.} Los elementos entre la posición 0 y la posición $i$ se encuentran ordenados
+\newline
+\newline
+\textbf{.} El arreglo es una permutación del arreglo original, o sea, que los elementos de las posiciones $i+1$ hasta $n-1$ son los que ocupaban esas posiciones en el arreglo original
+\newline
+\newline
+
+
 
 
 
