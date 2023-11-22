@@ -3183,6 +3183,44 @@ Luego, en cada iteración, el algoritmo respeta el siguiente \textbf{invariante}
 \textbf{.} El arreglo es una permutación del arreglo original (o sea, los elementos entre las posiciones $i+1$ y $n-1$ son los $n-i-1$ elementos más grandes del arreglo original).
 \newline
 \newline
+Y donde presentamos el siguiente \textbf{pseudocódigo}:
+\newline
+\newline
+Para $i$ desde 0 hasta $n-2$ hacer:
+\newline
+\newline
+\TipoVariable{min $\leftarrow$ seleccionar\_min($i, n-1$)}
+\newline
+\newline
+\TipoVariable{intercambiar(i, min)}
+\newline
+\newline
+Luego, la función \TipoVariable{seleccionar\_min($i, n-1$)} tiene el siguiente pseudocódigo:
+\newline
+\newline
+\TipoVariable{min $\leftarrow$ $i$}
+\newline
+\newline
+Para $j$ desde $i+1$ hasta $n-1$ hacer:
+\newline
+\newline
+si \TipoVariable{a[j] < a[min]} entonces \TipoVariable{min $\leftarrow$ j}  
+\newline
+\newline
+Ahora, veamos una versión recursiva del mismo algoritmo.
+\newline
+\newline
+Para ordenar un arreglo de posiciones $i$, ..., $n-1$ debemos:
+\newline
+\newline
+\textbf{.} Seleccionar el mínimo elemento del arreglo.
+\newline
+\newline
+\textbf{.} Ubicarlo en la posición $i$ intercambiandolo con el ocupante original de esa posición.
+\newline
+\newline
+\textbf{.} Ordenarlo a través del mismo algoritmo el arreglo de posiciones $i+1$, ..., $n-1$
+\newpage
 
 
 
