@@ -3146,6 +3146,43 @@ Deducimos que:
 \newline
 \newline
 Lo que implica que \# max de intercambios = $O(n)$
+\newpage
+
+\section{Clase Teórica 09. Ordenamiento (Sorting)}
+
+\subsection{El problema del ordenamiento}
+
+Queremos ordenar un arreglo[$\alpha$] $\to$ arreglo[$\alpha$] donde $\alpha$ es un tipo tal que está definida la relación $<_{\alpha}$
+\newline
+\newline
+Tambien nos vamos a enfocar en el ordenamiento en memoria secundaria como por ejemplo utilizado en grandes archivos. 
+
+\subsection{Selection Sort}
+
+Este algoritmo consiste en:
+\newline
+\newline
+Repetir para las posiciones $i$ del arreglo:
+\newline
+\newline
+\textbf{.} Seleccionar el mínimo elemento que se encuentra entre la posición actual ($i$-esima) y el final.
+\newline
+\newline
+\textbf{.} Ubicarlo en la posición $i$, intercambiandolo con el ocupante original de esa posición.
+\newline
+\newline
+Luego, en cada iteración, el algoritmo respeta el siguiente \textbf{invariante}:
+\newline
+\newline
+\textbf{.} Los elementos entre la posición 0 y la posición $i$ son los $i+1$ elementos más pequeños del arreglo original.
+\newline
+\newline
+\textbf{.} Los elementos entre la posición 0 y la posición $i$ se encuentran ordenados.
+\newline
+\newline
+\textbf{.} El arreglo es una permutación del arreglo original (o sea, los elementos entre las posiciones $i+1$ y $n-1$ son los $n-i-1$ elementos más grandes del arreglo original).
+\newline
+\newline
 
 
 
