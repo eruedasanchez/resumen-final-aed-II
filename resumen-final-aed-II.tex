@@ -3646,6 +3646,43 @@ Pero no siempre podemos suponer que el input proviene de una distribución unifo
 \newline
 Por último, una forma deterrminista de elegir un buen \textit{pivot} de por ejemplo un array de 5 elementos podría ser tomar el primer, ultimo y un elemento del medio, calcularle su mediana y tomar como \textit{pivot} al resultado.
 
+\subsection{Complejidad de los algoritmos de ordenamiento}
+
+Ahora, presentamos la complejidad de los elementos vistos hasta el momento.
+\newline
+\newline
+\textbf{.} Merge Sort y Heap Sort: $O(n~log(n))$
+\newline
+\newline
+\textbf{.} Quick Sort, Selection Sort, Insertion Sort: $O(n^{2})$ donde:
+\newline
+\newline
+Quick Sort: $O(n~log(n))$ en el caso mejor
+\newline
+\newline
+Selection Sort: $O(n^{2})$ en todos loss casos
+\newline
+\newline
+Insertion Sort: $O(n)$ en el caso mejor
+\newline
+\newline
+Ahora, ¿Cuál es la eficiencia máxima (complejidad mínima) obtenible en el peor caso? Es decir, \textbf{lower bound}.
+
+\subsubsection{Límites inferiores}
+
+Todos los algoritmos deben comparar elementos, o sea, ese es nuestro modelo de cómputo.
+\newline
+\newline
+Dados $a_{i}$, $a_{k}$, tres casos posibles: $a_{i}$ $<$ $a_{k}$, $a_{i}$ $>$ $a_{k}$ o $a_{i}$ $=$ $a_{k}$.
+\newline
+\newline
+Se asume por simplicidad que todos los elementos son distintos.
+\newline
+\newline
+Se asume entonces que todas las comparaciones tienen la forma $a_{i}$ $<$ $a_{k}$, y el resultado de la comparación es \textit{verdadero} o \textit{falso}. 
+\newpage
+
+
 
 
 
