@@ -3682,6 +3682,45 @@ Se asume por simplicidad que todos los elementos son distintos.
 Se asume entonces que todas las comparaciones tienen la forma $a_{i}$ $<$ $a_{k}$, y el resultado de la comparación es \textit{verdadero} o \textit{falso}. 
 \newpage
 
+\subsection{Árboles de decisión}
+
+Un árbol de decisión es una herramienta que utilizamos para realizar un análisis abstracto para visualizar las posibles ejecuciones de algoritmos en nuestro modelo de cómputo basado en comparaciones.
+\newline
+\newline
+Veamos el siguiente ejemplo donde estamos aplicamos una búsqueda binaria:
+\newline
+\newline
+Los nodos internos representan decisiones binarias.
+\newline
+\newline
+Comienzo comparando el elemento del medio del arreglo con $x$. Luego, pueden ocurrir dos decisiones. En el caso que $A[1] < x$, voy a dirigirme hacia la rama derecha y comparar $A[2]$ vs $x$. En el caso que $A[1] > x$, voy a dirigirme hacia la rama izquierda y comparar $A[0]$ vs $x$. 
+\newline
+\newline
+Ahora, si comparamos $A[0]$ vs $x$ tenemos dos decisiones. Una es que $x < A[0]$ y otra es que $A[0] < x < A[1]$. Y ambas son hojas porque representan una posible respuesta de este algoritmo.
+\newline
+\newline
+Y si comparamos $A[2]$ vs $x$ tenemos dos decisiones. Una es que $A[1] < x < A[2]$ y otra es que $x > A[2]$. Y ambas son hojas porque representan una posible respuesta de este algoritmo.
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{dec-1}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Observemos que en las hojas se encuentran todas los posibles \textbf{outputs} del algoritmo.
+\newline
+\newline
+Cada \textbf{camino} representa una posible ejecución del algoritmo, en este caso, de la búsqueda binaria.
+\newline
+\newline
+La \textbf{longitud} de cada camino indica la cantidad de operaciones de comparación necesaria que se llevan a cabo para esa ejecución. 
+\newline
+\newline
+La \textbf{altura} representa el caso peor de ejecución del algoritmo.
+\newpage
+
 
 
 
