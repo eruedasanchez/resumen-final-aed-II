@@ -3521,6 +3521,75 @@ $T(n)$ $=$ $O(n~log(n))$
 \newline
 \newline
 Esto suponiendo que $n = 2^{k}$ pero en los casos que $n$ no sea potencia de 2, el costo de Merge Sort es estrictamente menor que si el tamaño del arreglo fuese potencia de 2, es decir, asintotícamente tambien podemos acotarlo por $O(n~log(n))$. 
+\subsection{Quick Sort}
+
+Supongamos que conocemos el elemento \textit{mediano} del arreglo, es decir, aquel que tiene cierta cantidad de elementos menores que él y cierta cantidad de elementos mayores que él. Entonces, podriamos implementar el siguiente algoritmo:
+\newline
+\newline
+\textbf{.} Separar el arreglo en dos mitades: los elementos menores que el mediano por un lado y los mayores por el otro.
+\newline
+\newline
+\textbf{.} Ordenar recursivamente las dos mitades.
+\newline
+\newline
+¡Y listo!
+\newline
+\newline
+Esquematicamente, lo podemos ver de la siguiente manera:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.3\textwidth]{quick-sort-1}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+\newline
+En el caso de no conocer al elemento mediano, podemos tomar a cualquier elemento del arreglo como \textit{bound}.
+\newline
+\newline
+Ahora, analicemos el siguiente ejemplo:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{quick-sort-2}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+\newline
+En la figura \TipoVariable{a)}, colocamos el arreglo que queremos ordenar.
+\newline
+\newline
+En la figura \TipoVariable{b)}, primero buscamos el máximo (12) del arreglo y lo colocamos al final (costo $O(n)$) intercambiandolo con el elemento que se encuentra en la última posición. Luego, elegimos como \textit{pivot} al elemento central (6) del arreglo, es decir, al elemento que se encuentra en el medio y lo colocamos al inicio intercambiandolo con el elemento que se encuentra en la primera posición. Por último, seteamos como \textit{lower} al segundo elemento del arreglo (5) y como \textit{upper} al $n-1$ elemento del arreglo (10). 
+\newline
+\newline
+En la figura \TipoVariable{c)}, implementamos la siguiente estrategia. Creamos dos ciclos donde en uno comparamos el valor actual de \textit{lower} con el del \textit{pivot} y como 5 $<$ 6, avanzo \textit{lower}. Mismo caso para el 4 y como 7 $<$ 6 $Abs!$, detengo a \textit{lower} apuntando al 7. Ahora, el caso de \textit{upper} es análogamente inverso, es decir, si elemento que apunta \textit{upper} es mayor al \textit{pivot}, avanzo \textit{upper} hacia la izquierda, por eso, \textit{upper} se detiene en 3.   
+\newline
+\newline
+En la figura \TipoVariable{d)}, como tengo un elemento mayor al \textit{pivot} y otro menor, los intercambio de posición.
+\newline
+\newline
+En la figura \TipoVariable{e)}, avanzo \textit{upper} y \textit{lower} con el mismo criterio que antes y por lo tanto los detengo cuando apuntan al 8 y 6 respectivamente.
+\newline
+\newline
+En la figura \TipoVariable{f)}, realizo el intercambio entre estos elementos.
+\newline
+\newline
+En la figura \TipoVariable{g)}, ambos punteros se cruzan porque 6 es menor/igual que 6 y 8 $>$ 6.
+\newline
+\newline
+En la figura \TipoVariable{h)}, \textit{upper} apunta a 1 porque 1 no es mayor que 6 y \textit{lower} apunta a 1 porque 8 no es menor que 6. Cuando quedan cruzados, como en este caso,  significa que termine con esta iteración.
+\newline
+\newline
+En la figura \TipoVariable{i)}, como termine la iteración, intercambio al elemento que apunta \textit{upper} (1) con el \textit{pivot} que se habia elegido inicialmente (6) obteniendo el resultado de la figura.
+\newline
+\newline
+En la figura \TipoVariable{j)}, aplico recursivamente el mismo algoritmo a las dos nuevas mitades.
+\newpage
+
 
 
 
