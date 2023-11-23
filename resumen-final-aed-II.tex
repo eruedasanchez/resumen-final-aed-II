@@ -3339,6 +3339,43 @@ Selection sort es inestable en el caso (6,1), (4,3), (6,5), (1,7)
 \newline
 \newline
 Insertion sort es un algoritmo estable unicamente teniendo el cuidado de que si hay claves con el mismo, ir colocandolas despues de las que ya fueron insertadas para no perder la estabilidad.
+\subsection{HeapSort}
+
+El algoritmo de \textit{HeapSort} es una mejora del algoritmo \textit{SelectionSort} utilizando una estructura mucho más eficiente como el \textit{heap}.   
+\newline
+\newline
+Selection Sort realiza $n-1$ iteraciones donde en cada una de ellas, la operación más costosa es encontrar el mínimo en una parte del arreglo. Esta operación era costosa porque se realizaba de manera ineficiente. Justamente, para encontrar el mínimo en un arreglo de manera eficiente, podemos utilizar un \textbf{heap} y que el costo sea logarítmico en lugar de lineal.  
+\newline
+\newline
+Inicialmente, podemos plantear un algoritmo donde colocamos a los elementos del arreglo uno a uno en un \textit{heap}, luego ir sacandolos y colocandolos en un arreglo. Esta operación tiene costo $O(n~log(n))$.
+\newline
+\newline
+Sin embargo, podemos realizar algo mejor utilizando la operación \textbf{ArrayToHeap} y el \textbf{Algoritmo de Floyd} cuya complejidad es $O(n)$. Con estas operaciones, definimos el algoritmo de \textbf{HeapSort} donde la complejidad asíntotica es la misma pero el consumo de memoria es por mitad dado que en el algoritmo inicial se utiliza un arreglo para colocar el heap y otro para ir insertando los elementos ya ordenados. En el algoritmo de \textbf{heapsort}, realizamos todas las operaciones en el mismo areglo.
+\newline
+\newline
+A continuación, presentamos el algoritmo:
+\newline
+\newline
+\TipoVariable{heap $\leftarrow$ arrayToMaxHeap($A$)}
+\newline
+\newline
+\TipoVariable{para $i$ desde $n-1$ hasta $0$ hacer}
+\newline
+\newline
+\TipoVariable{max $\leftarrow$ proximo(heap)}
+\newline
+\newline
+\TipoVariable{desencolar}
+\newline
+\newline
+\TipoVariable{$A[i]$ $\leftarrow$ max}
+\newline
+\newline
+Por lo tanto, el costo de este algoritmo es $O(n)$ para la operación \TipoVariable{arrayToMaxHeap($A$)} y $O(n~log(n))$ para el ciclo principal ya que la operación más costosa es desencolar que tiene costo $O(log(n))$ y como tenemos $n$ elementos en el arreglo, el costo final del ciclo es $O(n~log(n))$. Concluimos que el costo del algoritmo es $O(n)$ + $O(n~log(n))$ = $O(max\{n,n~log(n)\})$ = $O(n~log(n))$. 
+\newline
+\newline
+analizar la estabilidad (podria no ser estable claramente debido a como sea la implementacion del heap ante la igualdad de claves)
+\newpage
 
 
 
