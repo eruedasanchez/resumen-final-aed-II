@@ -3590,6 +3590,64 @@ En la figura \TipoVariable{i)}, como termine la iteración, intercambio al eleme
 En la figura \TipoVariable{j)}, aplico recursivamente el mismo algoritmo a las dos nuevas mitades.
 \newpage
 
+\subsubsection{Complejidad}
+
+Ahora, analicemos la complejidad de este algoritmo.
+\newline
+\newline
+El costo está dado por la cantidad de comparaciones. Por lo tanto, en el peor caso, el costo es $O(n^{2})$ mientraas que en el caso promedio es de $O(n~log(n))$.
+\newline
+\newline
+Analicemos el caso peor de este algoritmo.
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{quick-sort-3}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+\newline
+En el caso peor siempre elijo como \textit{pivot} el mínimo o el máximo, voy a separar $n-1$ elementos de un lado y 0 elementos del otro y por lo tanto, el único elemento que se va a ir ordenando en cada paso es el mínimo o máximo que fue elegido como pivot y esto tiene costo cuadratico.
+\newline
+\newline
+Analicemos el caso mejor de este algoritmo.
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.4\textwidth]{quick-sort-4}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+\newline
+En el caso mejor, siempre elijo como \textit{pivot} al elemento \textit{mediano} del arreglo, voy a separar la mitad de los elementos de un lado y la otra mitad del otro obteniendo un costo logarítmico. 
+\newpage
+Analicemos el caso promedio de este algoritmo.
+\newline
+\newline
+La idea es que, en un input al azar, la probabilidad de que el elemento $i$-esimo sea pivot es $\displaystyle \frac{1}{n}$.
+\newline
+\newline
+Por lo tanto, tenemos la siguiente recurrencia:
+\newline
+\newline
+$T(n)$ = $(n+1)$ + $\displaystyle \frac{1}{n}$ $\displaystyle \sum_{1 \leq k \leq n}^{} (T(k-1) + T(n-k))$ con $n+1$ comparaciones para separar los elementos mayores de un lado y menores del otro.
+\newline
+\newline
+$T(n)$ = $(n+1)$ + $\displaystyle \frac{2}{n}$ $\displaystyle \sum_{1 \leq k \leq n}^{} T(k-1)$ $=$ $O(n~log(n))$
+\newline
+\newline
+\newline
+Pero no siempre podemos suponer que el input proviene de una distribución uniforme. Para ello, podemos forzarlo permutando el input, es decir, desorden un poco el arreglo para beneficiar al azar o bien eligiendo el pivot al azar, es decir, aplicando \textit{algoritmos probabilísticos}. 
+\newline
+\newline
+Por último, una forma deterrminista de elegir un buen \textit{pivot} de por ejemplo un array de 5 elementos podría ser tomar el primer, ultimo y un elemento del medio, calcularle su mediana y tomar como \textit{pivot} al resultado.
+
+
+
 
 
 
