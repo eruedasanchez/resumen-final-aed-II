@@ -3376,6 +3376,151 @@ Por lo tanto, el costo de este algoritmo es $O(n)$ para la operación \TipoVaria
 \newline
 analizar la estabilidad (podria no ser estable claramente debido a como sea la implementacion del heap ante la igualdad de claves)
 \newpage
+\subsection{Merge Sort}
+
+Este algoritmo está diseñado mediante una metodología que se denomina \textit{Divide \& Conquer} o \textit{Divide o Reinarás}.   
+\newline
+\newline
+La metodología consiste en:
+\newline
+\newline
+\textbf{.} Dividir un problema en problema similares... pero más chicos 
+\newline
+\newline
+\textbf{.} Resolver los problemas menores
+\newline
+\newline
+\textbf{.} Combinar las soluciones de los problemas menores para obtener la solución del problema original.
+\newline
+\newline
+El método tiene sentido siempre y cuando la división y la combinación no sean excesivamente caras.
+\newline
+\newline
+A continuación, presentamos el algoritmo de Merge Sort:
+\newline
+\newline
+\textbf{.} Si $n < 2$, el arreglo ya está ordenado.
+\newline
+\newline
+\textbf{.} En caso contrario:
+\newline
+\newline
+1. Dividir el arreglo en dos partes iguales, o sea, por la mitad
+\newline
+\newline
+2. Ordenar recusivamente (a través del mismo algoritmo) ambas mitades
+\newline
+\newline
+3. Fundir ambas mitades (ya ordenadas) en un único arreglo
+\newline
+\newline
+Veamos el siguiente ejemplo:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{merge-sort-1}
+	\label{drivers1}
+\end{figure}
+\newpage
+Ahora, analizamos en detalle la operación \textbf{merge}:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{merge-sort-2}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Inicialmente, tenemos tres punteros. Uno que apunta al inicio del arreglo $A$, otro que apunta al inicio del arreglo $B$ y otro que apunta al inicio del arreglo donde almacenaremos el resultado $R$.
+\newline
+\newline
+Como 2 $<$ 5, inserto el número 2 en $R$ y avanzo el puntero del arreglo $A$. 
+\newline
+\newline
+Ahora, como 5 $<$ 6, inserto el número 5 en $R$ y avanzo el puntero del arreglo $B$.
+\newline
+\newline
+Como 6 $<$ 9, inserto el número 6 en $R$ y avanzo el puntero del arreglo $A$. Pero como ya no tengo más elementos por recorrer, puedo insertar tranquilamente todos los elementos de $B$, que en este caso es solo el número 9.
+\newline
+\newline
+Por lo tanto, tenemos que ordenar $n$ = 4 elementos y \#pasos = 3 por lo que la complejidad es $O(n)$.  
+\newline
+\newline
+Ahora, analicemos la complejidad de este algoritmo.
+\newline
+\newline
+\TipoVariable{MERGE-SORT $A[0,..., n-1]$} con costo $T(n)$ definido para poder establecer el costo de la recursión
+\newline
+\newline
+1. Si $n=1$, ya está ordenado con costo $O(1)$
+\newline
+\newline
+2. Recursivamente ordenar \TipoVariable{A[0,..., $\displaystyle \frac{n}{2} - 1$]} y \TipoVariable{A[$\displaystyle \frac{n}{2} - 1$, $n-1$]} con costo $2T(\displaystyle \frac{n}{2})$
+\newline
+\newline
+3. $Merge$ las dos mitades ordenadas con costo $O(n-1)$ 
+\newline
+\newline
+Es decir:
+\newline
+\newline
+$T(n)$ = $\left\lbrace\begin{array}{c} O(1)~si~n=1 \\ \\ 2T(\displaystyle \frac{n}{2})~+~O(n-1)~si~n>1 \end{array}\right.$
+\newline
+\newline
+\newline
+Ahora, comencemos a analizar la siguiente expresión:
+\newline
+\newline
+$T(n)$ $=$ $2T(\displaystyle \frac{n}{2})$ $+$ $(n-1)$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $2(2T(\displaystyle \frac{n}{4}) +(\displaystyle \frac{n}{2}-1))$ $+$ $(n-1)$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $4T(\displaystyle \frac{n}{4})$ $+$ $2n - 2 - 1$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $4(2T(\displaystyle \frac{n}{8}) + \displaystyle \frac{n}{4}-1)$ $+$ $2n - 2 - 1$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $8T(\displaystyle \frac{n}{8})$ $+$ $3n - 4 - 2 - 1$
+\newline
+\newline
+\newline
+$T(n)$ $=$ ...
+\newline
+\newline
+\newline
+$T(n)$ $=$ $2^{i}T(\displaystyle \frac{n}{2^{i}})$ $+$ $i~n - 2^{i-1} - ... - 2 - 1$
+\newline
+\newline
+\newline
+Esto lo podemos hacer hasta que $2^{i}$ = $n$, o sea, $i = log_{2}(n)$ y por lo tanto:
+\newline
+\newline
+\newline
+$T(n)$ $=$ $2^{log_{2}(n)}T(\displaystyle \frac{n}{2^{log_{2}(n)}})$ $+$ $log_{2}(n)~n - 2^{log_{2}(n)-1} - ... - 2 - 1$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $2^{log_{2}(n)}T(1)$ $+$ $log_{2}(n)~n - 2^{log_{2}(n)-1} - ... - 2 - 1$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $2^{log_{2}(n)}$ $+$ $log_{2}(n)~n - 2^{log_{2}(n)-1} - ... - 2 - 1$ y podemos acotar esta expresión por $O(n~log_{2}(n))$ 
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O(n~log(n))$
+\newline
+\newline
+Esto suponiendo que $n = 2^{k}$ pero en los casos que $n$ no sea potencia de 2, el costo de Merge Sort es estrictamente menor que si el tamaño del arreglo fuese potencia de 2, es decir, asintotícamente tambien podemos acotarlo por $O(n~log(n))$. 
 
 
 
