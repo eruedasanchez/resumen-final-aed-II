@@ -3720,6 +3720,32 @@ La \textbf{longitud} de cada camino indica la cantidad de operaciones de compara
 \newline
 La \textbf{altura} representa el caso peor de ejecución del algoritmo.
 \newpage
+Ahora, veamos un ejemplo de un árbol de decisión sobre el conjunto \{$a_{1},a_{2},a_{3}$\} para cualquier algoritmo de ordenamiento sobre estos elementos.
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.8\textwidth]{dec-2}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+En general, los árboles de decisión tienen $n!$ hojas donde $n$ es la cantidad de elementos del conjunto o arreglo a ordenar dado que por ejemplo para el caso de tres elementos, tenemos 3 opciones para el primer lugar, 2 opciones para el segundo y solo 1 para la ultima posición.
+\newline
+\newline
+El camino más largo de la raíz a una hoja (altura) representa el número de comparaciones que el algoritmo tiene que realizar en peor caso.
+\newline
+\newline
+\textbf{Teorema}: Cualquier árbol de decisión que ordena $n$ elementos tiene altura $\Omega(n~log(n))$ 
+\newline
+\newline
+\textbf{Demostración}: Consideramos un árbol de decisión binario con $n!$ hojas. Por lo tanto, la altura mínima es $\Omega(log(n!))$ = $\Omega(n~log(n))$ 
+\newline
+\newline
+\textbf{Corolario 1}: Ningún algoritmo de ordenamiento tiene complejidad mejor que $\Omega(n~log(n))$ bajo nuestro modelo de cómputo.
+\newline
+\newline
+\textbf{Corolario 2}: Los algoritmos Merge Sort y Heap Sort tienen complejidad asintótica óptima. 
 
 
 
