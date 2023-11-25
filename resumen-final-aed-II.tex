@@ -3872,7 +3872,74 @@ $T(n)$ = $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  \displaystyle \frac{a^
 $T(n)$ = $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{a}{c^{d}})^{i}$
 \newpage
 
-
+Ahora, analicemos por casos los posibles resultados de $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{a}{c^{d}})^{i}$ 
+\newline
+\newline
+\textbf{.} En el caso que $a=1$ y $d=0$, es decir, un solo subproblema, la combinación tiene costo constante. Por ejemplo, el caso de la búsqueda binaria y por lo tanto:
+\newline
+\newline
+\newline
+$bn^{0}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{1}{c^{0}})^{i}$ = $b$ $\displaystyle \sum_{i=0}^{log_{c}(n)} 1$ = $O(log_{c}(n))$   
+\newline
+\newline
+\newline
+\textbf{.} En el caso que $d=1$, es decir, conquer lineal. Por ejemplo, el caso de la búsqueda binaria y por lo tanto:
+\newline
+\newline
+$bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{a}{c})^{i}$ 
+\newline
+\newline
+\newline
+1. Cuando $a < c$, o sea, pocos subproblemas $\displaystyle \frac{a}{c} < 1$ y por lo tanto, la serie converge lo que implica que:
+\newline
+\newline
+$bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{a}{c})^{i}$ = $bn$ $const$ = $O(n)$  
+\newline
+\newline
+\newline
+2. Cuando $a = c$, por ejemplo, en el caso del Merge Sort lo que implica que:
+\newline
+\newline
+$bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{c}{c})^{i}$ = $bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)} 1$ = $O(n~log_{c}(n))$  
+\newline
+\newline
+\newline
+3. Cuando $a > c$, o sea, muchos subproblemas, lo que implica que:
+\newline
+\newline
+$T(n)$ $=$ $bn$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{a}{c})^{i}$ 
+\newline
+\newline
+\newline
+$T(n)$ $=$ $bn$ $\displaystyle \frac{(\displaystyle \frac{a}{c})^{log_{c}(n)+1} - 1}{\displaystyle \frac{a}{c}-1}$ por Serie Geometrica 
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O(n~(\displaystyle \frac{a}{c})^{log_{c}(n)})$ eliminando todas las constantes
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O(n~\displaystyle \frac{a^{log_{c}(n)}}{c^{log_{c}(n)}})$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O(n~\displaystyle \frac{a^{log_{c}(n)}}{n})$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O(a^{log_{c}(n)})$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O(a^{log_{a}(n) * log_{c}(a)})$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O((a^{log_{a}(n)})^{log_{c}(a)})$
+\newline
+\newline
+\newline
+$T(n)$ $=$ $O(n^{log_{c}(a)})$
 
 
 
