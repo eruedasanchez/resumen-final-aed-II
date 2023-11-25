@@ -3941,6 +3941,30 @@ $T(n)$ $=$ $O((a^{log_{a}(n)})^{log_{c}(a)})$
 \newline
 $T(n)$ $=$ $O(n^{log_{c}(a)})$
 
+\subsection{Teorema Maestro (Master Theorem)}
+
+Permite resolver ecuaciones de recurrencia de la forma:
+\newline
+\newline
+\newline
+$T(n)$ = $\left\lbrace\begin{array}{c} O(1)~si~n=1 \\ \\ 2T(\displaystyle \frac{n}{2})~+~O(n-1)~si~n>1 \end{array}\right.$
+\newline
+\newline
+\newline
+La solución es:
+\newline
+\newline
+$T(n)$ = $\Theta(n^{log_{c}(a)})$ si $f(n)$ = $O(n^{log_{c}(a) - \epsilon})$ para $\epsilon > 0$
+\newline
+\newline
+$T(n)$ = $\Theta(n^{log_{c}(a)}~log(n))$ si $f(n)$ = $\Theta(n^{log_{c}(a)})$ 
+\newline
+\newline
+$T(n)$ = $\Theta(f(n))$ si $f(n)$ = $\Omega(n^{log_{c}(a) + \epsilon})$ para $\epsilon > 0$ y $af(\displaystyle \frac{n}{c}) < kf(n)$ para $k < 1$ y $n$ suficientemente grande.
+\newline
+\newline
+En los casos 1 y 3 es $T(n)$ $\in$ $\Theta(f(n) + n^{log_{c}(a)})$
+
 
 
 
