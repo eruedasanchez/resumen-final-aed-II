@@ -3746,7 +3746,131 @@ El camino más largo de la raíz a una hoja (altura) representa el número de co
 \newline
 \newline
 \textbf{Corolario 2}: Los algoritmos Merge Sort y Heap Sort tienen complejidad asintótica óptima. 
+\newpage
 
+\section{Clase Teórica 10. Dividir y Conquistar }
+
+Comenzamos presentando el esquema del pseudocódigo para la metodología D\&C.
+\newline
+\newline
+Algoritmo DC($X$).
+\newline
+\newline
+\textbf{.} Si $X$ es suficientemente chico o simple, ADHOC($X$).
+\newline
+\newline
+\textbf{.} En caso contrario:
+\newline
+\newline
+1. Descomponer $X$ en subinstancias $X_{1}$,$X_{2}$,...,$X_{n}$
+\newline
+\newline
+2. Para $i$ desde 1 hasta $k$ hacer $Y_{i} \leftarrow$ DC($X_{i}$)
+\newline
+\newline
+3. Combinar las soluciones $Y_{i}$ para construir una solución $Y$ para $X$.
+
+\subsection{Recurrencias típicas de D\&C}
+
+El esquema de D\&C se basa en dividir instancias de tamaño mayor que cierto $n_{0}$ en subinstancias, resolverlas y luego combinar las soluciones para el problema inicial.
+\newline
+\newline
+Esto da lugar a \textbf{ecuaciones de recurrencia} que miden el costo total del algoritmo. La situación típica se da en dividir en $a$ subproblemas, de tamaño máximo $\displaystyle \frac{n}{c}$, el costo de determinar subproblemas (divide) y unirlos (conquer) es $bn^{d}$. Suponemos la base ($n=1$) cuesta $b$.  
+\newline
+\newline
+Por lo tanto, para hallar la solución de la recurrencia, suponiendo $n = c^{k}$ es:
+\newline
+\newline
+$T(n)$ = $a$ $T(\displaystyle \frac{n}{c})$ + $bn^{d}$
+\newline
+\newline
+\newline
+$T(n)$ = $a$ $T(\displaystyle \frac{c^{k}}{c})$ + $b(c^{k})^{d}$
+\newline
+\newline
+\newline
+$T(n)$ = $a$ $T(c^{k-1})$ + $bc^{kd}$
+\newline
+\newline
+\newline
+$T(n)$ = $a$ ($a$ $T(\displaystyle \frac{c^{k-1}}{c})$ + $b(c^{k-1})^{d}$) + $bc^{kd}$
+\newline
+\newline
+\newline
+$T(n)$ = $a$ ($a$ $T(c^{k-2})$ + $b(c^{d(k-1)})$) + $bc^{kd}$
+\newline
+\newline
+\newline
+$T(n)$ = $a^{2}$ $T(c^{k-2})$ + $abc^{d(k-1)}$ + $bc^{kd}$
+\newline
+\newline
+\newline
+$T(n)$ = $a^{2}$ ($a$ $T(\displaystyle \frac{c^{k-2}}{c})$ + $b(c^{k-2})^{d}$) + $abc^{d(k-1)}$ + $bc^{kd}$
+\newline
+\newline
+\newline
+$T(n)$ = $a^{2}$ ($a$ $T(c^{k-3})$ + $b(c^{d(k-2)})$) + $abc^{d(k-1)}$ + $bc^{kd}$
+\newline
+\newline
+\newline
+$T(n)$ = $a^{3}$ $T(c^{k-3})$ + $a^{2}bc^{d(k-2)}$ + $abc^{d(k-1)}$ + $bc^{kd}$
+\newline
+\newline
+\newline
+...
+\newline
+\newline
+\newline
+Por lo tanto, la ecuación está descripta como:
+\newline
+\newline
+$T(n)$ = $a^{j}$ $T(c^{k-j})$ $+$ $\displaystyle \sum_{i=0}^{j-1} a^{i}bc^{d(k-i)}$
+\newline
+\newline
+Esto lo hacemos hasta el caso base, es decir, cuando $c^{k-j} = 1$, o sea, cuando $j$ = $log_{c}(n) = log_{c}(c^{k} = k) $ y por lo tanto:
+\newline
+\newline
+$T(n)$ = $a^{k}$ $T(c^{k-k})$ $+$ $\displaystyle \sum_{i=0}^{k-1} a^{i}bc^{d(k-i)}$
+\newline
+\newline
+\newline
+$T(n)$ = $a^{k}$ $+$ $\displaystyle \sum_{i=0}^{k-1} a^{i}bc^{d(k-i)}$
+\newline
+\newline
+\newline
+$T(n)$ = $a^{k}b$ $+$ $b \displaystyle \sum_{i=0}^{k-1} a^{i}c^{d(k-i)}$ donde $b$ en el término de $a^{k}b$ representa el costo del caso base (podria ser cualquier otra constante)
+\newline
+\newline
+$T(n)$ = $b$ . ($a^{k}$ $+$ $\displaystyle \sum_{i=0}^{k-1} a^{i}c^{d(k-i)}$)
+\newline
+\newline
+\newline
+$T(n)$ = $b$ $\displaystyle \sum_{i=0}^{k} a^{i}c^{d(k-i)}$
+\newline
+\newline
+\newline
+$T(n)$ = $b$ $\displaystyle \sum_{i=0}^{k} a^{i}c^{dk-di}$
+\newline
+\newline
+\newline
+$T(n)$ = $b$ $\displaystyle \sum_{i=0}^{k} a^{i}c^{dk}c^{-di}$
+\newline
+\newline
+\newline
+$T(n)$ = $bc^{dk}$ $\displaystyle \sum_{i=0}^{k} a^{i}c^{-di}$
+\newline
+\newline
+\newline
+$T(n)$ = $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)} a^{i} \displaystyle \frac{1}{(c^{d})^{i}}$
+\newline
+\newline
+\newline
+$T(n)$ = $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  \displaystyle \frac{a^{i}}{(c^{d})^{i}}$
+\newline
+\newline
+\newline
+$T(n)$ = $bn^{d}$ $\displaystyle \sum_{i=0}^{log_{c}(n)}  (\displaystyle \frac{a}{c^{d}})^{i}$
+\newpage
 
 
 
