@@ -4007,7 +4007,73 @@ Por lo tanto $P$ = [8,10,3,13,9,15,2,16,7,1,11,14,5,12,4,6]
 	\label{drivers1}
 \end{figure}
 \newpage
-
+Y obtenemos los siguientes subarreglos:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{puntos-4}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Luego, en la etapa de \textbf{conquer} encontramos el par de puntos más cercano en ambas mitades (recursivo).
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{puntos-5}
+	\label{drivers1}
+\end{figure}
+\newpage
+Ahora, en la etapa de \textbf{combine} no podriamos retornar $\delta$ = min($\delta_{L}$, $\delta_{R}$) porque no consideramos los cruces de estos puntos. Es decir, podría ocurrir que el par de puntos que se encuentran a distancia mínimo este uno en el plano derecho y otro en el plano izquierdo. 
+\newline
+\newline
+Por lo tanto, tendría que considerar para cada punto de $P_{R}$ y $P_{L}$ aquellos que están del otro plano. Pero, no van a ser necesario comparar todas las distancias.
+\newline
+\newline
+Sabemos que la distancia es $\delta$ = min($\delta_{L}$, $\delta_{R}$) o menor. Por lo tanto, los posibles par de puntos candidatos a mínimos tienen que estar delimitados por esta distancia $\delta$, es decir, no es necesario considerar a aquellos par de puntos que se encuentren a una distancia mayor a $\delta$ porque habrán superado dicha distancia.   
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{puntos-6}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Ahora, creamos un arreglo $Y'$ con los puntos de las bandas verticales ordenados por el eje $y$. Es decir, $Y'$ = [1,2,16,11,15,7].
+\newline
+\newline
+Luego, para cada punto $p$ en $Y'$ buscamos otros puntos en $Y'$ que estén a una distancia $\delta'$ menor a $\delta$. 
+\newline
+\newline
+Por lo tanto, si $\delta'$ $<$ $\delta$, retornamos $\delta'$ sino $\delta$. 
+\newline
+\newline
+Ahora, veamos una aclaraciones generales.
+\newline
+\newline
+\textbf{.} Los llamados recursivos (\textbf{conquer}) se detienen cuando  $|P| \leq 3$, de esa manera nos garantizamos que nunca vamos a intentar resolver sub-problemas que sólo contengan 1 punto.
+\newline
+\newline
+\textbf{.} Es necesario contar con dos versiones del arreglo de puntos $P$, uno ordenado según $x$, otro según $y$. Se los puede \textbf{pre-ordenar} en $O(n~log(n))$
+\newline
+\newline
+\textbf{.} En cada llamado \textbf{divide} hay que preservar este orden para no aumentar la complejidad del algoritmo (tener cuidado con el arreglo ordenado según $y$). Se puede hacer en $O(n)$.
+\newline
+\newline
+Por último, calculamos el costo de este algoritmo:
+\newline
+\newline
+\newline
+$T(n)$ = $\left\lbrace\begin{array}{c} 2T(\displaystyle \frac{n}{2})~+~O(n)~si~n>3 \\ \\ O(1)~si~n\leq3 \end{array}\right.$
+\newline
+\newline
+Concluimos que podemos encontrar el par de puntos más cercanos en $T(n)$ = $O(n~lg(n))$.
+\newline
+\newline
+Por último, podemos generalizar el algoritmo a $d$-dimensiones con complejidad $T(n,d)$ = $O(n~lg(n)^{d-1})$
 
 
 
