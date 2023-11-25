@@ -3979,6 +3979,34 @@ Dado un conjunto de puntos en el plano, encontrar el par de puntos más cercano.
 \newline
 La solución de \textbf{fuerza bruta} es, para cada punto, calcular la distancia con los puntos restantes y devolver a aquellos dos que contengan el mínimo de todas las distancias calculadas.
 \newpage
+Para realizar esto de una manera más eficiente, vamos a aplicar una solución \textbf{D\&C}. 
+\newline
+\newline
+Supongamos que tenemos una entrada de un conjunto con 16 puntos.
+\newline
+\newline
+Para la etapa de \textbf{divide}, vamos a dividir el plano por la mitad y calcular recursivamente la distancia mínima entre puntos del plano derecho e izquierdo. 
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{puntos-2}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Ahora, para calcular las distancias minimas, voy a encontrar el punto medio en el arreglo ordenado según el eje $x$. 
+\newline
+\newline
+Por lo tanto $P$ = [8,10,3,13,9,15,2,16,7,1,11,14,5,12,4,6]
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{puntos-3}
+	\label{drivers1}
+\end{figure}
+\newpage
 
 
 
