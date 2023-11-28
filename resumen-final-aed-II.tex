@@ -4706,7 +4706,28 @@ Por lo tanto, comenzamos con una rotación a izquierda aplicada a $k$ que lo ubi
 	\centering
 \includegraphics[width=0.5\textwidth]{st-1}
 	\label{drivers1}
+\end{figure}    
+
+\subsubsection{Rotación Zig-zig}
+
+Ocurre cuando el padre del nodo $k$, que es el que estoy buscando, no es la raíz y $k$ es hijo izquierdo mientras que su padre $p$ también es hijo izquierdo del nodo $a$ o $k$ es hijo derecho mientras que su padre $p$ también es hijo derecho del nodo $a$.
+\newline
+\newline
+Por lo tanto, comenzamos con una rotación a derecha aplicada a $p$ y luego una rotación a derecha aplicada a $k$ que lo posiciona en la raíz del árbol. 
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{st-2}
+	\label{drivers1}
 \end{figure}      
+
+\subsubsection{Inserción y Borrado}
+
+Para insertar, hacemos como siempre: buscamos el lugar donde corresponde insertar y efectuamos las rotaciones resultantes de esa búsqueda. El elemento insertado queda entonces en la raíz.
+\newline
+\newline
+Para borrar un elemento de un splay tree se puede proceder de la siguiente forma: se realiza una búsqueda del nodo a eliminar, lo cual lo deja en la raíz del árbol. Si ésta es eliminada, se obtienen dos subárboles $S_{izq}$ y $S_{der}$. Se busca el elemento mayor en $S_{izq}$, $m$, que pasa a ser su nueva raíz. Como $m$ era el elemento mayor, no tenia hijo derecho, por lo que se cuelga $S_{der}$ como subárbol derecho y $S_{izq}-m$ como subárbol izquierdo con lo que termina la operación de eliminación.  
 
 
 
