@@ -4310,6 +4310,41 @@ Al desencolar el registro \TipoVariable{E}, ingresa el registro \TipoVariable{D}
 \end{figure}      
 \newpage
 
+Nuevamente, al escribir el registro \TipoVariable{O}, ingresa el registro \TipoVariable{E} que es menor al registro \TipoVariable{O} que acaba de salir, lo marco a \TipoVariable{E} como si fuera mayor y coloco al registro \TipoVariable{R} en alguna de la cintas de salida como se muestra a continuación:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{susti-12}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Nuevamente, estamos en condiciones de comenzar un nuevo bloque porque el registro \TipoVariable{N} es menor que el registro \TipoVariable{R} que acaba de salir como se muestra a continuación:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{susti-13}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Continuamos operando de este modo hasta insertar todos los registros en alguna cinta de salida.
+\newline
+\newline
+Ahora, analicemos la \textbf{complejidad} de este algoritmo.
+\newline
+\newline
+El tamaño de los bloques ordenados es: 7,4,3,5,5,1.
+\newline
+\newline
+\textbf{Propiedad}: Para secuencias aleatorias, las secuencias creadas asi son aproximadamente el doble del tamaño del heap utilizado.
+\newline
+\newline
+Por lo tanto, ganamos una pasada sobre la secuencia (además de pagar $log(M)$ por elemento en la primera pasada, pero eso no es grave, ya que de la otra manera tambien pagábamos $\displaystyle \frac{N}{M}$ * $M$ $log(M)$). 
+\newpage
+
 
 
 
