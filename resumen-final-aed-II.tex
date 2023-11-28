@@ -4488,6 +4488,89 @@ Como $S$ $>$ $M$, tendriamos que insertarlo en la rama de más a la derecha. Por
 \end{figure}      
 \newpage
 
+¿Qué pasa si el padre también es un 4-nodo?
+\newline
+\newline
+La primera solución es partirlo también a él e ir asi hacia arriba.
+\newline
+\newline
+La segunda solución, en el camino de descenso, ir partiendo todos los 4-nodos que encontremos.
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{a-234-4}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Finalmente, veamos como queda la secuencia de inserciones restantes, es decir, la secuencia de inserciones \TipoVariable{QUEDA}.
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{a-234-5}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Por último, analicemos la complejidad de las operaciones de árboles 2-3-4.
+\newline
+\newline
+\textbf{.} Búsqueda: $O(log(n))$
+\newline
+\newline
+\textbf{.} Inserciones: $O(log(n))$ (necesitan a lo sumo $O(log(N))$) divisiones de nodos
+\newline
+\newline
+\textbf{.} Borrado: también se puede en $O(log(n))$
+\newline
+\newline
+A su vez, estos árboles tienen problemas de implementación porque poseen cierta complicación proveniente del manejo de distintos tipos de nodos.
+\newpage
+Ahora, volvamos a los \textbf{Árboles B}.
+\newline
+\newline
+Los árboles B son similares a los árboles 2-3-4 pero cada nodo puede tener hasta $M-1$ claves, o sea, hasta $M$ enlaces.
+\newline
+\newline
+Para desplazarse de un nodo al siguiente, hay que encontrar (mediante búsqueda binaria) el intervalo apropiado de la clave buscada, y salir a través del enlace correspondiente.
+\newline
+\newline
+Similarmente a los árboles 2-3-4, es necesario dividir los nodos que están llenos a lo largo del camino: cada vez que se encuentra un $k$-nodo que es padre de un $M$-nodo, se lo reemplaza por un ($k+1$)-nodo asociado a dos ($\displaystyle \frac{M}{2}$)-nodos.
+\newline
+\newline
+La idea es que cada nodo corresponda a una página de disco. Notar que $M$ grande implica mayor costo en cada nodo.
+
+\subsubsection{Hashing Dinámico o Extensible}
+
+A semejanza de los árboles B, los registros se almacenan en páginas que, cuando se llenan, se dividen en dos partes.
+\newline
+\newline
+Como en el ISAM, se mantiene un índice al que se accede para encontrar la página que contiene los registros que coincidan con la clave.
+\newline
+\newline
+La idea es que todos los elementos con el mismo valor de $h$, van a parar a la misma página de memoria.
+\newline
+\newline
+Si por causa de una inserción, se llena una página, ésta se divide en 2, los elementos van a una u otra, dependiendo del valor de una nueva función de hash.
+\newline
+\newline
+Veamos el siguiente ejemplo:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{hed-1}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+En este ejemplo, aplicamos la función de hash $h_{1}$ a un conjunto de claves cuya imagen es $\{0,1\}$. Supongamos que le aplicamos la función $h_{1}$ a la clave $X$. Si $h_{1}(X)$ = 1 y la página correspondiente se encuentra llena (o sea, el puntero apunta a nil), parto en 2 la página completa y defino una nueva función de hash $h_{2}$ donde coloco en una pagina a aquellas claves donde $h_{2}(C)$ = 0 y en otra pagina a aquellas claves donde $h_{2}(C)$ = 1. Supongamos que $h_{2}(X)$ = 1 pero está página tambien se encuentra completa. Entonces, repito el procedimiento creando $h_{3}$ pero en este caso, $h_{3}(X)$ = 1 pero el puntero apunta a una página y no a nil por lo que puede insertar allí a $X$.    
+\newline
+\newline
+Por lo tanto, en la práctica, se va armando y desarmando un árbol de índices, cuyas hojas apuntan al archivo donde está el registro. Si el árbol de índices cabe en memoria principal, entonces con un sólo acceso a disco alcanza.
+
 
 
 
