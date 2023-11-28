@@ -4635,6 +4635,48 @@ Sin embargo, podemos \textit{aleatorizar} o \textit{randomizar} el requerimiento
 El análisis del costo de la búsqueda puede ser complicado pero intuitivamente es $O(log(n))$ en promedio y $O(n)$ en el peor caso. 
 \newpage
 
+\subsection{ABB óptimos}
+
+Un ABB óptimo trata de optimizar el costo de las búsquedas, es decir, si supieramos las frecuencias de acceso a cada elemento podriamos construir un árbol en el que los elementos más accedidos estén más cerca de la raíz.
+\newline
+\newline
+En tiempo $O(n^{2})$ se puede construir el árbol óptimo.
+\newline
+\newline
+Queremos encontrar una estructura que me permita construir estos ABB óptimos en el escenario dinámico y no estático.
+\newline
+\newline
+Para ello, introducimos los \textbf{splay trees} donde la idea es tratar de \textit{tender} al ABB óptimo todo el tiempo.
+\newline
+\newline
+Los splay trees son estructuras auto-ajustantes porque se modifican a si mismo cuando se operan sobre ellas. En este caso, el ajuste que realizan sucede cada vez que consulto un elemento, lo traslado a la raíz del árbol. 
+\newline
+\newline
+Estos traslados se realizan a través de rotaciones tipo AVL. Pero no a través de rotaciones simples entre el elemento accedido y su padre hasta llegar a la raíz sino mediante un mecanismo denominado \textbf{Splaying}.
+\newline
+\newline
+Ahora, mencionamos algunas ventajas de los splay trees:
+\newline
+\newline
+\textbf{.} Son más simples de implementar que los árboles balanceados (no hay que verificar condiciones de balanceo).
+\newline
+\newline
+\textbf{.} No tiene requerimientos de memoria adicionales (no hay que almacenar factores de balanceo ni nada parecido).
+\newline
+\newline
+\textbf{.} Poseen muy buena performance en secuencias de acceso no uniformes.
+\newline
+\newline
+\textbf{.} Si bien no es posible garantizar $O(log(n))$ por operación, si es posible garantizar $O(m log(n))$ para secuencias de $m$ operaciones. Una operación en particular podría requerir tiempo $O(n)$.
+\newline
+\newline
+\textbf{.} En general, cuando una secuencia de $M$ operaciones toma tiempo $O(M f(N))$, se dice que el costo amortizado  en tiempo de cada operación es $O(f(N))$. Por lo tanto, en un splay tree los costos amortizados por operación son $O(log(N))$. 
+\newline
+\newline
+\textbf{.} Más aún, por el \textbf{Teorema de Optimalidad Estática}, asintoticamente, los Splay Trees son tan eficientes como \textbf{cualquier} ABB fijo.
+\newline
+\newline
+Y por la \textbf{Conjetura de Optimalidad Dinámica}, asintoticamente, los Splay Trees son tan eficientes como \textbf{cualquier ABB que se modifique} a través de rotaciones.
 
 
 
