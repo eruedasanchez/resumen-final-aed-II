@@ -4129,6 +4129,59 @@ Mientras haya elementos en la cinta de entrada, para $i$ desde 1 hasta 3, leer 3
 \end{figure}
 \newpage
 
+Luego, la segunda pasada consiste en:
+\newline
+\newline
+Mientras haya bloques de 3 en las 3 cintas fusionar los 3 bloques de 3 armando uno de 9 en las cintas 4,5 y 6 alternadamente como se muestra a continuación:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{fme-2}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Es decir, en el primer registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{E}, \TipoVariable{L} y \TipoVariable{D} el cual resulta ser \TipoVariable{D} 
+\newline
+\newline
+Avanzo el cabezal de la cinta 3 y en el segundo registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{E}, \TipoVariable{L} y \TipoVariable{E} el cual resulta ser \TipoVariable{E} (elijo el que se encuentra ubicado en la cinta 3).
+\newline
+\newline
+Avanzo el cabezal de la cinta 3 y en el tercer registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{E}, \TipoVariable{L} y \TipoVariable{E} el cual resulta ser \TipoVariable{E}
+\newline
+\newline
+Avanzo el cabezal de la cinta 3 y en el cuarto registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{E}, \TipoVariable{L} y \TipoVariable{O} el cual resulta ser \TipoVariable{E}
+\newline
+\newline
+Avanzo el cabezal de la cinta 1 y en el quinto registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{J}, \TipoVariable{L} y \TipoVariable{O} el cual resulta ser \TipoVariable{J}
+\newline
+\newline
+Avanzo el cabezal de la cinta 1 y en el quinto registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{J}, \TipoVariable{L} y \TipoVariable{O} el cual resulta ser \TipoVariable{J}
+\newline
+\newline
+El cabezal de la cinta 1 no apunta a más registros y en el sexto registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{L} y \TipoVariable{O} el cual resulta ser \TipoVariable{L}
+\newline
+\newline
+Avanzo el cabezal de la cinta 2 y en el septimo registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{M} y \TipoVariable{O} el cual resulta ser \TipoVariable{M}
+\newline
+\newline
+Avanzo el cabezal de la cinta 2 y en el octavo registro de la cinta 4 colocamos el registro de menor valor entre \TipoVariable{P} y \TipoVariable{O} el cual resulta ser \TipoVariable{P}
+\newline
+\newline
+El cabezal de la cinta 3 no apunta a más registros y en el noveno registro de la cinta 4 colocamos al registro \TipoVariable{P}
+\newline
+\newline
+Por lo tanto, la cinta 4 queda ordenada de la siguiente manera: \TipoVariable{DEEEJLMOP}.
+\newline
+\newline
+Esto mismo lo repito para los bloques 2 y 3 colocandolos en la cintas 4 y 6 respectivamente.
+\newline
+\newline
+Finalmente, realizando una última pasada de la misma manera que venimos haciendo pero considerando ahora las cintas 4,5 y 6, logramos ordenar los registros de \TipoVariable{EJEMPLODEORDENACIONFUSION}. 
+\newpage
+
+
 
 
 
