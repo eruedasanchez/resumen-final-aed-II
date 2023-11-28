@@ -4677,7 +4677,22 @@ Ahora, mencionamos algunas ventajas de los splay trees:
 \newline
 \newline
 Y por la \textbf{Conjetura de Optimalidad Dinámica}, asintoticamente, los Splay Trees son tan eficientes como \textbf{cualquier ABB que se modifique} a través de rotaciones.
-
+\newline
+\newline
+A continuación, explicamos el mecanismo de \textit{splaying} que tiene 4 casos fundamentales:
+\newline
+\newline
+\textbf{.} Si accedemos a la raíz del árbol, no hacemos nada.
+\newline
+\newline
+\textbf{.} Si accedemos a $k$, y el padre de $k$ es la raíz, hacemos una rotación simple.
+\newline
+\newline
+\textbf{.} Si accedemos a $k$, y el padre de $k$ no es la raíz, hay dos casos posibles (y sus especulares): rotación zig-zag y rotación zig-zig.
+\newline
+\newline
+Como efecto del splaying no sólo se mueve el nodo accesado hacia la raíz sino que todos los nodos del camaino desde la raíz hasta el nodo accesado se mueven aproximadamente a la mitad de su profundidad anterior, a costa de que algunos pocos nodos bajen como máximo dos niveles en el árbol.
+\newpage
 
 
 
