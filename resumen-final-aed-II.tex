@@ -4570,8 +4570,47 @@ En este ejemplo, aplicamos la función de hash $h_{1}$ a un conjunto de claves c
 \newline
 \newline
 Por lo tanto, en la práctica, se va armando y desarmando un árbol de índices, cuyas hojas apuntan al archivo donde está el registro. Si el árbol de índices cabe en memoria principal, entonces con un sólo acceso a disco alcanza.
+\newpage
 
+\section{Clase Teórica 12. Skip Lists y Splay Trees}
 
+\subsection{Skip Lists}
+
+Queremos implementar diccionarios con listas enlazadas ordenadas.
+\newline
+\newline
+Las listas enlazadas son muy simples pero ineficientes. Por ejemplo, el costo de una búsqueda es el mismo tanto para una lista enlazada ordenada como para una que no lo está y es $O(n)$ con $n$ la cantidad de elementos de la lista. 
+\newline
+\newline
+Pero tenemos una pequeña ventaja. Supongamos que tenemos la lista 5,12,18,25,41,57,63,70,90,94. Entonces, si queremos saber si se encuentra el número 28, como se encuentra ordenada, una visitado el 41 podemos concluir que el elemento buscado no se encuenrta sin tener la necesidad de recorrerla toda.
+\newline
+\newline
+Ahora, nos gustaría tener una forma de poder avanzar \textit{más rápido} sobre esta lista. Por lo tanto, podríamos plantear la siguiente lista:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{sl-1}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Por ejemplo, si queremos buscar al 63, en lugar de ir visitando elemento por elemento de la lista, podemos empezar a buscar por la lista de arriba que me permite saltar más rápido preguntando si 12 $>$ 63 $Abs!$, 25 $>$ 63 $Abs!$, 57 $>$ 63 $Abs!$ y como 70 $>$ 63, bajo de nivel, y si el elemento se encuentra, debe estar en ese nivel. 
+\newline
+\newline
+Así, alcanzarían [$\displaystyle \frac{n}{2}$] + 1 comparaciones para una búsqueda. 
+\newline
+\newline
+Sin embargo, esto no parece suficiente, por lo que podríamos acelerar más la búsqueda agregando más niveles como se muestra a continuación. 
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{sl-2}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
 
 
 
