@@ -4345,6 +4345,116 @@ El tamaño de los bloques ordenados es: 7,4,3,5,5,1.
 Por lo tanto, ganamos una pasada sobre la secuencia (además de pagar $log(M)$ por elemento en la primera pasada, pero eso no es grave, ya que de la otra manera tambien pagábamos $\displaystyle \frac{N}{M}$ * $M$ $log(M)$). 
 \newpage
 
+\subsubsection{Fusión Polifásica}
+
+Tenemos el mismo problema que lo anteriores. Es decir, gran cantidad de dispositivos necesarios: $2P$, o como mínimo $P+1$ (a un costo de duplicar la cantidad de pasadas).
+\newline
+\newline
+Cuando se tienen menos cintas, se puede hacer lo siguiente:
+\newline
+\newline
+\textbf{.} Distribuir los datos en todas las cintas menos una, aplicando una estrategia de \textit{fusión hasta el vaciado}.
+\newline
+\newline
+\textbf{.} Cuando una cinta se vacía, se puede rebobinar y usar como cinta de salida.
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{poli-1}
+	\label{drivers1}
+\end{figure}      
+
+\subsection{Búsqueda en Diccionarios en memoria externa}
+
+El objetivo será poder encontrar una palabra entre un millón con 2 o 3 accesos a disco.
+\newline
+\newline
+Los métodos que vamos a utilizar para realizar las búsquedas son:
+\newline
+\newline
+\textbf{.} Acceso Secuencial Indexado (ISAM)
+\newline
+\newline
+\textbf{.} Árboles B
+\newline
+\newline
+\textbf{.} Hashing Extensible
+
+\subsubsection{Acceso Secuencial Indexado (ISAM)}
+
+Caso de acceso secuencial puro. Por ejemplo, \TipoVariable{EJEMPLODEBUSQUEDAEXTERNA} donde tenemos 2 discos con 3 páginas de 4 registros cada una como se muestra a continuación:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{isam-1}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Si queremos buscar un registro determinado $X$, tendriamos que recorrer cada página de cada uno de los discos hasta encontrar o no a $X$. Sin embargo, como los bloques están ordenados, podríamos tener en cada disco un índice que establezca qué claves pertenecen a las páginas que están en ese disco.
+\newline
+\newline
+Por lo tanto, la primera página de cada disco es su índice. Y el \textit{índice} nos dice cuál es la mayor clave que se encuentra en la página anterior.
+\newline
+\newline
+Analicemos el siguiente diagrama:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{isam-2}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Primero, observamos que necesitamos un disco de más para almacenar los índices. 
+\newline
+\newline
+\textbf{.} En la primer posicíon del disco 1 se indica que no hay un registro del último bloque de un disco anterior. En la segunda posición se indica que el último registro del primer bloque es el \TipoVariable{D} y, en la tercer posición se indica que el último registro del segundo bloque es el \TipoVariable{E}.
+\newline
+\newline
+\textbf{.} En la primer posicíon del disco 2 se indica que el último registro del disco anterior es el \TipoVariable{E}. En la segunda posición se indica que el último registro del primer bloque es el \TipoVariable{J} y, en la tercer posición se indica que el último registro del segundo bloque es el \TipoVariable{O}.
+\newline
+\newline
+\textbf{.} En la primer posicíon del disco 3 se indica que el último registro del disco anterior es el \TipoVariable{O}. En la segunda posición se indica que el último registro del primer bloque es el \TipoVariable{S} y, en la tercer posición se indica que el último registro del segundo bloque es el \TipoVariable{X}.
+\newline
+\newline
+Se puede acelerar más con un índice maestro, que dice que claves están en cada disco. En el ejemplo anterior, el índice maestro diría que el disco 1 contiene las claves $\leq$ $E$, el disco 2 contiene las claves $\leq$ $O$ pero no $<$ $E$ y el disco 3 las claves $\leq$ $X$ pero no $<$ $P$. 
+\newline
+\newline
+El índice maestro puede estar en memoria principal pero el problema es que este método es muy rígido si va a haber inserciones/borrados.
+\newline
+\newline
+Por último, la \textbf{complejidad} de una búsqueda es $O(1)$ pero la inserción es $O(n)$ (buscamos 2 o 3 accesos unicamente) porque puede implicar una reorganización completa.
+
+\subsubsection{Árboles B}
+
+Son árboles totalmente balanceados, es decir, todas las hojas están a la misma distancia de la raíz.
+\newline
+\newline
+La idea es acceder a una página de memoria por nivel.
+\newline
+\newline
+Pero vamos a explicar los árboles B mediante una variante de ellos que son los \textbf{árboles 2-3-4}.
+\newline
+\newline
+Los árboles 2-3-4 se llaman asi porque cada nodo, en lugar de contener una única clave, puede contener una (2-hijos), dos (3-hijos) o tres claves (4-hijos). 
+\newline
+\newline
+Es decir, los nodos pueden contener 1,2 o 3 claves.
+\newline
+\newline
+\textbf{.} 1 clave $\rightarrow$ 2 enlaces: 2-nodos 
+\newline
+\newline
+\textbf{.} 2 claves $\rightarrow$ 3 enlaces: 3-nodos
+\newline
+\newline
+\textbf{.} 3 claves $\rightarrow$ 4 enlaces: 4-nodos
+\newpage
+
 
 
 
