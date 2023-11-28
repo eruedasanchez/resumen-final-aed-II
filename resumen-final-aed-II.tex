@@ -4611,6 +4611,29 @@ Sin embargo, esto no parece suficiente, por lo que podríamos acelerar más la b
 \end{figure}      
 \newline
 \newline
+Luego, queeremos llevar esta idea al límite. En el límite, cada $2^{i}$-esimo nodo posee una referencia al nodo $2^{i}$ posiciones más adelante en la lista. Es decir, que en el nivel 0, vamos a ir avanzando de a un elemento, en el nivel 1, vamos a ir avanzando de a dos elemento, en el nivel 2, vamos a ir avanzando de a cuatro elemento, etc,  
+\newline
+\newline
+Observemos que el nodo que no tiene ningún valor asociado y contiene todos los punteros al inicio de cada una de las listas juega el papel de menor absoluto de  todos los elementos de la lista.
+\newline
+\newline
+Por lo tanto, el número total de referencias es ¡solamente el doble!
+\newline
+\newline
+Pero como máximo se examinan $O(log_{2}(n))$ nodos durante una búsqueda y tenemos $log_{2}(n)$ niveles.
+\newline
+\newline
+Entonces, cualquier búsqueda utilizando \textit{skip lists}, a lo sumo vamos a tener que visitar 2 nodos por nivel y como tenemos $log_{2}(n)$ niveles, son $2log_{2}(n)$ que podemos acotar por $O(log(n))$    
+\newline
+\newline
+En el modelo anterior, $\displaystyle \frac{1}{2}$ de los nodos son de nivel 1, $\displaystyle \frac{1}{4}$ son de nivel 2 y $\displaystyle \frac{1}{2^{i}}$ son de nivel $2^{i}$. 
+\newline
+\newline
+Sin embargo, podemos \textit{aleatorizar} o \textit{randomizar} el requerimiento, y asignar el nivel de cada nodo probabilísticamente. Por ejemplo, subiendole el nivel mientras una moneda siga saliendo \textit{cara}.
+\newline
+\newline
+El análisis del costo de la búsqueda puede ser complicado pero intuitivamente es $O(log(n))$ en promedio y $O(n)$ en el peor caso. 
+\newpage
 
 
 
