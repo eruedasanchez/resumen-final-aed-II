@@ -4455,6 +4455,39 @@ Es decir, los nodos pueden contener 1,2 o 3 claves.
 \textbf{.} 3 claves $\rightarrow$ 4 enlaces: 4-nodos
 \newpage
 
+Veamos un ejemplo de un 3-nodo
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{a-234-1}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Veamos el siguiente ejemplo donde las claves son \TipoVariable{EJEMPLODEBU}:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{a-234-2}
+	\label{drivers1}
+\end{figure}      
+\newline
+\newline
+Ahora, queremos insertar la clave \TipoVariable{S}.
+\newline
+\newline
+Como $S$ $>$ $M$, tendriamos que insertarlo en la rama de más a la derecha. Por lo tanto, podriamos insertar a \TipoVariable{S} en el nodo que contiene a \TipoVariable{O P U} pero como ese nodo sólo soporta 3 claves, podemos insertarlo allí pero debemos subir a la raíz a la clave \TipoVariable{P} y crear un nuevo nodo que contenga a la clave para manterer el árbol balanceado como se muestra a continuación:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{a-234-3}
+	\label{drivers1}
+\end{figure}      
+\newpage
+
 
 
 
