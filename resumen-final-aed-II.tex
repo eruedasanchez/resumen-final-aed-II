@@ -4181,6 +4181,43 @@ Esto mismo lo repito para los bloques 2 y 3 colocandolos en la cintas 4 y 6 resp
 Finalmente, realizando una última pasada de la misma manera que venimos haciendo pero considerando ahora las cintas 4,5 y 6, logramos ordenar los registros de \TipoVariable{EJEMPLODEORDENACIONFUSION}. 
 \newpage
 
+Ahora, analicemos la \textbf{complejidad} de este algoritmo suponiendo $N$ (25 en el ejemplo) registros, memoria interna de tamaño $M$ (3 en el ejemplo) y fusiones a $P$ (3 en el ejemplo) vias.
+\newline
+\newline
+\textbf{.} La primera pasada produce aproximadamente $\displaystyle \frac{N}{M}$ bloques ordenados.
+\newline
+\newline
+\textbf{.} Se hacen fusiones a $P$ vias, en cada paso, posterior, lo que requiere aproximadamente $log_{P}(\displaystyle \frac{N}{M})$ pasadas.
+
+\subsubsection{Selección por sustitución}
+
+La idea es usar una cola de prioridad de tamaño $M$ para ordenar bloques, pasar los elementos a través de una cola de prioridad escribiendo siempre el más pequeño y sustituyendolo por el siguiente. Pero, si el nuevo es menor que el que acaba de salir, lo marcamos como si fuera mayor, hasta que algunos de esos nuevos llegue al primer lugar de la cola de prioridad.
+\newline
+\newline
+Analicemos el siguiente ejemplo: \TipoVariable{EJEMPLODEORDENACIONFUSION}. 
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{susti-1}
+	\label{drivers1}
+\end{figure}
+\newline
+\newline
+Tenemos la cola de prioridad de tamaño $M$ = 3 registros y la $salida$ donde vamos a ir colocando los bloques ordenados. Entonces, llenamos la cola de prioridad con los registros \TipoVariable{E}, \TipoVariable{J} y \TipoVariable{E} de manera que al encolarse quedan ordenados.
+\newline
+\newline
+Luego, desencolo la raíz (\TipoVariable{E}) y coloco a este registro en alguna de la cintas de salida como se muestra a continuación:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{susti-2}
+	\label{drivers1}
+\end{figure}
+\newpage
+
+
 
 
 
