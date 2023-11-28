@@ -4694,6 +4694,20 @@ A continuación, explicamos el mecanismo de \textit{splaying} que tiene 4 casos 
 Como efecto del splaying no sólo se mueve el nodo accesado hacia la raíz sino que todos los nodos del camaino desde la raíz hasta el nodo accesado se mueven aproximadamente a la mitad de su profundidad anterior, a costa de que algunos pocos nodos bajen como máximo dos niveles en el árbol.
 \newpage
 
+\subsubsection{Rotación Zig-zag}
+
+Ocurre cuando el padre del nodo $k$, que es el que estoy buscando, no es la raíz y $k$ es hijo derecho mientras que su padre $p$ es hijo izquierdo del nodo $a$ o viceversa.
+\newline
+\newline
+Por lo tanto, comenzamos con una rotación a izquierda aplicada a $k$ que lo ubica en la posición de $p$ y luego una rotación a derecha aplicada a $k$ que lo posiciona en la raíz del árbol. 
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{st-1}
+	\label{drivers1}
+\end{figure}      
+
 
 
 
