@@ -4074,8 +4074,60 @@ Concluimos que podemos encontrar el par de puntos más cercanos en $T(n)$ = $O(n
 \newline
 \newline
 Por último, podemos generalizar el algoritmo a $d$-dimensiones con complejidad $T(n,d)$ = $O(n~lg(n)^{d-1})$
+\newpage
 
+\section{Clase Teórica 11. Sorting y Searching en memoria secundaria}
 
+Ahora, nos vamos a enfocar en pensar y desarrollar ideas algorítmicas para optimizar el uso de la memoria rápida tratando de usar lo menos posible la memoria secundaria. Aunque vamos a tener que usar la memoria secundaria si o si porque los datos no caben en memoria principal.
+\newline
+\newline
+Por lo tanto, queremos minimizar la cantidad de veces que un elemento hace el viaje memoria secundaria - memoria principal.
+
+\subsection{Ordenación-fusión}
+
+El objetivo es ordenar grandes bloques de datos en memoria secundaria minimizando el número de pasadas sobre el archivo.
+\newline
+\newline
+Entonces, una estrategia que podemos utilizar es:
+\newline
+\newline
+\textbf{.} Realizar una pasada a lo largo del archivo a ordenar diviendolo en bloques que entren en memoria interna, ordenar esos bloques y luego fusionarlos  
+\newline
+\newline
+Para ello, podemos utilizar los siguientes métodos:
+\newline
+\newline
+\textbf{.} Fusión Múltiple Equilibrada
+\newline
+\newline
+\textbf{.} Selección por sustitución
+\newline
+\newline
+\textbf{.} Función polifásica
+
+\subsubsection{Fusión Múltiple Equilibrada}
+
+Supongamos que tenemos que ordenar los registros con valores \TipoVariable{EJEMPLODEORDENACIONFUSION}.
+\newline
+\newline
+Los registros están en una cinta, y sólo pueden ser accedidos secuencialmente.
+\newline
+\newline
+En memoria hay sólo espacio para un número constante pequeño de registros, pero disponemos de todas las cintas que necesitemos (vamos a suponer capacidad de 3 registros).
+\newline
+\newline
+Por lo tanto, la primer pasada consiste en:
+\newline
+\newline
+Mientras haya elementos en la cinta de entrada, para $i$ desde 1 hasta 3, leer 3 registros (letras) a la vez y escribirlos, ordenados, en la cinta $i$ obteniendo el resultado que se muestra a continuación:
+\newline
+\newline
+\begin{figure}[h]
+	\centering
+\includegraphics[width=0.5\textwidth]{fme-1}
+	\label{drivers1}
+\end{figure}
+\newpage
 
 
 
